@@ -30,7 +30,7 @@
                                         <i class="bi bi-person-fill"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>12</h6>
+                                        <h6></h6>
                                         <span class="text-muted pt-2 ps-1">Mahasiswa</span>
                                     </div>
                                 </div>

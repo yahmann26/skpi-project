@@ -32,13 +32,13 @@
                         <th width="20%">Nama</th>
                         <th width="25%">Prodi</th>
                         <th width="15%">Jabatan</th>
-                        <th width="15%">Aksi</th>
+                        <th width="10%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dosen as $dosen)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $dosen->kode_dosen }}</td>
                             <td>{{ $dosen->nama_dosen }}</td>
                             <td>{{ $dosen->prodi->nama_prodi }}</td>

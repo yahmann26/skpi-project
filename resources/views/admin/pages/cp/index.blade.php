@@ -14,39 +14,36 @@
         </nav>
     </div>
     <!-- End Page Title -->
-
-    <div class="pb-3">
-        <a href='{{ url('admin/cp/create') }}' class="btn btn-primary">Tambah</a>
-    </div>
-
-    <div class="card">
-
+    
         <div class="card-body">
+            <a href='{{ url('admin/cp/create') }}' class="btn btn-primary">Tambah</a>
+
+            {{ $dataTable->table() }}
 
             <!-- Table with stripped rows -->
-            <table class="table datatable table-striped table-bordered">
+            {{-- <table class="table datatable table-striped table-bordered">
                 <thead>
                     <tr>
                         <th width="2%">No</th>
-                        <th width="15%">Nama Prodi</th>
+                        <th width="10%">Nama Prodi</th>
                         <th width="20%">Penguasaan Pengetahuan</th>
                         <th width="20%">Keterampilan</th>
                         <th width="20%">Kemampuan Kerja</th>
                         <th width="20%">Sikap</th>
-                        <th width="10%">Aksi</th>
+                        <th width="8%">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach ($cp as $cp)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $cp->prodi->nama_prodi }}</td>
                             <td>{!! $cp->penguasaan_pengetahuan !!}</td>
                             <td>{!! $cp->keterampilan !!}</td>
                             <td>{!! $cp->kemampuan_kerja !!}</td>
                             <td>{!! $cp->sikap !!}</td>
-                            <td class="text-center">
+                            <td>
                                 <a href="{{ url('admin/cp/' . $cp->id) }}" class="btn btn-success btn-sm"><i
                                         class="bi bi-eye"></i></a>
                                 <a href="{{ url('admin/cp/' . $cp->id . '/edit') }}" class="btn btn-warning btn-sm"><i
@@ -61,14 +58,17 @@
                             </td>
                         </tr>
                     @endforeach
-
-
                 </tbody>
-            </table>
+            </table> --}}
             <!-- End Table with stripped rows -->
 
         </div>
-    </div>
+
 @endsection
 
+@section('script')
 
+    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+
+
+@endsection

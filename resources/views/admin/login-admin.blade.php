@@ -1,4 +1,5 @@
 @extends('auth.auth-login')
+
 @section('title', 'Admin')
 
 @section('login')

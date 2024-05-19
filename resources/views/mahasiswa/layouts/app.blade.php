@@ -16,13 +16,13 @@
     <!-- Vendor CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/vendor/remixicon/remixicon.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}" >
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/choices.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('assets/css/choices.css') }}" rel="stylesheet"> --}}
 
 </head>
 
@@ -35,7 +35,7 @@
     <main id="main" class="main">
         @include('mahasiswa.components.alert')
 
-        @yield('main')
+        @yield('mahasiswa-main')
     </main>
 
     @include('mahasiswa.components.footer')
@@ -44,21 +44,17 @@
 </body>
 
 
-
-
-
-
 <!-- Vendor JS Files -->
 <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
 <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+
 <!-- Template Main JS File -->
 <script src="{{ asset('assets/js/main.js') }}"></script>
-<script src="{{ asset('assets/js/choices.js') }}"></script>
-<script src="{{ asset('assets/js/form-element-select.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/choices.js') }}"></script>
+<script src="{{ asset('assets/js/form-element-select.js') }}"></script> --}}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 

@@ -8,11 +8,12 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.png') }}">
 
     <!-- General CSS Files -->
-    <link rel="stylesheet" href="/modules/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/modules/fontawesome/css/all.min.css" />
+    <link rel="stylesheet"
+        href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
+        
     <!-- Template CSS -->
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('css/components.css') }}" /> --}}
 
 </head>
 
@@ -31,7 +32,7 @@
     </div>
 
     <!-- General JS Scripts -->
-    <script src="/js/stisla.js"></script>
+    <script src="{{ asset('js/stisla.js') }}"></script>
 </body>
 
 </html>

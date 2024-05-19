@@ -2,7 +2,7 @@
 
 @section('title', 'Dashboard')
 
-@section('main')
+@section('mahasiswa-main')
     <div class="pagetitle">
         <h1>Dashboard</h1>
         <nav>
@@ -37,7 +37,8 @@
                         </div>
                     </div>
                     <!-- End Pengajuan Card -->
-                    <!-- Pengajuan Card -->
+
+                    <!-- Validasi Card -->
                     <div class="col-xl-4 col-md-6">
                         <div class="card info-card sales-card">
                             <div class="card-body">
@@ -54,8 +55,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Pengajuan Card -->
-                    <!-- Pengajuan Card -->
+                    <!-- End Validasi Card -->
+
+                    <!-- Tolak Card -->
                     <div class="col-xl-4 col-md-6">
                         <div class="card info-card sales-card">
                             <div class="card-body">
@@ -72,8 +74,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Pengajuan Card -->
-                    <!-- Pengajuan Card -->
+                    <!-- End Tolak Card -->
+
+                    <!-- Poin Card -->
                     <div class="col-xl-4 col-md-6">
                         <div class="card info-card sales-card">
                             <div class="card-body">
@@ -90,10 +93,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Pengajuan Card -->
-
-
-
+                    <!-- End poin Card -->
                 </div>
             </div>
         </div>

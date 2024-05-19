@@ -29,13 +29,13 @@
                     <tr>
                         <th width="2%">No</th >
                         <th width="25%">Nama Kategori</th>
-                        <th width="15%">Aksi</th>
+                        <th width="10%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($kategori as $kategori)
                     <tr>
-                        <td >{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $loop->iteration }}</td>
                         <td >{{ $kategori->nama_kategori }}</td>
                         <td >
                             <a href="{{ url('admin/kategori/'.$kategori->id)}}" class="btn btn-success btn-sm"><i class="bi bi-eye"></i></a>

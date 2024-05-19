@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CapaianPembelajaran;
 use App\Models\Prodi;
+use App\DataTables\CpDataTable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class CpController extends Controller
@@ -13,12 +15,10 @@ class CpController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CpDataTable $dataTable)
     {
-        $cp = CapaianPembelajaran::orderBy('id', 'desc')->get();
-        return view('admin.pages.cp.index', [
-            "title" => "Capaian Pembelajaran"
-        ])->with('cp', $cp);
+
+        return $dataTable->render('admin.pages.cp.index');
     }
 
     /**
@@ -37,10 +37,6 @@ class CpController extends Controller
      */
     public function store(Request $request)
     {
-        // Session::flash('penguasaan_pengetahuan', $request->penguasaan_pengetahuan);
-        // Session::flash('keterampilan', $request->keterampilan);
-        // Session::flash('kemampuan_kerja', $request->kemampuan_kerja);
-        // Session::flash('sikap', $request->sikap);
         Session::flash('prodi_id', $request->prodi_id);
 
         $request->validate([
@@ -49,12 +45,6 @@ class CpController extends Controller
             'kemampuan_kerja' => 'required',
             'sikap' => 'required',
             'prodi_id' => 'required',
-        ], [
-            'penguasaan_pengetahuan.required' => 'Penguasaan Pengetahuan wajib diisi',
-            'keterampilan.required' => 'Keterampilan wajib diisi',
-            'kemampuan_kerja.required' => 'Kemampuan Kerja wajib diisi',
-            'sikap.required' => 'Sikap Wajib Dipilih',
-            'prodi_id.required' => 'Prodi Wajib Dipilih',
         ]);
 
         $cp = [
@@ -74,7 +64,9 @@ class CpController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $prodi = Prodi::all();
+        $cp = CapaianPembelajaran::with('prodi')->find($id)->where('id', $id)->first();
+        return view('admin.pages.cp.show', compact('cp', 'prodi'))->with('cp', $cp);
     }
 
     /**
@@ -92,7 +84,23 @@ class CpController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $cp = CapaianPembelajaran::with('prodi')->find($id);
+        $request->validate ([
+            'penguasaan_pengetahuan' => 'required',
+            'keterampilan' => 'required',
+            'kemampuan_kerja' => 'required',
+            'sikap' => 'required',
+        ]);
+
+        $cp= [
+            'penguasaan_pengetahuan' => $request->penguasaan_pengetahuan,
+            'keterampilan' => $request->keterampilan,
+            'kemampuan_kerja' => $request->kemampuan_kerja,
+            'sikap' => $request->sikap,
+        ];
+
+        CapaianPembelajaran::where('id', $id)->update($cp);
+        return redirect()->to('admin/cp')->with('success', 'Berhasil Mengupdate Data');
     }
 
     /**

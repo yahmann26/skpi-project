@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\MahasiswaDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MahasiswaRequest;
 use App\Models\Mahasiswa;
 use App\Models\Prodi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class MahasiswaController extends Controller
@@ -14,12 +16,10 @@ class MahasiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(MahasiswaDataTable $dataTable)
     {
-        $mahasiswa = Mahasiswa::orderBy('id', 'desc')->get();
-        return view('admin.pages.mahasiswa.index', [
-            "title" => "User Mahasiswa"
-        ])->with('mahasiswa', $mahasiswa);
+        $jumlahMahasiswa = Mahasiswa::count();
+        return $dataTable->render('admin.pages.mahasiswa.index', compact('jumlahMahasiswa'));
     }
 
     /**
@@ -108,7 +108,9 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $mahasiswa = Mahasiswa::with('prodi')->find($id);
+        $mahasiswa = DB::table('mahasiswa')->orderBy('id')->cursorPaginate(1000);
+        // $mahasiswa = DB::table('mahasiswa')->with('prodi')->find($id)->simplePaginate();
+        // $mahasiswa = Mahasiswa::with('prodi')->find($id);
         $request->validate([
             'nama_mahasiswa' => 'required',
             'tempat_lahir' => 'required',

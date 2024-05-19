@@ -53,7 +53,7 @@ class AdminController extends Controller
         return view('admin.dashboard', [
             "title" => "Dashboard",
         ]);
-    }
+    }   
 
     /**
      * Show the form for creating a new resource.

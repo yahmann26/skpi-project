@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\KegiatanDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Kegiatan;
@@ -13,12 +14,9 @@ class KegiatanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(KegiatanDataTable $dataTable)
     {
-        $kegiatan = Kegiatan::orderBy('id', 'desc')->get();
-        return view('admin.pages.kegiatan.index', [
-            "title" => "Data Kegiatan"
-        ])->with('kegiatan', $kegiatan);
+        return $dataTable->render('admin.pages.kegiatan.index');
     }
 
     /**
