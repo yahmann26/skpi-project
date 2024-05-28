@@ -14,7 +14,7 @@
         </nav>
     </div>
     <!-- End Page Title -->
-    
+
         <div class="card-body">
             <a href='{{ url('admin/cp/create') }}' class="btn btn-primary">Tambah</a>
 
@@ -66,9 +66,6 @@
 
 @endsection
 
-@section('script')
-
-    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
-
-
-@endsection
+@push('script')
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush()

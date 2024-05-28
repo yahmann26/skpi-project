@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Kegiatan;
+use App\Models\Kategori;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class KegiatanDataTable extends DataTable
+class KategoriDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,16 +22,13 @@ class KegiatanDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return datatables()
-        ->eloquent($query)
-        ->addIndexColumn()
-        ->addColumn('kategori', function ($kegiatan) {
-            return $kegiatan->kategori->nama_kategori; // Mengambil nama prodi dari relasi
-        })
-        ->addColumn('action', function ($row) {
-            $showUrl = route('kegiatan.show', $row->id);
-            $editUrl = route('kegiatan.edit', $row->id);
-            $deleteUrl = route('kegiatan.destroy', $row->id);
-            return '
+            ->eloquent($query)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $showUrl = route('kategori.show', $row->id);
+                $editUrl = route('kategori.edit', $row->id);
+                $deleteUrl = route('kategori.destroy', $row->id);
+                return '
             <a href="' . $showUrl . '" class="edit btn btn-success btn-sm"><i class="bi bi-eye"></i></a>
             <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
             <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
@@ -39,14 +36,14 @@ class KegiatanDataTable extends DataTable
                 ' . method_field("DELETE") . '
                 <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
             </form>';
-        })
-        ->rawColumns(['action']);
+            })
+            ->rawColumns(['action']);
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Kegiatan $model): QueryBuilder
+    public function query(Kategori $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -57,20 +54,20 @@ class KegiatanDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('kegiatan-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        // Button::make('excel'),
-                        // Button::make('csv'),
-                        // Button::make('pdf'),
-                        // Button::make('print'),
-                        // Button::make('reset'),
-                        // Button::make('reload')
-                    ]);
+            ->setTableId('kategori-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1, 'asc')
+            ->selectStyleSingle()
+            ->buttons([
+                // Button::make('excel'),
+                // Button::make('csv'),
+                // Button::make('pdf'),
+                // Button::make('print'),
+                // Button::make('reset'),
+                // Button::make('reload')
+            ]);
     }
 
     /**
@@ -79,16 +76,12 @@ class KegiatanDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('DT_RowIndex')->title('No')->width(10)->addClass('text-center'),
-            Column::make('nama_kegiatan')->width(90),
-            Column::make('kategori')->title('Kategori')->width(50),
-            Column::make('tingkat_kegiatan')->width(50),
-            Column::make('jabatan')->width(30),
-            Column::make('bobot')->width(30),
+            Column::computed('DT_RowIndex')->title('No')->width(5)->addClass('text-center'),
+            Column::make('nama_kategori')->width(400),
             Column::computed('action')
                 //   ->exportable(false)
                 //   ->printable(false)
-                  ->width(30)
+                  ->width(50)
                   ->addClass('text-center'),
         ];
     }
@@ -98,6 +91,6 @@ class KegiatanDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Kegiatan_' . date('YmdHis');
+        return 'Kategori_' . date('YmdHis');
     }
 }

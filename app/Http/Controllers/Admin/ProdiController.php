@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\ProdiDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Prodi;
 use Illuminate\Http\Request;
@@ -19,12 +20,9 @@ class ProdiController extends Controller
         $this->middleware('AdminMiddleware');
     }
 
-    public function index()
+    public function index(ProdiDataTable $datatable)
     {
-        $prodi = Prodi::orderBy('id', 'desc')->get();
-        return view('admin.pages.prodi.index', [
-            "title" => "Program Studi",
-        ])->with('prodi', $prodi);
+        return $datatable->render('admin.pages.prodi.index');
     }
 
     /**

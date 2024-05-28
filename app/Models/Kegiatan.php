@@ -21,4 +21,9 @@ class Kegiatan extends Model
     public function kategori() {
         return $this->belongsTo(Kategori::class);
     }
+
+    public function pengajan()
+    {
+        return $this->hasMany(Pengajuan::class);
+    }
 }

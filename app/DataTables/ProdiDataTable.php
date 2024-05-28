@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Kegiatan;
+use App\Models\Prodi;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class KegiatanDataTable extends DataTable
+class ProdiDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,13 +24,10 @@ class KegiatanDataTable extends DataTable
         return datatables()
         ->eloquent($query)
         ->addIndexColumn()
-        ->addColumn('kategori', function ($kegiatan) {
-            return $kegiatan->kategori->nama_kategori; // Mengambil nama prodi dari relasi
-        })
         ->addColumn('action', function ($row) {
-            $showUrl = route('kegiatan.show', $row->id);
-            $editUrl = route('kegiatan.edit', $row->id);
-            $deleteUrl = route('kegiatan.destroy', $row->id);
+            $showUrl = route('prodi.show', $row->id);
+            $editUrl = route('prodi.edit', $row->id);
+            $deleteUrl = route('prodi.destroy', $row->id);
             return '
             <a href="' . $showUrl . '" class="edit btn btn-success btn-sm"><i class="bi bi-eye"></i></a>
             <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
@@ -46,7 +43,7 @@ class KegiatanDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Kegiatan $model): QueryBuilder
+    public function query(Prodi $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -57,11 +54,11 @@ class KegiatanDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('kegiatan-table')
+                    ->setTableId('prodi-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
+                    ->dom('Bfrtip')
+                    ->orderBy(1, 'asc')
                     ->selectStyleSingle()
                     ->buttons([
                         // Button::make('excel'),
@@ -80,15 +77,14 @@ class KegiatanDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex')->title('No')->width(10)->addClass('text-center'),
-            Column::make('nama_kegiatan')->width(90),
-            Column::make('kategori')->title('Kategori')->width(50),
-            Column::make('tingkat_kegiatan')->width(50),
-            Column::make('jabatan')->width(30),
-            Column::make('bobot')->width(30),
+            Column::make('kode_prodi')->width(60),
+            Column::make('nama_prodi')->width(90),
+            Column::make('akreditasi')->width(50),
+            Column::make('gelar')->width(100),
             Column::computed('action')
                 //   ->exportable(false)
                 //   ->printable(false)
-                  ->width(30)
+                  ->width(50)
                   ->addClass('text-center'),
         ];
     }
@@ -98,6 +94,6 @@ class KegiatanDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Kegiatan_' . date('YmdHis');
+        return 'Prodi_' . date('YmdHis');
     }
 }

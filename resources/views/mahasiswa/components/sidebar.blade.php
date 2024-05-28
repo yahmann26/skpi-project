@@ -12,7 +12,7 @@
         <!-- End Dashboard Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href={{ url('mahasiswa/kegiatan')}}>
+            <a class="nav-link collapsed" href={{ url('mahasiswa/pengajuan')}}>
                 <i class="bi bi-activity"></i>
                 <span>Kegiatan</span>
             </a>

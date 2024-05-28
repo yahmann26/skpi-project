@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\DosenDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
 use App\Models\Prodi;
@@ -13,12 +14,9 @@ class DosenController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(DosenDataTable $datatable)
     {
-        $dosen = Dosen::orderBy('id', 'desc')->get();
-        return view('admin.pages.dosen.index', [
-            "title" => "User Dosen"
-        ])->with('dosen', $dosen);
+        return $datatable->render('admin.pages.dosen.index');
     }
 
     /**
@@ -71,7 +69,9 @@ class DosenController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $prodi = Prodi::all();
+        $dosen = Dosen::with('prodi')->find($id);
+        return view('admin.pages.dosen.show', compact('dosen', 'prodi'))->with('dosen', $dosen);
     }
 
     /**

@@ -16,7 +16,7 @@
     <!-- End Page Title -->
 
     <div class="card-body">
-        <a href='{{ url('admin/pt/create') }}' class="btn btn-primary">Tambah</a>
+        <a href='{{ url('admin/kegiatan/create') }}' class="btn btn-primary">Tambah</a>
 
         {{ $dataTable->table() }}
     </div>
@@ -24,7 +24,6 @@
 
 @endsection
 
-@section('script')
+@push('script')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
-
-@endsection
+@endpush()

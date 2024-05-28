@@ -2,9 +2,6 @@
 
 @section('title', 'PT')
 
-@section('style')
-    
-@endsection
 
 @section('main')
     {{-- Page Titile --}}
@@ -27,7 +24,6 @@
 
 @endsection
 
-@section('script')
+@push('script')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
-
-@endsection
+@endpush()

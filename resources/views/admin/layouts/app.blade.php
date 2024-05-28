@@ -7,7 +7,7 @@
 
     <title> Admin &mdash; @yield('title')</title>
 
-    @yield('style')
+    @stack('style')
 
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.png') }}">
 
@@ -18,11 +18,11 @@
         rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
-
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+
+
 
 
 </head>
@@ -38,7 +38,7 @@
 
         @yield('main')
 
-        @yield('script')
+        @stack('script')
 
     </main>
 

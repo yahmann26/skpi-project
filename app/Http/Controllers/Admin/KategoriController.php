@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\KategoriDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
@@ -9,16 +10,17 @@ use Illuminate\Support\Facades\Session;
 
 class KategoriController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('AdminMiddleware');
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(KategoriDataTable $datatable)
     {
-        $kategori = Kategori::orderBy('id', 'desc')->get();
-
-        return view('admin.pages.kategori.index', [
-            "title" => "Kategori Kegiatan"
-        ])->with('kategori', $kategori);
+        return $datatable->render('admin.pages.kategori.index');
     }
 
     /**
@@ -68,6 +70,7 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::findOrFail($id);
         return view('admin.pages.kategori.edit')->with('kategori', $kategori);
+
     }
 
     /**

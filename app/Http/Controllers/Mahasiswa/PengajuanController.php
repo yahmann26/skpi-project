@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\Mahasiswa;
 
+use App\DataTables\Mahasiswa\PengajuanDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class KegiatanController extends Controller
+class PengajuanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('MahasiswaMiddleware');
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PengajuanDataTable $datatable)
     {
-        return view('mahasiswa.pages.kegiatan.index');
+        return $datatable->render('mahasiswa.pages.pengajuan.index');
     }
 
     /**
@@ -20,7 +26,7 @@ class KegiatanController extends Controller
      */
     public function create()
     {
-        return view('mahasiswa.pages.kegiatan.create');
+        //
     }
 
     /**

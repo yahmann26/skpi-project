@@ -11,12 +11,17 @@ use Illuminate\Support\Facades\Session;
 
 class KegiatanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('AdminMiddleware');
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index(KegiatanDataTable $dataTable)
+    public function index(KegiatanDataTable $KegiatandataTable)
     {
-        return $dataTable->render('admin.pages.kegiatan.index');
+        return $KegiatandataTable->render('admin.pages.kegiatan.index');
     }
 
     /**

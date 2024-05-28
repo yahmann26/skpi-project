@@ -2,15 +2,13 @@
 
 @section('title', 'Tambah Capaian Pembelajaran')
 
-@section('style')
-
+@push('style')
     <style type="text/css">
         .ck-editor__editable_inline {
             height: 200px;
         }
     </style>
-
-@endsection
+@endpush
 
 @section('main')
     {{-- Page Titile --}}
@@ -103,7 +101,8 @@
 
 @endsection
 
-@section('script')
+@push('script')
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
 
     <script>
         ClassicEditor
@@ -136,5 +135,4 @@
                 console.error(error);
             });
     </script>
-
-@endsection
+@endpush

@@ -89,8 +89,9 @@ class MahasiswaController extends Controller
      */
     public function show(string $id)
     {
+        $prodi = Prodi::all();
         $mahasiswa = Mahasiswa::where('id', $id)->first();
-        return view('admin.pages.mahasiswa.show')->with('mahasiswa', $mahasiswa);
+        return view('admin.pages.mahasiswa.show', compact('prodi'))->with('mahasiswa', $mahasiswa);
     }
 
     /**

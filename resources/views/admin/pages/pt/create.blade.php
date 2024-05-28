@@ -2,15 +2,13 @@
 
 @section('title', 'Tambah PT')
 
-@section('style')
-
+@push('style')
     <style type="text/css">
         .ck-editor__editable_inline {
             height: 200px;
         }
     </style>
-
-@endsection
+@endpush
 
 @section('main')
     {{-- Page Titile --}}
@@ -66,20 +64,20 @@
 
 @endsection
 
-@section('script')
+@push('script')
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
 
-<script>
-    ClassicEditor
-        .create(document.querySelector('#sistem_pt'))
-        .catch(error => {
-            console.error(error);
-        });
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#sistem_pt'))
+            .catch(error => {
+                console.error(error);
+            });
 
-    ClassicEditor
-        .create(document.querySelector('#kkni'))
-        .catch(error => {
-            console.error(error);
-        });
-</script>
-
-@endsection
+        ClassicEditor
+            .create(document.querySelector('#kkni'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+@endpush

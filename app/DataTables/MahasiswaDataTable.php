@@ -48,7 +48,7 @@ class MahasiswaDataTable extends DataTable
      */
     public function query(Mahasiswa $model): QueryBuilder
     {
-        return $model->newQuery()->select('*')->with('prodi');
+        return $model->newQuery()->with('prodi');
     }
 
     /**
@@ -60,8 +60,8 @@ class MahasiswaDataTable extends DataTable
                     ->setTableId('mahasiswa-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
+                    // ->dom('Bfrtip')
+                    ->orderBy(1, 'asc')
                     ->selectStyleSingle()
                     ->buttons([
                         // Button::make('excel'),

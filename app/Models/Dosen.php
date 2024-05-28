@@ -18,4 +18,9 @@ class Dosen extends Model
     public function prodi() {
         return $this->belongsTo(Prodi::class);
     }
+
+    public function pengajuan()
+    {
+        return $this->hasMany(Pengajuan::class);
+    }
 }

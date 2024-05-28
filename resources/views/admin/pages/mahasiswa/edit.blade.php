@@ -35,13 +35,8 @@
                         <div class="row mb-3">
                             <label for="inputNumber" class="col-sm-2 col-form-label">NIM</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control @error('nim') is-invalid @enderror" name="nim"
+                                <input type="number" class="form-control" disabled name="nim"
                                     value="{{ $mahasiswa->nim }}" id="nim">
-                                @error('nim')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
                             </div>
                         </div>
 

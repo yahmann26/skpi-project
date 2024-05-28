@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Dosen\DosenController;
-use App\Http\Controllers\Mahasiswa\KegiatanController;
+use App\Http\Controllers\Mahasiswa\KegiatanController as MahasiswaKegiatanController;
+use App\Http\Controllers\Mahasiswa\PengajuanController as MahasiswaPengajuanController;
 use App\Http\Controllers\Mahasiswa\MahasiswaController;
 use App\Http\Controllers\Admin\CpController as AdminCpCOntroller;
 use App\Http\Controllers\Admin\PtController as AdminPtController;
@@ -31,8 +30,6 @@ Route::get('/', function () {
         "title" => "SKPI FASTIKOM UNSIQ"
     ]);
 });
-
-Route::get('list', [Controller::class, 'dataTableLogic']);
 
 // admin
 Route::get('/login-admin', [AdminController::class, 'login']);
@@ -60,7 +57,8 @@ Route::post('/verifikasi-mahasiswa', [MahasiswaController::class, 'verifikasiPos
 
 Route::prefix('mahasiswa')->middleware(['MahasiswaMiddleware'])->group(function(){
     Route::get('dashboard', [MahasiswaController::class, 'index']);
-    Route::resource('kegiatan', KegiatanController::class);
+    // Route::resource('kegiatan', MahasiswaKegiatanController::class);
+    Route::resource('pengajuan', MahasiswaPengajuanController::class);
 });
 
 
@@ -71,6 +69,3 @@ Route::post('/login-dosen', [DosenController::class, 'loginPost']);
 Route::get('/verifikasi-dosen', [DosenController::class, 'verifikasi']);
 Route::post('/verifikasi-dosen', [DosenController::class, 'verifikasiPost']);
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

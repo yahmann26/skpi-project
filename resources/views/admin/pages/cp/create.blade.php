@@ -2,15 +2,13 @@
 
 @section('title', 'Tambah Capaian Pembelajaran')
 
-@section('style')
-
+@push('style')
     <style type="text/css">
         .ck-editor__editable_inline {
             height: 200px;
         }
     </style>
-
-@endsection
+@endpush
 
 @section('main')
     {{-- Page Titile --}}
@@ -105,7 +103,9 @@
 
 @endsection
 
-@section('script')
+@push('script')
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
 
     <script>
         ClassicEditor
@@ -135,13 +135,11 @@
         ClassicEditor
             .create(document.querySelector('#sikap'), {
                 ckFinder: {
-                    storeUrl: " {{ route('cp.store', ['_token'=>csrf_token()]) }}",
+                    storeUrl: " {{ route('cp.store', ['_token' => csrf_token()]) }}",
                 }
             })
             .catch(error => {
                 console.error(error);
             });
     </script>
-
-
-@endsection
+@endpush

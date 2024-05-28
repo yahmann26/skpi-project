@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Mahasiswa;
 
-use App\Models\Kegiatan;
+use App\Models\Pengajuan;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class KegiatanDataTable extends DataTable
+class PengajuanDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,13 +24,16 @@ class KegiatanDataTable extends DataTable
         return datatables()
         ->eloquent($query)
         ->addIndexColumn()
-        ->addColumn('kategori', function ($kegiatan) {
-            return $kegiatan->kategori->nama_kategori; // Mengambil nama prodi dari relasi
+        ->addColumn('kegiatan', function ($pengajuan) {
+            return $pengajuan->kegiatan->nama_kegiatan; // Mengambil nama kegiatan dari relasi
+        })
+        ->addColumn('kategori', function ($pengajuan) {
+            return $pengajuan->kegiatan->kategori->nama_kategori; // Mengambil nama kategori dari relasi
         })
         ->addColumn('action', function ($row) {
-            $showUrl = route('kegiatan.show', $row->id);
-            $editUrl = route('kegiatan.edit', $row->id);
-            $deleteUrl = route('kegiatan.destroy', $row->id);
+            $showUrl = route('pengajuan.show', $row->id);
+            $editUrl = route('pengajuan.edit', $row->id);
+            $deleteUrl = route('pengajuan.destroy', $row->id);
             return '
             <a href="' . $showUrl . '" class="edit btn btn-success btn-sm"><i class="bi bi-eye"></i></a>
             <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
@@ -46,9 +49,9 @@ class KegiatanDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Kegiatan $model): QueryBuilder
+    public function query(Pengajuan $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('kegiatan');
     }
 
     /**
@@ -57,19 +60,19 @@ class KegiatanDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('kegiatan-table')
+                    ->setTableId('pengajuan-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
-                        // Button::make('excel'),
-                        // Button::make('csv'),
-                        // Button::make('pdf'),
-                        // Button::make('print'),
-                        // Button::make('reset'),
-                        // Button::make('reload')
+                        Button::make('excel'),
+                        Button::make('csv'),
+                        Button::make('pdf'),
+                        Button::make('print'),
+                        Button::make('reset'),
+                        Button::make('reload')
                     ]);
     }
 
@@ -80,11 +83,12 @@ class KegiatanDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex')->title('No')->width(10)->addClass('text-center'),
-            Column::make('nama_kegiatan')->width(90),
-            Column::make('kategori')->title('Kategori')->width(50),
-            Column::make('tingkat_kegiatan')->width(50),
-            Column::make('jabatan')->width(30),
-            Column::make('bobot')->width(30),
+            Column::make('kategori')->width(90),
+            Column::make('kegiatan')->width(90),
+            // Column::make('tingkat_kegiatan')->width(50),
+            // Column::make('jabatan')->width(30),
+            // Column::make('bobot')->width(30),
+            Column::make('status')->width(30),
             Column::computed('action')
                 //   ->exportable(false)
                 //   ->printable(false)
@@ -98,6 +102,6 @@ class KegiatanDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Kegiatan_' . date('YmdHis');
+        return 'Pengajuan_' . date('YmdHis');
     }
 }

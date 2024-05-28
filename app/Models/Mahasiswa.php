@@ -29,6 +29,11 @@ class Mahasiswa extends Model
         return $this->belongsTo(Prodi::class);
     }
 
+    public function pengajuan()
+    {
+        return $this->hasMany(Pengajuan::class);
+    }
+
     // public function surat()
     // {
     //     return $this->hasOne(surat::class);

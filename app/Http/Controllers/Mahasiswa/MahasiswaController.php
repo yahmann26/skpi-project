@@ -90,7 +90,7 @@ class MahasiswaController extends Controller
 	{
 		return view('mahasiswa.dashboard', [
 			"title" => "Dashboard",
-			// "mhs" => $request->authM
+			"mhs" => $request->authM
 		]);
 	}
 
