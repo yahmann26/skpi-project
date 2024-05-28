@@ -6,10 +6,7 @@ use App\Models\Kegiatan;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class KegiatanDataTable extends DataTable
@@ -81,8 +78,6 @@ class KegiatanDataTable extends DataTable
             Column::make('jabatan')->width(30),
             Column::make('bobot')->width(30),
             Column::computed('action')
-                //   ->exportable(false)
-                //   ->printable(false)
                   ->width(30)
                   ->addClass('text-center'),
         ];
