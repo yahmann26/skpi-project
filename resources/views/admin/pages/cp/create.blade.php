@@ -104,42 +104,15 @@
 @endsection
 
 @push('script')
-
     <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
-
     <script>
-        ClassicEditor
-            .create(document.querySelector('#penguasaan_pengetahuan'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#keterampilan'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#kemampuan_kerja'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#sikap'), {
-                ckFinder: {
-                    storeUrl: " {{ route('cp.store', ['_token' => csrf_token()]) }}",
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        const editorFields = ['penguasaan_pengetahuan', 'keterampilan', 'kemampuan_kerja', 'sikap'];
+        editorFields.forEach(field => {
+            ClassicEditor
+                .create(document.querySelector('#' + field))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
     </script>
 @endpush

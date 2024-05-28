@@ -15,7 +15,7 @@
     </div>
     <!-- End Page Title -->
     <div class="card-body">
-        <a href='{{ url('admin/dosen/create') }}' class="btn btn-primary">Tambah</a>
+        <a href='{{ url('admin/prodi/create') }}' class="btn btn-primary">Tambah</a>
 
         {{ $dataTable->table() }}
     </div>

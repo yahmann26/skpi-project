@@ -74,8 +74,8 @@ class PtDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex')->title('No')->width(40)->addClass('text-center'),
-            Column::make('sistem_pt'),
-            Column::make('kkni'),
+            Column::make('sistem_pt')->title('Sistem PT'),
+            Column::make('kkni')->title('KKNI'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

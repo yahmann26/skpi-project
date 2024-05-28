@@ -27,29 +27,21 @@ class CpDataTable extends DataTable
             ->addColumn('prodi', function ($cp) {
                 return $cp->prodi->nama_prodi; // Mengambil nama prodi dari relasi
             })
-            ->addColumn('action', function($row){
+            ->addColumn('action', function ($row) {
                 $editUrl = route('cp.edit', $row->id);
                 $deleteUrl = route('cp.destroy', $row->id);
                 return '
-                    <a href="'.$editUrl.'" class="edit btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></a>
-                    <form action="'.$deleteUrl.'" method="POST" style="display:inline-block;">
-                        '.csrf_field().'
-                        '.method_field("DELETE").'
+                    <a href="' . $editUrl . '" class="edit btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                        ' . csrf_field() . '
+                        ' . method_field("DELETE") . '
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                     </form>';
             })
-            ->editColumn('penguasaan_pengetahuan', function ($cp) {
-                return strip_tags($cp->penguasaan_pengetahuan); // Menghilangkan HTML tag dari kolom sistem cp
-            })
-            ->editColumn('keterampilan', function ($cp) {
-                return strip_tags($cp->keterampilan); // Menghilangkan HTML tag dari kolom kkni
-            })
-            ->editColumn('kemampuan_kerja', function ($cp) {
-                return strip_tags($cp->kemampuan_kerja); // Menghilangkan HTML tag dari kolom sistem cp
-            })
-            ->editColumn('sikap', function ($cp) {
-                return strip_tags($cp->sikap); // Menghilangkan HTML tag dari kolom kkni
-            })
+            ->editColumn('penguasaan_pengetahuan', fn ($cp) => strip_tags($cp->penguasaan_pengetahuan))
+            ->editColumn('keterampilan', fn ($cp) => strip_tags($cp->keterampilan))
+            ->editColumn('kemampuan_kerja', fn ($cp) => strip_tags($cp->kemampuan_kerja))
+            ->editColumn('sikap', fn ($cp) => strip_tags($cp->sikap))
             ->rawColumns(['action']);
     }
 
@@ -67,20 +59,20 @@ class CpDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('cp-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1, 'asc')
-                    ->selectStyleSingle()
-                    ->buttons([
-                        // Button::make('excel'),
-                        // Button::make('csv'),
-                        // Button::make('pdf'),
-                        // Button::make('print'),
-                        // Button::make('reset'),
-                        // Button::make('reload')
-                    ]);
+            ->setTableId('cp-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1, 'asc')
+            ->selectStyleSingle()
+            ->buttons([
+                // Button::make('excel'),
+                // Button::make('csv'),
+                // Button::make('pdf'),
+                // Button::make('print'),
+                // Button::make('reset'),
+                // Button::make('reload')
+            ]);
     }
 
     /**
@@ -95,11 +87,7 @@ class CpDataTable extends DataTable
             Column::make('keterampilan')->width(25),
             Column::make('kemampuan_kerja')->width(25),
             Column::make('sikap')->width(25),
-            Column::computed('action')
-                //   ->exportable(false)
-                //   ->printable(false)
-                  ->width(20)
-                  ->addClass('text-center'),
+            Column::computed('action')->width(20)->addClass('text-center'),
         ];
     }
 

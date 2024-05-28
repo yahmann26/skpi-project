@@ -24,23 +24,18 @@ class KegiatanDataTable extends DataTable
         return datatables()
         ->eloquent($query)
         ->addIndexColumn()
-        ->addColumn('kategori', function ($kegiatan) {
-            return $kegiatan->kategori->nama_kategori; // Mengambil nama prodi dari relasi
-        })
-        ->addColumn('action', function ($row) {
-            $showUrl = route('kegiatan.show', $row->id);
-            $editUrl = route('kegiatan.edit', $row->id);
-            $deleteUrl = route('kegiatan.destroy', $row->id);
-            return '
-            <a href="' . $showUrl . '" class="edit btn btn-success btn-sm"><i class="bi bi-eye"></i></a>
-            <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-            <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                ' . csrf_field() . '
-                ' . method_field("DELETE") . '
-                <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-            </form>';
-        })
-        ->rawColumns(['action']);
+        ->addColumn('kategori', fn($kegiatan) => $kegiatan->kategori->nama_kategori)
+        ->addColumn('action', fn($row) => $this->actionColumn($row))
+            ->rawColumns(['action']);
+    }
+
+    private function actionColumn($row): string
+    {
+        // $showUrl = route('kegiatan.show', ['id' => $row->id]);
+        $editUrl = route('kegiatan.edit', ['id' => $row->id]);
+        $deleteUrl = route('kegiatan.destroy', ['id' => $row->id]);
+
+        return view('partials.action_buttons', compact('showUrl', 'editUrl', 'deleteUrl'))->render();
     }
 
     /**

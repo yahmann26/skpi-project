@@ -52,6 +52,7 @@
                             </div>
                         </div>
 
+                        {{-- Penguasaan Pengetahuan --}}
                         <div class="row mb-3">
                             <label for="penguasaan_pengetahuan" class="col-form-label">Penguasaan Pengetahuan</label>
                             <div class="col-sm-15">
@@ -60,6 +61,7 @@
                             </div>
                         </div>
 
+                        {{-- Keterampilan  --}}
                         <div class="row mb-3">
                             <label for="keterampilan" class="col-form-label">Keterampilan</label>
                             <div class="col-sm-15">
@@ -68,6 +70,7 @@
                             </div>
                         </div>
 
+                        {{-- Kemampuan Kerja --}}
                         <div class="row mb-3">
                             <label for="kemampuan_kerja" class="col-form-label">Kemampuan Kerja</label>
                             <div class="col-sm-15">
@@ -76,6 +79,7 @@
                             </div>
                         </div>
 
+                        {{-- Sikap --}}
                         <div class="row mb-3">
                             <label for="sikap" class="col-form-label">Sikap</label>
                             <div class="col-sm-15">
@@ -103,36 +107,14 @@
 
 @push('script')
     <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
-
     <script>
-        ClassicEditor
-            .create(document.querySelector('#penguasaan_pengetahuan'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#keterampilan'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#kemampuan_kerja'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#sikap'))
-            .catch(error => {
-                console.error(error);
-            });
+        const editorFields = ['penguasaan_pengetahuan', 'keterampilan', 'kemampuan_kerja', 'sikap'];
+        editorFields.forEach(field => {
+            ClassicEditor
+                .create(document.querySelector('#' + field))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
     </script>
 @endpush

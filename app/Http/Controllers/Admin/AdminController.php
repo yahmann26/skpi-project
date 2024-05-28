@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Dosen;
+use App\Models\Kategori;
+use App\Models\Kegiatan;
+use App\Models\Mahasiswa;
+use App\Models\Prodi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -49,11 +54,16 @@ class AdminController extends Controller
      */
     public function index()
     {
+        $jumlahMahasiswa = Mahasiswa::count();
+        $jumlahDosen = Dosen::count();
+        $jumlahProdi = Prodi::count();
+        $jumlahKegiatan = Kegiatan::count();
+        $jumlahKategori = Kategori::count();
         // $this->middleware('auth');
-        return view('admin.dashboard', [
+        return view('admin.dashboard', compact('jumlahMahasiswa', 'jumlahDosen', 'jumlahProdi', 'jumlahKegiatan', 'jumlahKategori'), [
             "title" => "Dashboard",
         ]);
-    }   
+    }
 
     /**
      * Show the form for creating a new resource.

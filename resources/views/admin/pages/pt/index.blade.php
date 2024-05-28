@@ -2,9 +2,8 @@
 
 @section('title', 'PT')
 
-
 @section('main')
-    {{-- Page Titile --}}
+    <!-- Judul Halaman -->
     <div class="pagetitle">
         <h1>Pendidikan Tinggi</h1>
         <nav>
@@ -14,16 +13,20 @@
             </ol>
         </nav>
     </div>
-    <!-- End Page Title -->
+    <!-- Akhir Judul Halaman -->
 
+    <!-- Konten Utama -->
     <div class="card-body">
-        <a href='{{ url('admin/pt/create') }}' class="btn btn-primary">Tambah</a>
+        <!-- Tombol Tambah -->
+        <a href="{{ url('admin/pt/create') }}" class="btn btn-primary">Tambah</a>
 
+        <!-- Tabel Data -->
         {{ $dataTable->table() }}
     </div>
-
+    <!-- Akhir Konten Utama -->
 @endsection
 
 @push('script')
+    <!-- Script DataTable -->
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
-@endpush()
+@endpush
