@@ -41,11 +41,37 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
         <li class="nav-heading">Menu</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ url('admin/pt')}}">
-                <i class="bi bi-award"></i>
-                <span>Perguruan Tinggi</span>
+            <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index']) ? '' : 'collapsed' }}"
+                data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
             </a>
+            <ul id="master-nav"
+                class="nav-content collapse "
+                data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.jenjang.index') }}"
+                        class="{{ isRouteName('admin.jenjang.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Jenjang Pendidikan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href=""
+                        class="{{ isRouteName('admin.prodi.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Program Studi</span>
+                    </a>
+                </li>
+
+                {{-- <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ url('admin/pt')}}">
+                        <i class="bi bi-circle"></i>
+                        <span>Perguruan Tinggi</span>
+                    </a>
+                </li> --}}
+            </ul>
         </li>
+
+
         <!-- End PT Nav -->
 
         <li class="nav-item">
@@ -85,22 +111,6 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
             </ul>
         </li>
         <!-- End Kegiatan Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ url('admin/prodi')}}">
-                <i class="bi bi-bookmarks"></i>
-                <span>Prodi</span>
-            </a>
-        </li>
-        <!-- End Prodi Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ url('admin/cp')}}">
-                <i class="bi bi-journal-album"></i>
-                <span>Capaian Pembelajaran</span>
-            </a>
-        </li>
-        <!-- End Capaian Pembelajaran Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="">

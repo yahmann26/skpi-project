@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDasboardController;
 use App\Http\Controllers\Admin\PengaturanController as AdminPengaturanController;
+use App\Http\Controllers\Admin\JenjangController as AdminJenjangController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,15 +25,14 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     // Route::get('pengaturan', [AdminPengaturanController::class, 'index'])->name('admin.pengaturan');
     // Route::post('pengaturan', [AdminPengaturanController::class, 'update'])->name('admin.pengaturan.update');
 
-    // // jenjang
-    // Route::get('jenjang', [AdminJenjangController::class, 'index'])->name('admin.jenjang.index');
-    // Route::get('getjenjang', [AdminJenjangController::class, 'getJenjang'])->name('admin.jenjang');
-    // Route::get('jenjang/tambah', [AdminJenjangController::class, 'create'])->name('admin.jenjang.create');
-    // Route::post('jenjang', [AdminJenjangController::class, 'store'])->name('admin.jenjang.store');
-    // Route::get('jenjang/{id}/ubah', [AdminJenjangController::class, 'edit'])->name('admin.jenjang.edit');
-    // Route::get('jenjang/{id}/lihat', [AdminJenjangController::class, 'show'])->name('admin.jenjang.show');
-    // Route::put('jenjang/{id}', [AdminJenjangController::class, 'update'])->name('admin.jenjang.update');
-    // Route::delete('jenjang/{id}', [AdminJenjangController::class, 'destroy'])->name('admin.jenjang.destroy');
+    // jenjang
+    Route::get('jenjang', [AdminJenjangController::class, 'index'])->name('admin.jenjang.index');
+    Route::get('jenjang/tambah', [AdminJenjangController::class, 'create'])->name('admin.jenjang.create');
+    Route::post('jenjang', [AdminJenjangController::class, 'store'])->name('admin.jenjang.store');
+    Route::get('jenjang/{id}/ubah', [AdminJenjangController::class, 'edit'])->name('admin.jenjang.edit');
+    Route::get('jenjang/{id}/lihat', [AdminJenjangController::class, 'show'])->name('admin.jenjang.show');
+    Route::put('jenjang/{id}', [AdminJenjangController::class, 'update'])->name('admin.jenjang.update');
+    Route::delete('jenjang/{id}', [AdminJenjangController::class, 'destroy'])->name('admin.jenjang.destroy');
 
     // // prodi
     // Route::get('prodi', [AdminProdiController::class, 'index'])->name('admin.prodi.index');
