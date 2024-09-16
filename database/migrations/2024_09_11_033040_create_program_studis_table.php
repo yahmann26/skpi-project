@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('akreditasi', 10)->nullable();
             $table->string('gelar', 100)->nullable();
             $table->string('gelar_en', 100)->nullable();
+            $table->text('kualifikasi_cpl')->nullable();
             $table->timestamps();
         });
     }

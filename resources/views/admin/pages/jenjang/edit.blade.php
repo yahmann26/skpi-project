@@ -3,7 +3,7 @@
 
 @section('main')
 <div class="pagetitle">
-    <h1>Tambah Jenjang</h1>
+    <h1>Edit Jenjang</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
@@ -15,7 +15,7 @@
 
 <section class="section dashboard">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card overflow-auto">
                 <div class="card-body" style="min-height: 300px">
                     <div class="card-title d-flex justify-content-between">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController as AdminDasboardController;
 use App\Http\Controllers\Admin\PengaturanController as AdminPengaturanController;
 use App\Http\Controllers\Admin\JenjangController as AdminJenjangController;
+use App\Http\Controllers\Admin\ProdiController as AdminProdiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,15 +35,17 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::put('jenjang/{id}', [AdminJenjangController::class, 'update'])->name('admin.jenjang.update');
     Route::delete('jenjang/{id}', [AdminJenjangController::class, 'destroy'])->name('admin.jenjang.destroy');
 
-    // // prodi
-    // Route::get('prodi', [AdminProdiController::class, 'index'])->name('admin.prodi.index');
-    // Route::get('getProdi', [AdminProdiController::class, 'getProdi'])->name('admin.prodi');
-    // Route::get('/prodi/tambah', [AdminProdiController::class, 'create'])->name('admin.prodi.create');
-    // Route::post('/prodi', [AdminProdiController::class, 'store'])->name('admin.prodi.store');
-    // Route::get('/prodi/{id}/ubah', [AdminProdiController::class, 'edit'])->name('admin.prodi.edit');
-    // Route::get('/prodi/{id}/lihat', [AdminProdiController::class, 'show'])->name('admin.prodi.show');
-    // Route::put('/prodi/{id}', [AdminProdiController::class, 'update'])->name('admin.prodi.update');
-    // Route::delete('/prodi/{id}', [AdminProdiController::class, 'destroy'])->name('admin.prodi.destroy');
+    // prodi
+    Route::get('/prodi', [AdminProdiController::class, 'index'])->name('admin.prodi.index');
+    Route::get('/prodi/tambah', [AdminProdiController::class, 'create'])->name('admin.prodi.create');
+    Route::post('/prodi', [AdminProdiController::class, 'store'])->name('admin.prodi.store');
+    Route::get('/prodi/{id}/ubah', [AdminProdiController::class, 'edit'])->name('admin.prodi.edit');
+    Route::put('/prodi/{id}', [AdminProdiController::class, 'update'])->name('admin.prodi.update');
+    Route::delete('/prodi/{id}', [AdminProdiController::class, 'destroy'])->name('admin.prodi.destroy');
+
+    // prodi CPL (capaian pembelajaran)
+    Route::get('/prodi/{id}/edit-cpl', [AdminProdiController::class, 'editCpl'])->name('admin.prodi.edit-cpl');
+    Route::put('/prodi/{id}/cpl', [AdminProdiController::class, 'updateCpl'])->name('admin.prodi.update-cpl');
 });
 
 Route::middleware('auth')->group(function () {
@@ -51,4 +54,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

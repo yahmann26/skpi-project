@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title', 'Jenjang Pendidikan')
+@section('title', 'Prodi')
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
@@ -8,11 +8,11 @@
 
 @section('main')
     <div class="pagetitle">
-        <h1>Jenjang Pendidikan</h1>
+        <h1>Program Studi</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item active">Jenjang Pendidikan</li>
+                <li class="breadcrumb-item active">Program Studi</li>
             </ol>
         </nav>
     </div>
@@ -26,8 +26,8 @@
                     <div class="card-body" style="min-height: 300px">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title">Data Jenjang Pendidikan</div>
-                            <a href="{{ route('admin.jenjang.create') }}" class="btn btn-sm btn-primary"><i
+                            <div class="card-title">Data Program Studi</div>
+                            <a href="{{ route('admin.prodi.create') }}" class="btn btn-sm btn-primary"><i
                                     class="bi bi-plus"></i> Tambah</a>
                         </div>
 
@@ -50,9 +50,10 @@
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "30%">Nama</th>
-                                    <th width = "20%">Singkatan</th>
-                                    <th width = "20%">Jenjang Lanjutan</th>
+                                    <th width = "20%">Nama</th>
+                                    <th width = "20%">Jenjang</th>
+                                    <th width = "10%">Akreditasi</th>
+                                    <th width = "20%">Gelar</th>
                                     <th width = "20%">Aksi</th>
                                 </tr>
                             </thead>
@@ -74,10 +75,10 @@
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
-        function deleteJenjang(id) {
+        function deleteProdi(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 $.ajax({
-                    url: 'admin/jenjang/' + id,
+                    url: 'admin/prodi/' + id,
                     type: 'DELETE',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
@@ -98,22 +99,26 @@
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.jenjang.index') }}",
+                ajax: "{{ route('admin.prodi.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
+                        name: 'DT_RowIndex',
                     },
                     {
                         data: 'nama',
                         name: 'nama'
                     },
                     {
-                        data: 'singkatan',
-                        name: 'singkatan'
+                        data: 'jenjang',
+                        name: 'jenjang'
                     },
                     {
-                        data: 'jenjang_lanjutan',
-                        name: 'jenjang_lanjutan'
+                        data: 'akreditasi',
+                        name: 'akreditasi'
+                    },
+                    {
+                        data: 'gelar',
+                        name: 'gelar'
                     },
                     {
                         data: 'action',

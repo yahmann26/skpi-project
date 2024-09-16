@@ -56,7 +56,7 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
                     </a>
                 </li>
                 <li>
-                    <a href=""
+                    <a href="{{ route('admin.prodi.index') }}"
                         class="{{ isRouteName('admin.prodi.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Program Studi</span>
                     </a>
