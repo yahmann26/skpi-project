@@ -71,9 +71,6 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
             </ul>
         </li>
 
-
-        <!-- End PT Nav -->
-
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-people"></i><span>User</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -94,12 +91,13 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
         <!-- End User Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ isRouteName(['admin.kategoriKegiatan.index', 'admin.prodi.index']) ? '' : 'collapsed' }}" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-activity"></i><span>Kegiatan</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{ url('admin/kategori')}}">
+                    <a href="{{ route('admin.kategoriKegiatan.index') }}"
+                        class="{{ isRouteName('admin.kategoriKegiatan.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Kategori Kegiatan</span>
                     </a>
                 </li>

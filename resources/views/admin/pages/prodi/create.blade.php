@@ -3,29 +3,25 @@
 
 @section('main')
     <div class="pagetitle">
-        {{-- <h1>Tambah Program Studi</h1> --}}
-
-        <div class="card-title d-flex justify-content-between">
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a>
-                    </li>
-                    <li class="breadcrumb-item">Program Studi</li>
-                    <li class="breadcrumb-item active">Tambah</li>
-                </ol>
-            </nav>
-            <a href="{{ route('admin.prodi.index') }}" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-arrow-left"></i> Kembali</a>
-        </div>
+        <h1>Tambah Program Studi</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item">Prodi</li>
+                <li class="breadcrumb-item active">Tambah</li>
+            </ol>
+        </nav>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <div class="card overflow-auto">
-                    <div class="card-body" >
+                    <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <h4>Prodi | Tambah</h4>
+                            <a href="{{ route('admin.prodi.index') }}" class="btn btn-sm btn-outline-primary"><i
+                                    class="bi bi-arrow-left"></i> Kembali</a>
+                            <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
                         <form action="{{ route('admin.prodi.store') }}" method="post">

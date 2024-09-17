@@ -1,14 +1,15 @@
 @extends('admin.layout.app')
+
 @section('title', 'Ubah CPL Program Studi - ')
 
 @section('main')
     <div class="pagetitle">
-        <h1>Capaian Pembelajaran Program Studi</h1>
+        <h1>Capaian Pembelajaran</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item">Program Studi</li>
-                <li class="breadcrumb-item active">CPL</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item">Prodi</li>
+                <li class="breadcrumb-item active">CP</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -17,7 +18,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card overflow-auto" id="app">
-                    <div class="card-body" style="min-height: 300px">
+                    <div class="card-body">
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
                                 {{ session('success') }}
@@ -53,11 +54,6 @@
                                     </div>
                                     <table class="table table-bordered" v-if="!cplEditMode">
                                         <tbody v-for="(item, index) in kualifikasiCplData">
-                                            {{-- <tr>
-                                            <th class="text-center bg-secondary text-white" style="width: 15px">A</th>
-                                            <th class="bg-secondary text-white">@{{ item.judul }}</th>
-                                        <th class="bg-secondary text-white">@{{ item.judul_en }}</th>
-                                        </tr> --}}
                                             <template v-if="item && item.subs">
                                                 <template v-for="(subItem, subIndex) in item.subs">
                                                     <tr>

@@ -3,11 +3,11 @@
 
 @section('main')
 <div class="pagetitle">
-    <h1>Edit Jenjang</h1>
+    <h1>Edit Jenjang Pendidikan</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-            <li class="breadcrumb-item">Jenjang</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+            <li class="breadcrumb-item">Jenjang Pendidikan</li>
             <li class="breadcrumb-item active">Ubah</li>
         </ol>
     </nav>
@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card overflow-auto">
-                <div class="card-body" style="min-height: 300px">
+                <div class="card-body">
                     <div class="card-title d-flex justify-content-between">
                         <a href="{{ route('admin.jenjang.index') }}" class="btn btn-sm btn-outline-primary"><i
                                 class="bi bi-arrow-left"></i> Kembali</a>

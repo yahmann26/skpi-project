@@ -15,9 +15,9 @@
 
 <section class="section dashboard">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card overflow-auto">
-                <div class="card-body" style="min-height: 300px">
+                <div class="card-body">
                     <div class="card-title d-flex justify-content-between">
                         <a href="{{ route('admin.jenjang.index') }}" class="btn btn-sm btn-outline-primary"><i
                                 class="bi bi-arrow-left"></i> Kembali</a>
