@@ -19,9 +19,9 @@ if (!function_exists('isRouteName')) {
     }
 }
 
-$logoAplikasiUrl = Skpi::getAssetUrl(Skpi::getSettingByName('logo_universitas'));
-$namaAplikasi = Skpi::getSettingByName('nama_aplikasi');
-$namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
+// $logoAplikasiUrl = Skpi::getAssetUrl(Skpi::getSettingByName('logo_universitas'));
+// $namaAplikasi = Skpi::getSettingByName('nama_aplikasi');
+// $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
 
 ?>
 
@@ -43,12 +43,9 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
         <li class="nav-item">
             <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index']) ? '' : 'collapsed' }}"
                 data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i
-                    class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="master-nav"
-                class="nav-content collapse "
-                data-bs-parent="#sidebar-nav">
+            <ul id="master-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.jenjang.index') }}"
                         class="{{ isRouteName('admin.jenjang.index') ? 'active' : '' }}">
@@ -77,12 +74,12 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{url('admin/dosen')}}">
+                    <a href="{{ url('admin/dosen') }}">
                         <i class="bi bi-circle"></i><span>User Dosen</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('admin/mahasiswa')}}">
+                    <a href="{{ url('admin/mahasiswa') }}">
                         <i class="bi bi-circle"></i><span>User Mahasiswa</span>
                     </a>
                 </li>
@@ -91,7 +88,8 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
         <!-- End User Nav -->
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.kategoriKegiatan.index', 'admin.prodi.index']) ? '' : 'collapsed' }}" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ isRouteName(['admin.kategoriKegiatan.index', 'admin.kegiatan.index']) ? '' : 'collapsed' }}"
+                data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-activity"></i><span>Kegiatan</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
@@ -102,7 +100,8 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('admin/kegiatan')}}">
+                    <a href="{{ route('admin.kegiatan.index') }}"
+                        class="{{ isRouteName('admin.kegiatan.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Data Kegiatan</span>
                     </a>
                 </li>
@@ -142,7 +141,9 @@ $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            <a class="nav-link collapsed" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-arrow-left-circle"></i>
+            <a class="nav-link collapsed" href="#"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                    class="bi bi-arrow-left-circle"></i>
                 Sign Out
             </a>
         </li><!-- End Logout Page Nav -->
