@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title', 'Prodi')
+@section('title', 'Mahasiswa')
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
@@ -11,8 +11,8 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item ">Data Master</li>
-                <li class="breadcrumb-item ">Program Studi</li>
+                <li class="breadcrumb-item ">User</li>
+                <li class="breadcrumb-item ">Mahasiswa</li>
                 <li class="breadcrumb-item active">List</li>
             </ol>
         </nav>
@@ -27,36 +27,19 @@
                     <div class="card-body">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title">Data Program Studi</div>
-                            <a href="{{ route('admin.prodi.create') }}" class="btn btn-sm btn-primary"><i
+                            <div class="card-title">Data Mahasiswa</div>
+                            <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-sm btn-primary"><i
                                     class="bi bi-plus"></i> Tambah</a>
                         </div>
-
-                        {{-- @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif --}}
 
                         <table id="datatable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "15%">Nama</th>
-                                    <th width = "15%">Jenis Pendidikan</th>
-                                    <th width = "10%">Akreditasi</th>
-                                    <th width = "20%">Gelar</th>
-                                    <th width = "15%">Jenjang Lanjutan</th>
-                                    <th width = "15%">Aksi</th>
+                                    <th width = "20%">NIM</th>
+                                    <th width = "20%">Nama Mahasiswa</th>
+                                    <th width = "20%">Program Studi</th>
+                                    <th width = "10%">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -77,10 +60,10 @@
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
-        function deleteProdi(id) {
+        function deletemahasiswa(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 $.ajax({
-                    url: 'admin/prodi/' + id,
+                    url: 'admin/mahasiswa/' + id,
                     type: 'DELETE',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
@@ -101,30 +84,22 @@
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.prodi.index') }}",
+                ajax: "{{ route('admin.mahasiswa.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
+                    },
+                    {
+                        data: 'nim',
+                        name: 'nim'
                     },
                     {
                         data: 'nama',
                         name: 'nama'
                     },
                     {
-                        data: 'jenjang',
-                        name: 'jenjang'
-                    },
-                    {
-                        data: 'akreditasi',
-                        name: 'akreditasi'
-                    },
-                    {
-                        data: 'gelar',
-                        name: 'gelar'
-                    },
-                    {
-                        data: 'jenjang_lanjutan',
-                        name: 'jenjang_lanjutan'
+                        data: 'prodi',
+                        name: 'prodi'
                     },
                     {
                         data: 'action',

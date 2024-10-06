@@ -8,11 +8,12 @@
 
 @section('main')
     <div class="pagetitle">
-        <h1>Kategori Kegiatan</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item active">Kategori Kegiatan</li>
+                <li class="breadcrumb-item ">Data Master</li>
+                <li class="breadcrumb-item ">Kategori Kegiatan</li>
+                <li class="breadcrumb-item active">List</li>
             </ol>
         </nav>
     </div>

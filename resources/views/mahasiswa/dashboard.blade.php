@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('mahasiswa.layout.app')
 
 @section('title', 'Dashboard')
 
@@ -7,7 +7,7 @@
         <h1>Dashboard</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
         </nav>
@@ -16,7 +16,7 @@
     <section class="section dashboard">
         <div class="row">
 
-            <h1>Welcome back  {{ Auth::user()->uid }} !!!</h1>
+            <h1>Welcome back  {{ Auth::user()->mahasiswa->nama }} !!!</h1>
             {{-- <div class="col-lg-12 col-md-8 col-sm-12 ">
                 <div class="row">
                     @include('admin.components.card', ['title' => 'Total Mahasiswa', 'icon' => 'bi bi-person-fill', 'count' => $jmlMahasiswa, 'subtitle' => 'Mahasiswa'])

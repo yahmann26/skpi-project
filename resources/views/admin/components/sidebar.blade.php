@@ -1,29 +1,4 @@
-<?php
 
-use App\Helper\Skpi;
-
-if (!function_exists('isRouteName')) {
-    function isRouteName($routeNames)
-    {
-        if (is_array($routeNames)) {
-            foreach ($routeNames as $routeName) {
-                if (Route::currentRouteName() == $routeName) {
-                    return true;
-                }
-            }
-        } else {
-            if (Route::currentRouteName() == $routeNames) {
-                return true;
-            }
-        }
-    }
-}
-
-// $logoAplikasiUrl = Skpi::getAssetUrl(Skpi::getSettingByName('logo_universitas'));
-// $namaAplikasi = Skpi::getSettingByName('nama_aplikasi');
-// $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
-
-?>
 
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
@@ -41,7 +16,7 @@ if (!function_exists('isRouteName')) {
         <li class="nav-heading">Menu</li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index']) ? '' : 'collapsed' }}"
+            <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index', 'admin.kategoriKegiatan.index']) ? '' : 'collapsed' }}"
                 data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
@@ -52,10 +27,18 @@ if (!function_exists('isRouteName')) {
                         <i class="bi bi-circle"></i><span>Jenjang Pendidikan</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="{{ route('admin.prodi.index') }}"
                         class="{{ isRouteName('admin.prodi.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Program Studi</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.kategoriKegiatan.index') }}"
+                        class="{{ isRouteName('admin.kategoriKegiatan.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Kategori Kegiatan</span>
                     </a>
                 </li>
 
@@ -69,45 +52,26 @@ if (!function_exists('isRouteName')) {
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ isRouteName(['admin.mahasiswa.index']) ? '' : 'collapsed' }}"
+                data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-people"></i><span>User</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{ url('admin/dosen') }}">
-                        <i class="bi bi-circle"></i><span>User Dosen</span>
+                    <a href="#"
+                        class="#">
+                        <i class="bi bi-circle"></i><span>Dosen</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('admin/mahasiswa') }}">
-                        <i class="bi bi-circle"></i><span>User Mahasiswa</span>
+                    <a href="{{ route('admin.mahasiswa.index') }}"
+                        class="{{ isRouteName('admin.mahasiswa.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Mahasiswa</span>
                     </a>
                 </li>
             </ul>
         </li>
         <!-- End User Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.kategoriKegiatan.index', 'admin.kegiatan.index']) ? '' : 'collapsed' }}"
-                data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-activity"></i><span>Kegiatan</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('admin.kategoriKegiatan.index') }}"
-                        class="{{ isRouteName('admin.kategoriKegiatan.index') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Kategori Kegiatan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.kegiatan.index') }}"
-                        class="{{ isRouteName('admin.kegiatan.index') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Kegiatan</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- End Kegiatan Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="">
@@ -130,7 +94,7 @@ if (!function_exists('isRouteName')) {
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="profile">
+            <a class="nav-link {{ isRouteName('admin.user.profile') ? '' : 'collapsed' }}" href="{{ route('admin.user.profile') }}" class="{{ isRouteName('admin.user.profile') ? 'active' : '' }}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>

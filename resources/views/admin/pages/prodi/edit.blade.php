@@ -70,12 +70,62 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="bhs_pengantar_kuliah" class="form-label">Bahasa Pengantar Kuliah <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group mb-3 @error('bhs_pengantar_kuliah') is-invalid @enderror">
+                                <span class="input-group-text">&nbsp;ID</span>
+                                <input type="text" name="bhs_pengantar_kuliah" class="form-control" aria-describedby="bhs_pengantar_kuliah-addon"
+                                    class="form-control" value="{{ $detailData->bhs_pengantar_kuliah }}" autofocus
+                                    placeholder="Bahasa Pengantar Kuliah">
+                            </div>
+                            @error('bhs_pengantar_kuliah')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group mb-3 @error('bhs_pengantar_kuliah_en') is-invalid @enderror">
+                                <span class="input-group-text">EN</span>
+                                <input type="text" name="bhs_pengantar_kuliah_en" class="form-control"
+                                    aria-describedby="bhs_pengantar_kuliah_en-addon" class="form-control" value="{{ $detailData->bhs_pengantar_kuliah_en }}"
+                                    autofocus placeholder="Bahasa Penagntar Kuliah (english)">
+                            </div>
+                            @error('bhs_pengantar_kuliah_en')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
                             <label for="akreditasi" class="form-label">Akreditasi</label>
                             <input type="text" name="akreditasi" id="akreditasi"
                                 class="form-control @error('akreditasi') is-invalid @enderror"
                                 value="{{ $detailData->akreditasi }}" placeholder="Misal: A, B, dsb">
                             @error('akreditasi')
                             <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="sistem_penilaian" class="form-label">Sistem Penilaian <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group mb-3 @error('sistem_penilaian') is-invalid @enderror">
+                                <span class="input-group-text">&nbsp;ID</span>
+                                <input type="text" name="sistem_penilaian" class="form-control" aria-describedby="sistem_penilaian-addon"
+                                    class="form-control" value="{{ $detailData->sistem_penilaian }}" autofocus
+                                    placeholder="Sistem Penilain">
+                            </div>
+                            @error('sistem_penilaian')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group mb-3 @error('sistem_penilaian_en') is-invalid @enderror">
+                                <span class="input-group-text">EN</span>
+                                <input type="text" name="sistem_penilaian_en" class="form-control"
+                                    aria-describedby="sistem_penilaian_en-addon" class="form-control" value="{{ $detailData->sistem_penilaian_en }}"
+                                    autofocus placeholder="Sistem Penilaian (english)">
+                            </div>
+                            @error('sistem_penilaian_en')
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 

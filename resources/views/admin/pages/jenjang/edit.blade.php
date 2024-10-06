@@ -61,11 +61,11 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="level_kkni" class="form-label">Level KKNI</label>
-                            <input type="number" name="level_kkni" id="level_kkni"
-                                class="form-control @error('level_kkni') is-invalid @enderror"
-                                value="{{ $detailData->level_kkni }}" placeholder="Level">
-                            @error('level_kkni')
+                            <label for="kualifikasi_kkni" class="form-label">Kualifikasi Sesuai KKNI</label>
+                            <input type="text" name="kualifikasi_kkni" id="kualifikasi_kkni"
+                                class="form-control @error('kualifikasi_kkni') is-invalid @enderror"
+                                value="{{ $detailData->kualifikasi_kkni }}" placeholder="Level">
+                            @error('kualifikasi_kkni')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -113,9 +113,9 @@
                         <div class="mb-3">
                             <div class="input-group mb-3">
                                 <span class="input-group-text">EN</span>
-                                <input type="text" name="jenjang_lanjutan" class="form-control" aria-describedby="jenjang_lanjutan_en-addon"
+                                <input type="text" name="jenjang_lanjutan_en" class="form-control" aria-describedby="jenjang_lanjutan_en-addon"
                                     class="form-control @error('jenjang_lanjutan_en') is-invalid @enderror"
-                                    value="{{ $detailData->jenjang_lanjutan_en }}" autofocus placeholder="Jenjang lanjutan">
+                                    value="{{ $detailData->jenjang_lanjutan_en }}" autofocus placeholder="Jenjang lanjutan En">
                             </div>
                             @error('jenjang_lanjutan_en')
                             <div class="invalid-feedback">{{ $message }}</div>

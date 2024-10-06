@@ -18,10 +18,11 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'uid' => 'admin',
-            'name' => 'admin',
             'email' => 'test@example.com',
             'password' => Hash::make('admin'),
             'role' => 'admin',
         ]);
+
+        $this->call(PengaturanSeeder::class);
     }
 }

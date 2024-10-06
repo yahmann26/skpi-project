@@ -33,7 +33,11 @@ class ProdiController extends Controller
                     fn($row) =>
                     '<div>' . $row->gelar . '</div><div class="fst-italic small text-secondary">' . $row->gelar_en . '</div>'
                 )
-                ->addColumn('jenjang', fn(ProgramStudi $prodi) => $prodi->jenjangPendidikan->nama)
+                ->addColumn('jenjang', fn($row) => '<div>' . $row->jenjangPendidikan->nama . '</div>
+                    <div class="fst-italic small text-secondary">' . $row->jenjangPendidikan->nama_en . '</div>')
+                ->addColumn('jenjang_lanjutan',fn($row) => '<div>' . $row->jenjangPendidikan->jenjang_lanjutan . '</div>
+                    <div class="fst-italic small text-secondary">' . $row->jenjangPendidikan->jenjang_lanjutan_en . '</div>'
+                )
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.prodi.edit', $row->id);
                     $editCpl = route('admin.prodi.edit-cpl', $row->id);
@@ -47,7 +51,7 @@ class ProdiController extends Controller
                             <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                         </form>';
                 })
-                ->rawColumns(['nama', 'gelar', 'jenjang', 'action'])
+                ->rawColumns(['nama', 'gelar', 'jenjang', 'jenjang_lanjutan', 'action'])
                 ->make(true);
         }
         return view('admin.pages.prodi.index');
@@ -68,6 +72,10 @@ class ProdiController extends Controller
             'jenjang_pendidikan_id' => 'required|exists:jenjang_pendidikan,id',
             'nama' => 'required|unique:program_studi,nama',
             'nama_en' => 'required|unique:program_studi,nama_en',
+            'bhs_pengantar_kuliah' => 'required',
+            'bhs_pengantar_kuliah_en' => 'required',
+            'sistem_penilaian' => 'required',
+            'sistem_penilaian_en' => 'required',
             'akreditasi' => 'required',
             'gelar' => 'required',
             'gelar_en' => 'required',
@@ -77,6 +85,10 @@ class ProdiController extends Controller
             'nama.unique' => 'Nama Prodi Sudah Ada',
             'nama_en.required' => 'Nama Prodi Harus Diisi',
             'nama_en.unique' => 'Nama Prodi Sudah Ada',
+            'bhs_pengantar_kuliah.required' => 'Bahasa Pengantar Kuliah Harus Diisi',
+            'bhs_pengantar_kuliah_en.required' => 'Bahasa Pengantar Kuliah Harus Diisi',
+            'bhs_pengantar_kuliah.required' => 'Sistem Penilaian Harus Diisi',
+            'bhs_pengantar_kuliah_en.required' => 'Sistem Penilaian Harus Diisi',
             'akreditasi.required' => 'Akreditasi Harus Diisi',
             'gelar.required' => 'Gelar Harus Diisi',
             'gelar_en.required' => 'Gelar Harus Diisi',
@@ -87,6 +99,10 @@ class ProdiController extends Controller
             'jenjang_pendidikan_id' => $request->jenjang_pendidikan_id,
             'nama' => $request->nama,
             'nama_en' => $request->nama_en,
+            'bhs_pengantar_kuliah' => $request->bhs_pengantar_kuliah,
+            'bhs_pengantar_kuliah_en' => $request->bhs_pengantar_kuliah_en,
+            'sistem_penilaian' => $request->sistem_penilaian,
+            'sistem_penilaian_en' => $request->sistem_penilaian_en,
             'akreditasi' => $request->akreditasi,
             'gelar' => $request->gelar,
             'gelar_en' => $request->gelar_en
@@ -141,7 +157,11 @@ class ProdiController extends Controller
             'jenjang_pendidikan_id' => $request->jenjang_pendidikan_id,
             'nama' => $request->nama,
             'nama_en' => $request->nama_en,
+            'bhs_pengantar_kuliah' => $request->bhs_pengantar_kuliah,
+            'bhs_pengantar_kuliah_en' => $request->bhs_pengantar_kuliah_en,
             'akreditasi' => $request->akreditasi,
+            'sistem_penilaian' => $request->sistem_penilaian,
+            'sistem_penilaian_en' => $request->sistem_penilaian_en,
             'gelar' => $request->gelar,
             'gelar_en' => $request->gelar_en
         ]);
@@ -183,6 +203,6 @@ class ProdiController extends Controller
         }
 
         // redirect back
-        return redirect()->back()->with('success', 'CPL berhasil diperbarui');
+        return redirect()->route('admin.prodi.index')->with('success', 'CPL berhasil diperbarui');
     }
 }

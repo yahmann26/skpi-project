@@ -6,6 +6,10 @@ use App\Http\Controllers\Admin\JenjangController as AdminJenjangController;
 use App\Http\Controllers\Admin\ProdiController as AdminProdiController;
 use App\Http\Controllers\Admin\KategoriKegiatanController as AdminKategoriKegiatanController;
 use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
+use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+
+use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController  ;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,11 +26,11 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('/pengaturan', [AdminPengaturanController::class, 'index'])->name('admin.pengaturan.index');
     Route::post('/pengaturan', [AdminPengaturanController::class, 'update'])->name('admin.pengaturan.update');
 
-    // Route::get('user', [AdminDasboardController::class, 'getData'])->name('admin.user');
-    // Route::get('mahasiswa', [AdminMahasiswaController::class, 'index'])->name('admin.mahasiswa');
-    // Route::get('mahasiswa/{id}/lihat', [AdminMahasiswaController::class, 'show'])->name('admin.mahasiswa.show');
-    // Route::get('pengaturan', [AdminPengaturanController::class, 'index'])->name('admin.pengaturan');
-    // Route::post('pengaturan', [AdminPengaturanController::class, 'update'])->name('admin.pengaturan.update');
+    // user
+    Route::get('user/profil', [AdminUserController::class, 'profile'])->name('admin.user.profile');
+    Route::put('/user/profil', [AdminUserController::class, 'updateProfile'])->name('admin.user.update-profile');
+    Route::get('/user/kata-sandi', [AdminUserController::class, 'password'])->name('admin.user.password');
+    Route::put('/user/kata-sandi', [AdminUserController::class, 'updatePassword'])->name('admin.user.update-password');
 
     // jenjang
     Route::get('jenjang', [AdminJenjangController::class, 'index'])->name('admin.jenjang.index');
@@ -65,6 +69,45 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('/kegiatan/{id}/ubah', [AdminKegiatanController::class, 'edit'])->name('admin.kegiatan.edit');
     Route::put('/kegiatan/{id}', [AdminKegiatanController::class, 'update'])->name('admin.kegiatan.update');
     Route::delete('/kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
+
+
+    // Mahasiswa
+    Route::get('mahasiswa', [AdminMahasiswaController::class, 'index'])->name('admin.mahasiswa.index');
+    Route::get('mahasiswa/tambah', [AdminMahasiswaController::class, 'create'])->name('admin.mahasiswa.create');
+    Route::post('/mahasiswa', [AdminMahasiswaController::class, 'store'])->name('admin.mahasiswa.store');
+    Route::get('/mahasiswa/{id}/ubah', [AdminMahasiswaController::class, 'edit'])->name('admin.mahasiswa.edit');
+    Route::put('/mahasiswa/{id}', [AdminMahasiswaController::class, 'update'])->name('admin.mahasiswa.update');
+    Route::delete('/mahasiswa/{id}', [AdminMahasiswaController::class, 'destroy'])->name('admin.mahasiswa.destroy');
+});
+
+/* MAHASISWA */
+Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(function () {
+    Route::get('/dashboard', [MahasiswaDashboardController::class, 'index'])->name('mahasiswa.dashboard');
+
+    // user
+    // Route::get('/user/profil', [MahasiswaUserController::class, 'profile'])->name('mahasiswa.user.profile');
+    // Route::put('/user/profil', [MahasiswaUserController::class, 'updateProfile'])->name('mahasiswa.user.update-profile');
+    // Route::get('/user/kata-sandi', [MahasiswaUserController::class, 'password'])->name('mahasiswa.user.password');
+    // Route::put('/user/kata-sandi', [MahasiswaUserController::class, 'updatePassword'])->name('mahasiswa.user.update-password');
+
+    // // mahasiswa profile
+    // Route::get('/profil', [MahasiswaProfileController::class, 'index'])->name('mahasiswa.profile.index');
+    // Route::put('/profil', [MahasiswaProfileController::class, 'update'])->name('mahasiswa.profile.update');
+
+    // // mahasiswa prestasi
+    // Route::get('/prestasi', [MahasiswaPrestasiController::class, 'index'])->name('mahasiswa.prestasi.index');
+    // Route::get('/prestasi/tambah', [MahasiswaPrestasiController::class, 'create'])->name('mahasiswa.prestasi.create');
+    // Route::post('/prestasi', [MahasiswaPrestasiController::class, 'store'])->name('mahasiswa.prestasi.store');
+    // Route::get('/prestasi/{id}/ubah', [MahasiswaPrestasiController::class, 'edit'])->name('mahasiswa.prestasi.edit');
+    // Route::put('/prestasi/{id}', [MahasiswaPrestasiController::class, 'update'])->name('mahasiswa.prestasi.update');
+    // Route::delete('/prestasi/{id}', [MahasiswaPrestasiController::class, 'destroy'])->name('mahasiswa.prestasi.destroy');
+
+    // // mahasiswa dokumen skpi
+    // Route::get('/dokumen', [MahasiswaDokumenController::class, 'index'])->name('mahasiswa.dokumen.index');
+    // Route::post('/dokumen/request', [MahasiswaDokumenController::class, 'request'])->name('mahasiswa.dokumen.request');
+
+    // // mahasiswa request skpi
+    // Route::get('/pengajuan', [MahasiswaPengajuanController::class, 'index'])->name('mahasiswa.pengajuan.index');
 });
 
 Route::middleware('auth')->group(function () {

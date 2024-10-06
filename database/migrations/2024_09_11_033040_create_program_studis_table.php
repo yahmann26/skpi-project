@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('nama', 100);
             $table->string('nama_en', 100)->nullable();
             $table->string('akreditasi', 10)->nullable();
+            $table->string('bhs_pengantar_kuliah')->nullable();
+            $table->string('bhs_pengantar_kuliah_en')->nullable();
+            $table->string('sistem_penilaian')->nullable();
+            $table->string('sistem_penilaian_en')->nullable();
             $table->string('gelar', 100)->nullable();
             $table->string('gelar_en', 100)->nullable();
             $table->text('kualifikasi_cpl')->nullable();

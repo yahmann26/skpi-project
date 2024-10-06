@@ -7,7 +7,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item">Prodi</li>
+                <li class="breadcrumb-item">Kegiatan</li>
                 <li class="breadcrumb-item active">Tambah</li>
             </ol>
         </nav>

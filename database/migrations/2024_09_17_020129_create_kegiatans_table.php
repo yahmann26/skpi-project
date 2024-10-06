@@ -14,10 +14,16 @@ return new class extends Migration
         Schema::create('kegiatan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kategori_kegiatan_id')->constrained('kategori_kegiatan', 'id')->cascadeOnDelete();
-            $table->string('nama');
-            $table->string('tingkat');
-            $table->string('jabatan');
-            $table->integer('bobot');
+            $table->foreignId('mahasiswa_id')->constrained('mahasiswa', 'id')->cascadeOnDelete();
+            $table->string('nama'); // nama kegiatan / prestasi / aktifitas
+            $table->string('nama_en'); // nama kegiatan / prestasi / aktifitas dlm bhs inggris
+            $table->string('tingkat'); // himpunan, univ, kota, provinsi
+            $table->year('tahun');
+            $table->string('jabatan'); // peserta, anggota, juara 1, dll
+            $table->string('penyelenggara');
+            $table->string('file_sertifikat')->nullable();
+            $table->string('status')->default('diproses'); // diproses, diterima, ditolak
+            $table->string('catatan_status')->nullable();
             $table->timestamps();
         });
     }

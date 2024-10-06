@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PHPStan\PhpDocParser\Ast\Type\ThisTypeNode;
 
 class ProgramStudi extends Model
 {

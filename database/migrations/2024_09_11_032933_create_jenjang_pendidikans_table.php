@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama', 100);
             $table->string('nama_en', 100)->nullable();
             $table->string('singkatan', 10)->nullable();
-            $table->integer('level_kkni')->unsigned()->nullable();
+            $table->string('kualifikasi_kkni')->nullable();
             $table->string('syarat_masuk')->nullable();
             $table->string('syarat_masuk_en')->nullable();
             $table->string('lama_studi_reguler')->nullable();
