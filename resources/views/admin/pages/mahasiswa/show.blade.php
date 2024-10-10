@@ -5,12 +5,12 @@
 @section('main')
     {{-- Page Titile --}}
     <div class="pagetitle">
-        <h1>User Mahasiswa</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('admin/dashboard')}}">Admin</a></li>
                 <li class="breadcrumb-item"><a>User</a></li>
-                <li class="breadcrumb-item active">Mahasiswa</li>
+                <li class="breadcrumb-item">Mahasiswa</li>
+                <li class="breadcrumb-item active">Lihat</li>
             </ol>
         </nav>
     </div>

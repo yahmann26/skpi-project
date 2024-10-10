@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('nama'); // nama kegiatan / prestasi / aktifitas
             $table->string('nama_en'); // nama kegiatan / prestasi / aktifitas dlm bhs inggris
             $table->string('tingkat'); // himpunan, univ, kota, provinsi
-            $table->year('tahun');
+            $table->date('tgl_mulai');
+            $table->date('tgl_selesai');
             $table->string('jabatan'); // peserta, anggota, juara 1, dll
-            $table->string('penyelenggara');
+            $table->string('penyelenggara'); // kementrian, pemda, fakultas
             $table->string('file_sertifikat')->nullable();
+            $table->string('deskripsi')->nullable();
             $table->string('status')->default('diproses'); // diproses, diterima, ditolak
             $table->string('catatan_status')->nullable();
             $table->timestamps();

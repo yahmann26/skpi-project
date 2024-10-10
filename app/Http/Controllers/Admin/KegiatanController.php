@@ -15,31 +15,60 @@ class KegiatanController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $data = Kegiatan::query()->latest();
+        // Fungsi untuk mendapatkan warna status
+        if (!function_exists('getStatusColor')) {
+            function getStatusColor($status)
+            {
+                $status = strtolower($status);
+                switch ($status) {
+                    case 'diproses':
+                        return '<span class="badge bg-warning">Diproses</span>';
+                    case 'ditolak':
+                        return '<span class="badge bg-danger">Ditolak</span>';
+                    case 'diterima':
+                        return '<span class="badge bg-success">Diterima</span>';
+                    default:
+                        return '<span class="badge bg-secondary">Tidak diketahui</span>';
+                }
+            }
+        }
 
-            return DataTables::of($data)
+        // Jika request adalah AJAX (untuk datatables)
+        if ($request->ajax()) {
+            // Ambil data kegiatan semua mahasiswa dengan relasi kategoriKegiatan dan mahasiswa
+            $kegiatan = Kegiatan::with(['kategoriKegiatan', 'mahasiswa'])->select('kegiatan.*')->orderBy('created_at', 'desc')->get();
+
+            return DataTables::of($kegiatan)
                 ->addIndexColumn()
-                ->addColumn('DT_RowIndex', function ($row) {
-                    return '';
+                ->addColumn('mahasiswa', fn($row) => $row->mahasiswa->nama) // Tampilkan nama mahasiswa
+                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama) // Tampilkan nama kategori kegiatan
+                ->addColumn('aksi', function ($row) {
+                    $editBtn = '<a href="' . route('admin.kegiatan.edit', $row->id) . '" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil"></i></a>';
+                    $deleteBtn = '<button type="button" class="btn btn-sm btn-light text-danger" data-bs-toggle="modal" data-id="' . $row->id . '" data-bs-target="#hapusModal"><i class="bi bi-trash"></i></button>';
+
+                    return $editBtn . ' ' . $deleteBtn;
                 })
-                ->addColumn('kategori', function (Kegiatan $kegiatan) {
-                    return $kegiatan->kategoriKegiatan->nama;
+                ->addColumn('sertifikat', function ($row) {
+                    return $row->file_sertifikat
+                        ? '<button type="button" class="btn btn-sm btn-success preview-file" data-bs-toggle="modal" data-bs-target="#previewModal" data-url="' . $row->file_sertifikat_url . '" data-type="' . pathinfo($row->file_sertifikat_url, PATHINFO_EXTENSION) . '"><i class="bi bi-file-earmark"></i> Lihat</button>'
+                        : '<span class="badge bg-secondary">Tidak ada</span>';
                 })
-                ->addColumn('action', function ($row) {
-                    $editUrl = route('admin.kegiatan.edit', $row->id);
-                    $deleteUrl = route('admin.kegiatan.destroy', $row->id);
-                    return '
-                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                    <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                        ' . csrf_field() . '
-                        ' . method_field("DELETE") . '
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                    </form>';
+                ->addColumn('status', fn($row) => getStatusColor($row->status)) // Panggil fungsi getStatusColor
+                ->addColumn('prodi', fn($row) => ($row->mahasiswa->prodi->nama))
+                ->addColumn('pencapaian', function ($row) {
+                    return '<div>' . $row->jabatan . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
                 })
-                ->rawColumns(['action'])
+                ->addColumn('nama', function ($row) {
+                    return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
+                })
+                ->addColumn('penyelenggara', function ($row) {
+                    return '<div>' . $row->penyelenggara . '</div><div class="small fst-italic text-muted">di: ' . $row->tingkat . '</div>';
+                })
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'penyelenggara', 'status', 'nama']) // Merender HTML
                 ->make(true);
         }
+
+        // Render view halaman admin untuk pengajuan kegiatan mahasiswa
         return view('admin.pages.kegiatan.index');
     }
 

@@ -74,6 +74,15 @@
         <!-- End User Nav -->
 
         <li class="nav-item">
+            <a class="nav-link {{ isRouteName('admin.kegiatan.index') ? '' : 'collapsed' }}"
+                href="{{ route('admin.kegiatan.index') }}"
+                class="{{ isRouteName('admin.kegiatan.index') ? 'active' : '' }}">
+                <i class="bi bi-gear"></i>
+                <span>Kegiatan</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link collapsed" href="">
                 <i class="bi bi-printer"></i>
                 <span>SKPI</span>

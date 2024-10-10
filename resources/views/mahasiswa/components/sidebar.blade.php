@@ -17,9 +17,9 @@
 
 
         <li class="nav-item">
-            <a class="nav-link "
-                href="#"
-                class="#">
+            <a class="nav-link {{ isRouteName('mahasiswa.kegiatan.index') ? '' : 'collapsed' }}"
+                href="{{ route('mahasiswa.kegiatan.index') }}"
+                class="{{ isRouteName('mahasiswa.kegiatan.index') ? 'active' : '' }}">
                 <i class="bi bi-award"></i>
                 <span>Kegiatan</span>
             </a>
@@ -37,7 +37,7 @@
         <li class="nav-heading">Setting</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="profile">
+            <a class="nav-link {{ isRouteName('mahasiswa.user.profile') ? '' : 'collapsed' }}" href="{{ route('mahasiswa.user.profile') }}" class="{{ isRouteName('mahasiswa.user.profile') ? 'active' : '' }}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>

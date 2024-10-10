@@ -3,10 +3,10 @@
 
 @section('main')
 <div class="pagetitle">
-    <h1>Jenjang Pendidikan</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+            <li class="breadcrumb-item">Data Master</li>
             <li class="breadcrumb-item">Jenjang Pendidikan</li>
             <li class="breadcrumb-item active">Tambah</li>
         </ol>
@@ -112,7 +112,7 @@
                         <div class="mb-3">
                             <div class="input-group mb-3">
                                 <span class="input-group-text">EN</span>
-                                <input type="text" name="jenjang_lanjutan" class="form-control" aria-describedby="jenjang_lanjutan_en-addon"
+                                <input type="text" name="jenjang_lanjutan_en" class="form-control" aria-describedby="jenjang_lanjutan_en-addon"
                                     class="form-control @error('jenjang_lanjutan_en') is-invalid @enderror"
                                     value="{{ old('jenjang_lanjutan_en') }}" autofocus placeholder="Jenjang lanjutan">
                             </div>
