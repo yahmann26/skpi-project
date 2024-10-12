@@ -1,4 +1,4 @@
-@extends('mahasiswa.layout.app')
+@extends('admin.layout.app')
 
 @section('title', 'Ubah Kegiatan ')
 
@@ -7,7 +7,7 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a>
                 </li>
                 <li class="breadcrumb-item ">Kegiatan</li>
                 <li class="breadcrumb-item active">List</li>
@@ -21,12 +21,12 @@
                 <div class="card overflow-auto">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <a href="{{ route('mahasiswa.kegiatan.index') }}" class="btn btn-sm btn-outline-primary"><i
+                            <a href="{{ route('admin.kegiatan.index') }}" class="btn btn-sm btn-outline-primary"><i
                                     class="bi bi-arrow-left"></i> Kembali</a>
                             <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
-                        <form class="row g-1" action="{{ route('mahasiswa.kegiatan.update', ['id' => $kegiatan->id]) }}" method="post" enctype="multipart/form-data">
+                        <form class="row g-1" action="{{ route('admin.kegiatan.update',['id' => $kegiatan->id]) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -34,7 +34,6 @@
                                 <label for="kategori_kegiatan_id" class="form-label">Kategori Kegiatan</label>
                                 <select name="kategori_kegiatan_id" id="kategori_kegiatan_id"
                                     class="form-select @error('kategori_kegiatan_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Jenjang Pendidikan --</option>
                                     @foreach ($kategori as $kategori)
                                         <option value="{{ $kategori->id }}"
                                             {{ $kegiatan->kategori_kegiatan_id == $kategori->id ? 'selected' : '' }}>
@@ -144,6 +143,16 @@
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"
                                     value="{{ $kegiatan->tgl_selesai }}">
                                 @error('tgl_selesai')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="mb-3">
+                                <label for="catatan_status" class="form-label">Catatan</label>
+                                <textarea name="catatan_status" id="catatan_status" class="form-control @error('catatan_status') is-invalid @enderror">{{ old('catatan_status', $kegiatan->catatan_status) }}</textarea>
+                                @error('catatan_status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

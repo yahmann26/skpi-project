@@ -67,9 +67,11 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     // kegiatan
     Route::get('kegiatan', [AdminKegiatanController::class, 'index'])->name('admin.kegiatan.index');
     Route::get('kegiatan/tambah', [AdminKegiatanController::class, 'create'])->name('admin.kegiatan.create');
-    Route::post('/kegiatan', [AdminKegiatanController::class, 'store'])->name('admin.kegiatan.store');
-    Route::get('/kegiatan/{id}/ubah', [AdminKegiatanController::class, 'edit'])->name('admin.kegiatan.edit');
-    Route::put('/kegiatan/{id}', [AdminKegiatanController::class, 'update'])->name('admin.kegiatan.update');
+    Route::post('kegiatan', [AdminKegiatanController::class, 'store'])->name('admin.kegiatan.store');
+    Route::get('kegiatan/{id}/ubah', [AdminKegiatanController::class, 'edit'])->name('admin.kegiatan.edit');
+    Route::get('kegiatan/{id}/lihat', [AdminKegiatanController::class, 'show'])->name('admin.kegiatan.show');
+    Route::put('kegiatan/{id}/status', [AdminKegiatanController::class, 'updateStatus'])->name('admin.kegiatan.update-status');
+    Route::put('kegiatan/{id}', [AdminKegiatanController::class, 'update'])->name('admin.kegiatan.update');
     Route::delete('/kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
 
 

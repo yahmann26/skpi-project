@@ -4,18 +4,25 @@
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
+    <style>
+        thead input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    </style>
 @endpush
 
 @section('main')
-<div class="pagetitle">
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-            <li class="breadcrumb-item ">Kegiatan</li>
-            <li class="breadcrumb-item active">List</li>
-        </ol>
-    </nav>
-</div>
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item ">Kegiatan</li>
+                <li class="breadcrumb-item active">List</li>
+            </ol>
+        </nav>
+    </div>
 
 
     <section class="section dashboard">
@@ -31,34 +38,27 @@
                                     class="bi bi-plus"></i> Tambah</a>
                         </div>
 
-                        {{-- @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif --}}
-
                         <table class="table table-bordered table-striped datatable">
                             <thead>
                                 <tr>
-                                    <th width="5%">#</th>
+                                    <th width="3%">No</th>
+                                    <th width="10%">NIM</th>
                                     <th width="20%">Nama Mahasiswa</th>
-                                    <th width="15%">Prodi</th>
+                                    <th width="15%">Program Studi</th>
                                     <th width="10%">Kategori</th>
-                                    <th width="17%">Nama Kegiatan</th>
-                                    <th width="10%">Pencapaian</th>
-                                    <th width="9%">Penyelenggara</th>
-                                    <th width="4%">Status</th>
-                                    {{-- <th>Sertifikat</th> --}}
-                                    <th width="10%">Aksi</th>
+                                    <th width="20%">Nama Kegiatan</th>
+                                    <th width="10%">Status</th>
+                                    <th width="12%">Aksi</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
                                 </tr>
                             </thead>
                         </table>
@@ -73,7 +73,8 @@
 @endsection
 
 @push('script')
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
@@ -83,11 +84,16 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('admin.kegiatan.index') }}",
-                columns: [{
+                columns: [
+                    {
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
                         searchable: false
+                    },
+                    {
+                        data: 'nim',
+                        name: 'nim'
                     },
                     {
                         data: 'mahasiswa',
@@ -106,28 +112,38 @@
                         name: 'nama'
                     },
                     {
-                        data: 'pencapaian',
-                        name: 'pencapaian'
-                    },
-                    {
-                        data: 'penyelenggara',
-                        name: 'penyelenggara'
-                    },
-                    {
                         data: 'status',
                         name: 'status'
                     },
-                    // {
-                    //     data: 'sertifikat',
-                    //     name: 'sertifikat'
-                    // },
                     {
                         data: 'aksi',
                         name: 'aksi',
                         orderable: false,
                         searchable: false
-                    },
-                ]
+                    }
+                ],
+
+                initComplete: function() {
+                    this.api()
+                        .columns()
+                        .every(function() {
+                            var column = this;
+                            var title = column.header().textContent;
+
+                            // Create input element and add event listener
+                            $('<input type="text" placeholder="Search ' + title + '" />')
+                                .appendTo($(column.header()).empty())
+                                .on('keyup change clear', function() {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                                });
+                        });
+                },
+
+                scrollX: false,
+                autoWidth: true,
+                responsive: true
             });
         });
     </script>

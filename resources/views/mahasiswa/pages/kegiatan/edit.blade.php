@@ -1,192 +1,222 @@
-@extends('admin.layout')
-@section('title', 'Ubah Prestasi - ')
+@extends('mahasiswa.layout.app')
+@section('title', 'Edit Kegiatan ')
 
-@section('content')
-<div class="pagetitle">
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-            <li class="breadcrumb-item ">Kegiatan</li>
-            <li class="breadcrumb-item active">Ubah</li>
-        </ol>
-    </nav>
-</div><!-- End Page Title -->
+@section('main')
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                </li>
+                <li class="breadcrumb-item ">Kegiatan</li>
+                <li class="breadcrumb-item active">Tambah</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-<section class="section dashboard">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card overflow-auto">
-                <div class="card-body" style="min-height: 300px">
-                    <div class="card-title d-flex justify-content-between">
-                        <a href="{{ route('mahasiswa.prestasi.index') }}" class="btn btn-sm btn-outline-primary"><i
-                                class="bi bi-arrow-left"></i> Kembali</a>
-                        <span class="text-danger small">Bertanda *) wajib diisi</span>
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card overflow-auto">
+                    <div class="card-body" style="min-height: 300px">
+                        <div class="card-title d-flex justify-content-between">
+                            <a href="{{ route('mahasiswa.kegiatan.index') }}" class="btn btn-sm btn-outline-primary"><i
+                                    class="bi bi-arrow-left"></i> Kembali</a>
+                            <span class="text-danger small">Bertanda *) wajib diisi</span>
+                        </div>
+
+                        <form class="row g-1" action="{{ route('mahasiswa.kegiatan.update', ['id' => $kegiatan->id]) }}"
+                            method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+
+                            {{-- Kategori Kegiatan --}}
+                            <div class="mb-3">
+                                <label class="form-label">Kategori Kegiatan</label>
+                                <select class="form-select" name="kategori_kegiatan_id" id="kategori_kegiatan_id">
+                                    @foreach ($kategori as $kategori)
+                                        <option value="{{ $kategori->id }}"
+                                            {{ $kegiatan->kategori_kegiatan_id == $kategori->id ? 'selected' : '' }}>
+                                            {{ $kategori->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Nama Kegiatan --}}
+                            <div class="mb-3">
+                                <label for="nama" class="form-label">Nama Kegiatan <span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group mb-3 @error('nama') is-invalid @enderror">
+                                    <span class="input-group-text">&nbsp;ID</span>
+                                    <input type="text" name="nama" class="form-control" aria-describedby="nama-addon"
+                                        class="form-control" value="{{ $kegiatan->nama }}" autofocus
+                                        placeholder="Nama Kegiatan">
+                                </div>
+                                @error('nama')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
+                                <div class="input-group mb-3 @error('nama_en') is-invalid @enderror">
+                                    <span class="input-group-text">EN</span>
+                                    <input type="text" name="nama_en" class="form-control"
+                                        aria-describedby="nama_en-addon" class="form-control" value="{{ $kegiatan->nama_en }}"
+                                        autofocus placeholder="Nama Kegiatan (english)">
+                                </div>
+                                @error('nama_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- pencapaian --}}
+                            <div class="mb-3">
+                                <label for="jabatan" class="form-label">Pencapaian <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" name="jabatan" id="jabatan"
+                                    class="form-control @error('jabatan') is-invalid @enderror"
+                                    value="{{ $kegiatan->jabatan }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
+                                @error('jabatan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tingkat" class="form-label">Tingkat kegiatan <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" name="tingkat" id="tingkat"
+                                    class="form-control @error('tingkat') is-invalid @enderror"
+                                    value="{{ $kegiatan->tingkat }}" placeholder="Misal: himpunan, univ, kabupaten dsb">
+                                @error('tingkat')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="penyelenggara" class="form-label">Penyelenggara Kegiatan <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" name="penyelenggara" id="penyelenggara"
+                                    class="form-control @error('penyelenggara') is-invalid @enderror"
+                                    value="{{ $kegiatan->penyelenggara }}"
+                                    placeholder="Misal: fakultas, kementrian, pemda dsb">
+                                @error('penyelenggara')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="deskripsi" class="form-label">Deskripsi<span
+                                        class="text-danger">*</span></label>
+                                <textarea name="deskripsi" id="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi', $kegiatan->deskripsi) }}</textarea>
+                                @error('deskripsi')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="file_sertifikat" class="col-sm-2 col-form-label">Bukti Sertifikat</label>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="file" id="file_sertifikat" name="file_sertifikat" >
+                                    @if ($kegiatan->file_sertifikat)
+                                        <small class="form-text text-muted">
+                                            File Saat Ini: {{ basename($kegiatan->file_sertifikat) }}
+                                        </small>
+                                    @endif
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <label for="tgl_mulai" class="form-label">Tanggal Mulai<span
+                                        class="text-danger">*</span></label>
+                                <input type="date" name="tgl_mulai" id="tgl_mulai"
+                                    class="form-control @error('tgl_mulai') is-invalid @enderror"
+                                    value="{{ $kegiatan->tgl_mulai }}">
+                                @error('tgl_mulai')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="tgl_selesai" class="form-label">Tanggal Selesai<span
+                                        class="text-danger">*</span></label>
+                                <input type="date" name="tgl_selesai" id="tgl_selesai"
+                                    class="form-control @error('tgl_selesai') is-invalid @enderror"
+                                    value="{{ $kegiatan->tgl_selesai }}">
+                                @error('tgl_selesai')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="mb-3">
+                                <div class="alert alert-info">
+                                    <strong>Info!</strong> Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
+                                    atau
+                                    dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
+                                    Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
+                                    Admin yang akan ditampilkan.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+
+                        </form>
                     </div>
+                </div>
+            </div>
 
-                    <form action="{{ route('mahasiswa.prestasi.update', ['id' => $prestasi->id]) }}" method="post"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+            <div class="col-md-4">
+                <div class="card overflow-auto">
+                    <div class="card-body" style="min-height: 300px">
 
-                        <div class="mb-3">
-                            <label for="prestasi_nama" class="form-label">Nama Lomba / Kegiatan <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" name="prestasi_nama" id="prestasi_nama"
-                                class="form-control @error('prestasi_nama') is-invalid @enderror"
-                                value="{{ old('prestasi_nama', $prestasi->nama) }}"
-                                placeholder="Misal: Lomba Debat Bahasa Inggris">
-                            @error('prestasi_nama')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <hr class="my-3">
+                        <div class="alert alert-info">
+                            <strong>Info!</strong>
+                            <br>Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
+                            atau
+                            dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
+                            Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
+                            Admin yang akan ditampilkan.
                         </div>
-
-                        <div class="mb-3">
-                            <label for="prestasi_pencapaian" class="form-label">Pencapaian / Juara <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" name="prestasi_pencapaian" id="prestasi_pencapaian"
-                                class="form-control @error('prestasi_pencapaian') is-invalid @enderror"
-                                value="{{ old('prestasi_pencapaian', $prestasi->pencapaian) }}"
-                                placeholder="Misal: Juara 1, Juara 2, dsb">
-                            @error('prestasi_pencapaian')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="prestasi_tingkat" class="form-label">Tingkat Prestasi <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" name="prestasi_tingkat" id="prestasi_tingkat"
-                                class="form-control @error('prestasi_tingkat') is-invalid @enderror"
-                                value="{{ old('prestasi_tingkat', $prestasi->tingkat) }}"
-                                placeholder="Misal: Nasional, Kecamatan, dsb">
-                            @error('prestasi_tingkat')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="prestasi_tahun" class="form-label">Tahun <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" name="prestasi_tahun" id="prestasi_tahun"
-                                class="form-control @error('prestasi_tahun') is-invalid @enderror"
-                                value="{{ old('prestasi_tahun', $prestasi->tahun) }}" placeholder="Misal: 2010">
-                            @error('prestasi_tahun')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="prestasi_penyelenggara" class="form-label">Penyelenggara Kegiatan <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" name="prestasi_penyelenggara" id="prestasi_penyelenggara"
-                                class="form-control @error('prestasi_penyelenggara') is-invalid @enderror"
-                                value="{{ old('prestasi_penyelenggara', $prestasi->penyelenggara) }}">
-                            @error('prestasi_penyelenggara')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="prestasi_tempat" class="form-label">Tempat Kegiatan <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" name="prestasi_tempat" id="prestasi_tempat"
-                                class="form-control @error('prestasi_tempat') is-invalid @enderror"
-                                value="{{ old('prestasi_tempat', $prestasi->tempat) }}">
-                            @error('prestasi_tempat')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Sertifikat/Surat Tugas <span class="text-danger">*</span></label>
-                            @if ($prestasi->file_sertifikat)
-                            <div class="mb-3 flex justify-end">
-                                <a href="{{ $prestasi->file_sertifikat_url }}" target="_blank"
-                                    class="btn btn-sm btn-success"><i class="bi bi-file-earmark-pdf"></i>
-                                    Lihat Sertifikat</a>
-                            </div>
-                            @endif
-                            <div>
-                                <input type="radio" id="fileOption" name="sertifikat_option" value="file" {{
-                                    old('sertifikat_option', $file_option)=='file' ? 'checked' : '' }}>
-                                <label for="fileOption">File</label>
-                                <input type="radio" id="urlOption" name="sertifikat_option" value="url" {{
-                                    old('sertifikat_option', $file_option) =='url' ? 'checked' : '' }}>
-                                <label for="urlOption">URL</label>
-                            </div>
-                            <div id="fileInput" class="mt-2"
-                                style="{{ old('sertifikat_option', $file_option) == 'file' ? 'display: block;' : 'display: none;' }}">
-                                <input type="file" name="prestasi_sertifikat_file" id="prestasi_sertifikat_file"
-                                    class="form-control @error('prestasi_sertifikat_file') is-invalid @enderror"
-                                    accept=".pdf,.jpg,.jpeg,.png" />
-                                @error('prestasi_sertifikat_file')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <div class="mt-2 text-muted text-small">
-                                    File maksimal 1MB. Format yang diperbolehkan: PDF, JPG, JPEG, PNG.
-                                </div>
-                            </div>
-                            <div id="urlInput" class="mt-2"
-                                style="{{ old('sertifikat_option', $file_option) == 'url' ? 'display: block;' : 'display: none;' }}">
-                                <input type="text" name="prestasi_sertifikat_url" id="prestasi_sertifikat_url"
-                                    class="form-control @error('prestasi_sertifikat_url') is-invalid @enderror"
-                                    placeholder="https://example.com/sertifikat.pdf"
-                                    value="{{ old('prestasi_sertifikat_url', $prestasi->file_sertifikat_url) }}">
-                                @error('prestasi_sertifikat_url')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <div class="mt-2 text-muted text-small">
-                                    Pastikan URL sertifikat dapat diakses publik.
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="my-4" />
-
-                        <div class="mb-3">
-                            <div class="alert alert-info">
-                                <strong>Info!</strong> Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
-                                atau
-                                dokumen lain yang dapat memvalidasi prestasi Anda. <br>
-                                Tidak semua prestasi akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
-                                Admin yang akan ditampilkan.
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const fileOption = document.getElementById('fileOption');
-        const urlOption = document.getElementById('urlOption');
-        const fileInput = document.getElementById('fileInput');
-        const urlInput = document.getElementById('urlInput');
-
-        fileOption.addEventListener('change', function () {
-            if (fileOption.checked) {
-                fileInput.style.display = 'block';
-                urlInput.style.display = 'none';
-            }
-        });
-
-        urlOption.addEventListener('change', function () {
-            if (urlOption.checked) {
-                fileInput.style.display = 'none';
-                urlInput.style.display = 'block';
-            }
-        });
-    });
-</script>
-@endpush
+    </section>
 
 @endsection
+
+@push('script')
+    <script>
+        $(function() {
+            $(document).ready(function() {
+
+                var message = $('.success__msg');
+                $('#fileUploadForm').ajaxForm({
+                    beforeSend: function() {
+                        var percentage = '0';
+                    },
+                    uploadProgress: function(event, position, total, percentComplete) {
+                        var percentage = percentComplete;
+                        $('.progress .progress-bar').css("width", percentage + '%', function() {
+                            return $(this).attr("aria-valuenow", percentage) + "%";
+                        })
+                    },
+                    complete: function(xhr) {
+                        console.log('File has uploaded');
+                        message.fadeIn().removeClass('alert-danger').addClass('alert-success');
+                        message.text("Uploaded File successfully.");
+                        setTimeout(function() {
+                            message.fadeOut();
+                        }, 2000);
+                        form.find('input:not([type="submit"]), textarea').val('');
+                        var percentage = '0';
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

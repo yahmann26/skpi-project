@@ -1,5 +1,5 @@
 @extends('mahasiswa.layout.app')
-@section('title', 'Tambah kegiatan - ')
+@section('title', 'Edit Kegiatan - ')
 
 @section('main')
     <div class="pagetitle">
@@ -7,8 +7,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}"><i class="bi bi-house-door"></i></a>
                 </li>
-                <li class="breadcrumb-item ">Kegiatan</li>
-                <li class="breadcrumb-item active">Tambah</li>
+                <li class="breadcrumb-item">Kegiatan</li>
+                <li class="breadcrumb-item active">Edit</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -24,9 +24,10 @@
                             <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
-                        <form class="row g-1" action="{{ route('mahasiswa.kegiatan.store') }}" method="post"
+                        <form class="row g-1" action="{{ route('mahasiswa.kegiatan.update', $kegiatan->id) }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
 
                             <div class="mb-3">
                                 <label for="kategori_kegiatan_id" class="form-label">Kategori Kegiatan</label>
@@ -35,11 +36,11 @@
                                     <option value="">-- Pilih Kategori Kegiatan --</option>
                                     @foreach ($kategori as $k)
                                         <option value="{{ $k->id }}"
-                                            {{ old('kategori_kegiatan_id') == $k->id ? 'selected' : '' }}>
+                                            {{ old('kategori_kegiatan_id', $kegiatan->kategori_kegiatan_id) == $k->id ? 'selected' : '' }}>
                                             {{ $k->nama }}</option>
                                     @endforeach
                                 </select>
-                                @error('kategori')
+                                @error('kategori_kegiatan_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -50,7 +51,7 @@
                                 <div class="input-group mb-3 @error('nama') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
                                     <input type="text" name="nama" class="form-control" aria-describedby="nama-addon"
-                                        class="form-control" value="{{ old('nama') }}" autofocus
+                                        value="{{ old('nama', $kegiatan->nama) }}" autofocus
                                         placeholder="Nama Kegiatan">
                                 </div>
                                 @error('nama')
@@ -60,7 +61,7 @@
                                 <div class="input-group mb-3 @error('nama_en') is-invalid @enderror">
                                     <span class="input-group-text">EN</span>
                                     <input type="text" name="nama_en" class="form-control"
-                                        aria-describedby="nama_en-addon" class="form-control" value="{{ old('nama_en') }}"
+                                        aria-describedby="nama_en-addon" value="{{ old('nama_en', $kegiatan->nama_en) }}"
                                         autofocus placeholder="Nama Kegiatan (english)">
                                 </div>
                                 @error('nama_en')
@@ -73,7 +74,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="text" name="jabatan" id="jabatan"
                                     class="form-control @error('jabatan') is-invalid @enderror"
-                                    value="{{ old('jabatan') }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
+                                    value="{{ old('jabatan', $kegiatan->jabatan) }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
                                 @error('jabatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -84,19 +85,18 @@
                                         class="text-danger">*</span></label>
                                 <input type="text" name="tingkat" id="tingkat"
                                     class="form-control @error('tingkat') is-invalid @enderror"
-                                    value="{{ old('tingkat') }}" placeholder="Misal: himpunan, univ, kabupaten dsb">
+                                    value="{{ old('tingkat', $kegiatan->tingkat) }}" placeholder="Misal: himpunan, univ, kabupaten dsb">
                                 @error('tingkat')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
 
                             <div class="mb-3">
                                 <label for="penyelenggara" class="form-label">Penyelenggara Kegiatan <span
                                         class="text-danger">*</span></label>
                                 <input type="text" name="penyelenggara" id="penyelenggara"
                                     class="form-control @error('penyelenggara') is-invalid @enderror"
-                                    value="{{ old('penyelenggara') }}"
+                                    value="{{ old('penyelenggara', $kegiatan->penyelenggara) }}"
                                     placeholder="Misal: fakultas, kementrian, pemda dsb">
                                 @error('penyelenggara')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -106,28 +106,27 @@
                             <div class="mb-3">
                                 <label for="deskripsi" class="form-label">Deskripsi<span
                                         class="text-danger">*</span></label>
-                                <textarea type="floatingTextarea" name="deskripsi" id="deskripsi"
-                                    class="form-control @error('deskripsi') is-invalid @enderror" value="{{ old('deskripsi') }}"></textarea>
+                                <textarea name="deskripsi" id="deskripsi"
+                                    class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi', $kegiatan->deskripsi) }}</textarea>
                                 @error('deskripsi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="file_sertifikat" class="col-sm-2 col-form-label" name="file_sertifikat">Bukti
-                                    Sertifikat</label>
+                                <label for="file_sertifikat" class="col-sm-2 col-form-label">Bukti Sertifikat</label>
                                 <div class="col-sm-12">
                                     <input class="form-control" type="file" id="file_sertifikat" name="file_sertifikat">
+                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah sertifikat.</small>
                                 </div>
                             </div>
-
 
                             <div class="col-md-6">
                                 <label for="tgl_mulai" class="form-label">Tanggal Mulai<span
                                         class="text-danger">*</span></label>
                                 <input type="date" name="tgl_mulai" id="tgl_mulai"
                                     class="form-control @error('tgl_mulai') is-invalid @enderror"
-                                    value="{{ old('tgl_mulai') }}">
+                                    value="{{ old('tgl_mulai', $kegiatan->tgl_mulai) }}">
                                 @error('tgl_mulai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -138,7 +137,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="date" name="tgl_selesai" id="tgl_selesai"
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"
-                                    value="{{ old('tgl_selesai') }}">
+                                    value="{{ old('tgl_selesai', $kegiatan->tgl_selesai) }}">
                                 @error('tgl_selesai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -190,29 +189,7 @@
     <script>
         $(function() {
             $(document).ready(function() {
-
-                var message = $('.success__msg');
-                $('#fileUploadForm').ajaxForm({
-                    beforeSend: function() {
-                        var percentage = '0';
-                    },
-                    uploadProgress: function(event, position, total, percentComplete) {
-                        var percentage = percentComplete;
-                        $('.progress .progress-bar').css("width", percentage + '%', function() {
-                            return $(this).attr("aria-valuenow", percentage) + "%";
-                        })
-                    },
-                    complete: function(xhr) {
-                        console.log('File has uploaded');
-                        message.fadeIn().removeClass('alert-danger').addClass('alert-success');
-                        message.text("Uploaded File successfully.");
-                        setTimeout(function() {
-                            message.fadeOut();
-                        }, 2000);
-                        form.find('input:not([type="submit"]), textarea').val('');
-                        var percentage = '0';
-                    }
-                });
+                // Any additional scripts for this page can go here
             });
         });
     </script>

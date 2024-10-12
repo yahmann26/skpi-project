@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Mahasiswa;
 
-use App\Helper\Skpi;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 use App\Models\KategoriKegiatan;
@@ -140,12 +139,14 @@ class KegiatanController extends Controller
 
     public function edit($id)
     {
-        $kegiatan = Kegiatan::findOrFail($id);
+        // get prodi
         $kategori = KategoriKegiatan::all();
 
-        return view('admin.pages.kegiatan.edit', [
-            'kegiatan' => $kegiatan,
+        $kegiatan = Kegiatan::with('kategoriKegiatan')->find($id);
+
+        return  view('mahasiswa.pages.kegiatan.edit', [
             'kategori' => $kategori,
+            'kegiatan' => $kegiatan
         ]);
     }
 

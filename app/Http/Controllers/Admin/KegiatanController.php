@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
+use App\Models\KategoriKegiatan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Models\KategoriKegiatan;
+use Illuminate\Support\Facades\Storage;
 
 class KegiatanController extends Controller
 {
@@ -40,19 +41,9 @@ class KegiatanController extends Controller
 
             return DataTables::of($kegiatan)
                 ->addIndexColumn()
+                ->addColumn('nim', fn($row) => $row->mahasiswa->nim) // Tampilkan nim mahasiswa
                 ->addColumn('mahasiswa', fn($row) => $row->mahasiswa->nama) // Tampilkan nama mahasiswa
                 ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama) // Tampilkan nama kategori kegiatan
-                ->addColumn('aksi', function ($row) {
-                    $editBtn = '<a href="' . route('admin.kegiatan.edit', $row->id) . '" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil"></i></a>';
-                    $deleteBtn = '<button type="button" class="btn btn-sm btn-light text-danger" data-bs-toggle="modal" data-id="' . $row->id . '" data-bs-target="#hapusModal"><i class="bi bi-trash"></i></button>';
-
-                    return $editBtn . ' ' . $deleteBtn;
-                })
-                ->addColumn('sertifikat', function ($row) {
-                    return $row->file_sertifikat
-                        ? '<button type="button" class="btn btn-sm btn-success preview-file" data-bs-toggle="modal" data-bs-target="#previewModal" data-url="' . $row->file_sertifikat_url . '" data-type="' . pathinfo($row->file_sertifikat_url, PATHINFO_EXTENSION) . '"><i class="bi bi-file-earmark"></i> Lihat</button>'
-                        : '<span class="badge bg-secondary">Tidak ada</span>';
-                })
                 ->addColumn('status', fn($row) => getStatusColor($row->status)) // Panggil fungsi getStatusColor
                 ->addColumn('prodi', fn($row) => ($row->mahasiswa->prodi->nama))
                 ->addColumn('pencapaian', function ($row) {
@@ -61,10 +52,20 @@ class KegiatanController extends Controller
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
                 })
-                ->addColumn('penyelenggara', function ($row) {
-                    return '<div>' . $row->penyelenggara . '</div><div class="small fst-italic text-muted">di: ' . $row->tingkat . '</div>';
+                ->addColumn('aksi', function ($row) {
+                    $editUrl = route('admin.kegiatan.edit', $row->id);
+                    $showUrl = route('admin.kegiatan.show', $row->id);
+                    $deleteUrl = route('admin.kegiatan.destroy', $row->id);
+                    return '
+                    <a href="' . $showUrl . '" class="edit btn btn-light btn-sm"><i class="bi bi-search"></i></a>
+                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                        ' . csrf_field() . '
+                        ' . method_field("DELETE") . '
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                    </form>';
                 })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'penyelenggara', 'status', 'nama']) // Merender HTML
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama']) // Merender HTML
                 ->make(true);
         }
 
@@ -77,11 +78,11 @@ class KegiatanController extends Controller
      */
     public function create()
     {
-        $kategori = KategoriKegiatan::all();
+        // $kategori = KategoriKegiatan::all();
 
-        return view('admin.pages.kegiatan.create', [
-            'kategori' => $kategori
-        ]);
+        // return view('admin.pages.kegiatan.create', [
+        //     'kategori' => $kategori
+        // ]);
     }
 
     /**
@@ -89,33 +90,33 @@ class KegiatanController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'kategori_kegiatan_id' => 'required',
-            'nama' => 'required',
-            'tingkat' => 'required',
-            'jabatan' => 'required',
-            'bobot' => 'required',
-        ], [
-            'kategori_kegiatan_id.required' => 'Kategori Wajib Dipilih',
-            'nama.required' => 'Nama kegiatan wajib diisi',
-            'tingkat.required' => 'Tingkat kegiatan wajib diisi',
-            'jabatan.required' => 'Jabatan wajib diisi',
-            'bobot.required' => 'Bobot wajib diisi',
+        // $request->validate([
+        //     'kategori_kegiatan_id' => 'required',
+        //     'nama' => 'required',
+        //     'tingkat' => 'required',
+        //     'jabatan' => 'required',
+        //     'bobot' => 'required',
+        // ], [
+        //     'kategori_kegiatan_id.required' => 'Kategori Wajib Dipilih',
+        //     'nama.required' => 'Nama kegiatan wajib diisi',
+        //     'tingkat.required' => 'Tingkat kegiatan wajib diisi',
+        //     'jabatan.required' => 'Jabatan wajib diisi',
+        //     'bobot.required' => 'Bobot wajib diisi',
 
-        ]);
+        // ]);
 
-        $kegiatan = [
-            'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
-            'nama' => $request->nama,
-            'tingkat' => $request->tingkat,
-            'jabatan' => $request->jabatan,
-            'bobot' => $request->bobot,
+        // $kegiatan = [
+        //     'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
+        //     'nama' => $request->nama,
+        //     'tingkat' => $request->tingkat,
+        //     'jabatan' => $request->jabatan,
+        //     'bobot' => $request->bobot,
 
-        ];
+        // ];
 
-        Kegiatan::create($kegiatan);
+        // Kegiatan::create($kegiatan);
 
-        return redirect()->route('admin.kegiatan.index')->with('success', 'Berhasil Menambahkan Data');
+        // return redirect()->route('admin.kegiatan.index')->with('success', 'Berhasil Menambahkan Data');
     }
 
     /**
@@ -123,7 +124,16 @@ class KegiatanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $kategori = KategoriKegiatan::all();
+
+        $kegiatan = Kegiatan::with('kategoriKegiatan')->findOrFail($id);
+
+        // dd($kegiatan);
+
+        return view('admin.pages.kegiatan.show', [
+            'kategoriKegiatan' => $kategori,
+            'kegiatan' => $kegiatan
+        ]);
     }
 
     /**
@@ -147,28 +157,53 @@ class KegiatanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $kegiatan = Kegiatan::with('kategoriKegiatan')->find($id);
+        // dd($request->all());
 
         $request->validate([
+            'kategori_kegiatan_id' => 'required',
             'nama' => 'required',
-            'tingkat' => 'required',
+            'nama_en' => 'required',
             'jabatan' => 'required',
-            'bobot' => 'required',
-        ], [
-            'nama.required' => 'Nama Kegiatan wajib diisi',
-            'tingkat.required' => 'Tingkat Kegiatan wajib diisi',
-            'jabatan.required' => 'TJabatan wajib diisi',
-            'bobot.required' => 'Bobot Masuk wajib diisi',
+            'tingkat' => 'required',
+            'tgl_mulai' => 'required',
+            'tgl_selesai' => 'required',
+            'file_sertifikat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $kegiatan = [
-            'nama' => $request->nama,
-            'tingkat' => $request->tingkat,
-            'jabatan' => $request->jabatan,
-            'bobot' => $request->bobot,
-        ];
+        $kegiatan = Kegiatan::find($id);
 
-        kegiatan::where('id', $id)->update($kegiatan);
+        if (!$kegiatan) {
+            return redirect()->route('admin.kegiatan.index')->with('error', 'Kegiatan tidak ditemukan');
+        }
+
+        $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
+        $kegiatan->nama = $request->nama;
+        $kegiatan->nama_en = $request->nama_en;
+        $kegiatan->tingkat = $request->tingkat;
+        $kegiatan->tgl_mulai = $request->tgl_mulai;
+        $kegiatan->tgl_selesai = $request->tgl_selesai;
+        $kegiatan->penyelenggara = $request->penyelenggara;
+        $kegiatan->deskripsi = $request->deskripsi;
+        $kegiatan->jabatan = $request->jabatan;
+        $kegiatan->catatan_status = $request->catatan_status;
+
+        // Mengelola upload file sertifikat jika ada file baru
+        if ($request->hasFile('file_sertifikat')) {
+            // Hapus file lama jika perlu
+            if ($kegiatan->file_sertifikat) {
+                Storage::disk('public')->delete($kegiatan->file_sertifikat);
+            }
+
+            // Upload file baru
+            $file = $request->file('file_sertifikat');
+            $fileName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $filePath = $file->storeAs('kegiatan', $fileName, 'public');
+            $kegiatan->file_sertifikat = $filePath;
+        }
+
+        // dd($kegiatan);
+
+        $kegiatan->save();
 
         return redirect()->route('admin.kegiatan.index')->with('success', 'Berhasil Mengupdate Data');
     }
@@ -180,5 +215,26 @@ class KegiatanController extends Controller
     {
         Kegiatan::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Berhasil menghapus data');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Validasi input jika diperlukan (opsional)
+        $request->validate([
+            'status' => 'required|in:diterima,ditolak',
+        ]);
+
+        // Ambil data kegiatan berdasarkan ID
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        // Update status kegiatan
+        $kegiatan->status = $request->status;
+
+        // dd($kegiatan);
+
+        $kegiatan->save();
+
+        // Kirim pesan sukses dan redirect kembali
+        return redirect()->route('admin.kegiatan.edit', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
     }
 }
