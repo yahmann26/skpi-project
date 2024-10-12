@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProdiController as AdminProdiController;
 use App\Http\Controllers\Admin\KategoriKegiatanController as AdminKategoriKegiatanController;
 use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
 use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
+use App\Http\Controllers\Admin\DosenController as AdminDosenController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
@@ -82,6 +83,15 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('mahasiswa/{id}/ubah', [AdminMahasiswaController::class, 'edit'])->name('admin.mahasiswa.edit');
     Route::put('mahasiswa/{id}', [AdminMahasiswaController::class, 'update'])->name('admin.mahasiswa.update');
     Route::delete('mahasiswa/{id}', [AdminMahasiswaController::class, 'destroy'])->name('admin.mahasiswa.destroy');
+
+    // dosen
+
+    Route::get('dosen', [AdminDosenController::class, 'index'])->name('admin.dosen.index');
+    Route::get('dosen/tambah', [AdminDosenController::class, 'create'])->name('admin.dosen.create');
+    Route::post('dosen', [AdminDosenController::class, 'store'])->name('admin.dosen.store');
+    Route::get('dosen/{id}/ubah', [AdminDosenController::class, 'edit'])->name('admin.dosen.edit');
+    Route::put('dosen/{id}', [AdminDosenController::class, 'update'])->name('admin.dosen.update');
+    Route::delete('dosen/{id}', [AdminDosenController::class, 'destroy'])->name('admin.dosen.destroy');
 });
 
 /* MAHASISWA */

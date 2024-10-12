@@ -52,14 +52,14 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.mahasiswa.index']) ? '' : 'collapsed' }}"
+            <a class="nav-link {{ isRouteName(['admin.mahasiswa.index', 'admin.dosen.index']) ? '' : 'collapsed' }}"
                 data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-people"></i><span>User</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#"
-                        class="#">
+                    <a href="{{ route('admin.dosen.index') }}"
+                        class="{{ isRouteName('admin.dosen.index') ? 'active' : ' ' }}">
                         <i class="bi bi-circle"></i><span>Dosen</span>
                     </a>
                 </li>

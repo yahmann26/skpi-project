@@ -10,7 +10,7 @@ class Dosen extends Model
 {
     use HasFactory;
 
-    protected $table = 'mahasiswa';
+    protected $table = 'dosen';
 
     protected $guarded = [];
 
