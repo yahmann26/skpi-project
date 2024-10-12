@@ -31,7 +31,7 @@ if (!function_exists('isRouteName')) {
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Admin &mdash; @yield('title')</title>
+    <title>Dosen &mdash; @yield('title')</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.png') }}">
 
@@ -51,9 +51,9 @@ if (!function_exists('isRouteName')) {
 </head>
 
 <body>
-    @include('admin.components.header')
+    @include('dosen.components.header')
 
-    @include('admin.components.sidebar')
+    @include('dosen.components.sidebar')
 
     <main id="main" class="main">
 
@@ -61,7 +61,7 @@ if (!function_exists('isRouteName')) {
 
     </main>
 
-    @include('admin.components.footer')
+    @include('dosen.components.footer')
 
     <!-- Scripts -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

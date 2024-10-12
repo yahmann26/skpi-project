@@ -59,25 +59,34 @@ class DosenController extends Controller
             'kode_dosen' => 'required|numeric|unique:dosen,kode_dosen',
             'nama' => 'required',
             'program_studi_id' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
         ], [
             'kode_dosen.required' => 'Kode Dosen wajib diisi',
-            'kode_dosen.numeric' => 'Kode Dosen Hanya Angka',
-            'kode_dosen.unique' => 'Kode Dosen sudah ada ',
+            'kode_dosen.numeric' => 'Kode Dosen hanya boleh angka',
+            'kode_dosen.unique' => 'Kode Dosen sudah ada',
             'nama.required' => 'Nama Dosen wajib diisi',
-            'program_studi_id.required' => 'Prodi Wajib Dipilih',
-            'email.required' => 'email wajib diisi',
+            'program_studi_id.required' => 'Prodi wajib dipilih',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
         ]);
+
+        // dd($request->all());
+
 
         DB::transaction(function () use ($request) {
             $kode_dosen = $request->kode_dosen;
 
+            // Buat pengguna baru
             $user = User::create([
                 'uid' => $kode_dosen,
                 'email' => $request->email,
-                'password' => Hash::make($kode_dosen) // mengatur password sama dengan kode_dosen
+                'password' => Hash::make($kode_dosen), // Password sama dengan kode_dosen
+                'role' => 'dosen', // Atur role langsung ke 'dosen'
             ]);
 
+            // dd($user);
+
+            // Buat entri dosen baru
             Dosen::create([
                 'kode_dosen' => $kode_dosen,
                 'nama' => $request->nama,
@@ -88,6 +97,7 @@ class DosenController extends Controller
 
         return redirect()->route('admin.dosen.index')->with('success', 'Data berhasil ditambahkan!');
     }
+
 
     public function edit(string $id)
     {

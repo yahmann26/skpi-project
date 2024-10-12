@@ -1,5 +1,3 @@
-
-
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
@@ -39,22 +37,14 @@
 
         <li class="nav-heading">Setting</li>
 
-        {{-- <li class="nav-item">
-            <a class="nav-link {{ isRouteName('dosen.pengaturan.index') ? '' : 'collapsed' }}"
-                href="{{ route('dosen.pengaturan.index') }}"
-                class="{{ isRouteName('dosen.pengaturan.index') ? 'active' : '' }}">
-                <i class="bi bi-gear"></i>
-                <span>Pengaturan</span>
-            </a>
-        </li>
-
-
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName('dosen.user.profile') ? '' : 'collapsed' }}" href="{{ route('dosen.user.profile') }}" class="{{ isRouteName('dosen.user.profile') ? 'active' : '' }}">
+            <a class="nav-link {{ isRouteName('dosen.user.profile') ? '' : 'collapsed' }}"
+                href="{{ route('dosen.user.profile') }}"
+                class="{{ isRouteName('dosen.user.profile') ? 'active' : '' }}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
-        </li> --}}
+        </li>
         <!-- End Profile Page Nav -->
 
         <li class="nav-item">
