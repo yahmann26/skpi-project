@@ -1,4 +1,4 @@
-@extends('dosen.layout.app')
+@extends('kaprodi.layout.app')
 
 @section('title', 'Kegiatan')
 
@@ -17,7 +17,7 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dosen.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item ">Kegiatan</li>
                 <li class="breadcrumb-item active">List</li>
             </ol>
@@ -34,7 +34,7 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data Kegiatan</div>
-                            <a href="{{ route('dosen.kegiatan.create') }}" class="btn btn-sm btn-primary"><i
+                            <a href="{{ route('kaprodi.kegiatan.create') }}" class="btn btn-sm btn-primary"><i
                                     class="bi bi-plus"></i> Tambah</a>
                         </div>
 
@@ -83,7 +83,7 @@
             var table = $('.datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('dosen.kegiatan.index') }}",
+                ajax: "{{ route('kaprodi.kegiatan.index') }}",
                 columns: [
                     {
                         data: 'DT_RowIndex',

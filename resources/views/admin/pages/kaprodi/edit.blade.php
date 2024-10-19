@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title', 'Edit Dosen')
+@section('title', 'Edit Kaprodi')
 
 @section('main')
     {{-- Page Titile --}}
@@ -9,7 +9,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item">User</li>
-                <li class="breadcrumb-item">Dosen</li>
+                <li class="breadcrumb-item">Kaprodi</li>
                 <li class="breadcrumb-item active">Edit</li>
             </ol>
         </nav>
@@ -22,12 +22,12 @@
                 <div class="card overflow-auto">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <a href="{{ route('admin.dosen.index') }}" class="btn btn-sm btn-outline-primary"><i
+                            <a href="{{ route('admin.kaprodi.index') }}" class="btn btn-sm btn-outline-primary"><i
                                     class="bi bi-arrow-left"></i> Kembali</a>
                         </div>
 
                         <!-- General Form Elements -->
-                        <form action="{{ route('admin.dosen.update', ['id' => $dosen->id]) }}" method="POST">
+                        <form action="{{ route('admin.kaprodi.update', ['id' => $kaprodi->id]) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -36,16 +36,16 @@
                                 <label for="kode_dosen" class="col-sm-2 col-form-label">Kode Dosen</label>
                                 <div class="col-sm-10">
                                     <input type="number" class="form-control" disabled name="kode_dosen"
-                                        value="{{ $dosen->kode_dosen }}" id="kode_dosen">
+                                        value="{{ $kaprodi->kode_dosen }}" id="kode_dosen">
                                 </div>
                             </div>
 
-                            {{-- page nama dosen --}}
+                            {{-- page nama Kaprodi --}}
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Nama Dosen</label>
+                                <label for="inputText" class="col-sm-2 col-form-label">Nama Kaprodi</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control @error('nama') is-invalid @enderror"
-                                        name="nama" value="{{ $dosen->nama }}" id="nama">
+                                        name="nama" value="{{ $kaprodi->nama }}" id="nama">
                                     @error('nama')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -54,12 +54,12 @@
                                 </div>
                             </div>
 
-                            {{-- page emial dosen --}}
+                            {{-- page emial Kaprodi --}}
                             <div class="row mb-3">
-                                <label for="email" class="col-sm-2 col-form-label">Email Dosen</label>
+                                <label for="email" class="col-sm-2 col-form-label">Email Kaprodi</label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        name="email" value="{{ $dosen->user->email }}" id="email">
+                                        name="email" value="{{ $kaprodi->user->email }}" id="email">
                                     @error('email')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -75,7 +75,7 @@
                                     <select class="form-select" name="program_studi_id" id="program_studi_id">
                                         @foreach ($prodi as $p)
                                             <option value="{{ $p->id }}"
-                                                {{ $dosen->program_studi_id == $p->id ? 'selected' : '' }}>
+                                                {{ $kaprodi->program_studi_id == $p->id ? 'selected' : '' }}>
                                                 {{ $p->nama }}
                                             </option>
                                         @endforeach

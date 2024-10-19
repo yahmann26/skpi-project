@@ -1,14 +1,14 @@
-@extends('dosen.layout.app')
+@extends('kaprodi.layout.app')
 
-@section('title', 'Ubah CPL Program Studi - ')
+@section('title', 'Ubah CPL Program Studi')
 
 @section('main')
     <div class="pagetitle">
-        <h1>Capaian Pembelajaran Lulusan</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dosen.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item">Prodi</li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                </li>
+                <li class="breadcrumb-item">Program Studi</li>
                 <li class="breadcrumb-item active">CPL</li>
             </ol>
         </nav>
@@ -34,11 +34,11 @@
                             </div>
                         @endif
                         <form
-                            action="{{ route('dosen.prodi.update-cpl', ['id' => $detailData->id, 'from' => request()->query('from')]) }}"
+                            action="{{ route('kaprodi.prodi.update-cpl', ['id' => $detailData->id, 'from' => request()->query('from')]) }}"
                             method="post">
 
                             <div class="card-title d-flex justify-content-between">
-                                <a href="{{ route('dosen.prodi.index') }}" class="btn btn-sm btn-outline-primary"><i
+                                <a href="{{ route('kaprodi.prodi.index') }}" class="btn btn-sm btn-outline-primary"><i
                                         class="bi bi-arrow-left"></i> Kembali</a>
                                 <!-- <span class="text-danger small">Bertanda *) wajib diisi</span> -->
                             </div>

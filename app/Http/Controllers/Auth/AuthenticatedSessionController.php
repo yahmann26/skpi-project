@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\Dosen;
-use App\Models\Mahasiswa;
-use App\Models\User;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,8 +37,8 @@ class AuthenticatedSessionController extends Controller
             $user = Auth::user();
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
-            } elseif ($user->role === 'dosen') {
-                return redirect()->route('dosen.dashboard');
+            } elseif ($user->role === 'kaprodi') {
+                return redirect()->route('kaprodi.dashboard');
             } elseif ($user->role === 'mahasiswa') {
                 return redirect()->route('mahasiswa.dashboard');
             }
@@ -50,7 +47,6 @@ class AuthenticatedSessionController extends Controller
         return back()->withErrors([
             'uid' => 'Akun Tidak Dikenali',
         ]);
-
     }
 
     /**

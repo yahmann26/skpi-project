@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title', 'Dosen')
+@section('title', 'kaprodi')
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
@@ -12,7 +12,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item ">User</li>
-                <li class="breadcrumb-item ">Dosen</li>
+                <li class="breadcrumb-item ">Kaprodi</li>
                 <li class="breadcrumb-item active">List</li>
             </ol>
         </nav>
@@ -27,8 +27,8 @@
                     <div class="card-body">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title">Data Dosen</div>
-                            <a href="{{ route('admin.dosen.create') }}" class="btn btn-sm btn-primary"><i
+                            <div class="card-title">Data Kaprodi</div>
+                            <a href="{{ route('admin.kaprodi.create') }}" class="btn btn-sm btn-primary"><i
                                     class="bi bi-plus"></i> Tambah</a>
                         </div>
 
@@ -36,8 +36,8 @@
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "20%">Kode Dosen</th>
-                                    <th width = "20%">Nama Dosen</th>
+                                    <th width = "20%">Kode kaprodi</th>
+                                    <th width = "20%">Nama Kaprodi</th>
                                     <th width = "20%">Program Studi</th>
                                     <th width = "10%">Aksi</th>
                                 </tr>
@@ -60,10 +60,10 @@
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
-        function deletedosen(id) {
+        function deletekaprodi(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 $.ajax({
-                    url: 'admin/dosen/' + id,
+                    url: 'admin/kaprodi/' + id,
                     type: 'DELETE',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
@@ -84,7 +84,7 @@
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.dosen.index') }}",
+                ajax: "{{ route('admin.kaprodi.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',

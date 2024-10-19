@@ -53,8 +53,8 @@ class User extends Authenticatable
         return $this->hasOne(Mahasiswa::class);
     }
 
-    public function dosen()
+    public function kaprodi()
     {
-        return $this->hasOne(Dosen::class);
+        return $this->hasOne(Kaprodi::class);
     }
 }

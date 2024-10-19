@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
-use App\Models\Dosen;
+use App\Models\Kaprodi;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -11,24 +11,24 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-class DosenController extends Controller
+class KaprodiController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Dosen::query()->latest();
+            $data = Kaprodi::query()->latest();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('DT_RowIndex', function ($row) {
                     return '';
                 })
-                ->addColumn('prodi', function (Dosen $dosen) {
-                    return $dosen->prodi->nama;
+                ->addColumn('prodi', function (Kaprodi $kaprodi) {
+                    return $kaprodi->prodi->nama;
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('admin.dosen.edit', $row->id);
-                    $deleteUrl = route('admin.dosen.destroy', $row->id);
+                    $editUrl = route('admin.kaprodi.edit', $row->id);
+                    $deleteUrl = route('admin.kaprodi.destroy', $row->id);
                     return '
                     <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                     <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
@@ -40,15 +40,14 @@ class DosenController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.pages.dosen.index');
+        return view('admin.pages.kaprodi.index');
     }
-
 
     public function create()
     {
         $prodi = ProgramStudi::all();
 
-        return view('admin.pages.dosen.create', [
+        return view('admin.pages.kaprodi.create', [
             'prodi' => $prodi
         ]);
     }
@@ -64,14 +63,13 @@ class DosenController extends Controller
             'kode_dosen.required' => 'Kode Dosen wajib diisi',
             'kode_dosen.numeric' => 'Kode Dosen hanya boleh angka',
             'kode_dosen.unique' => 'Kode Dosen sudah ada',
-            'nama.required' => 'Nama Dosen wajib diisi',
+            'nama.required' => 'Nama Kaprodi wajib diisi',
             'program_studi_id.required' => 'Prodi wajib dipilih',
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
         ]);
 
         // dd($request->all());
-
 
         DB::transaction(function () use ($request) {
             $kode_dosen = $request->kode_dosen;
@@ -81,13 +79,13 @@ class DosenController extends Controller
                 'uid' => $kode_dosen,
                 'email' => $request->email,
                 'password' => Hash::make($kode_dosen), // Password sama dengan kode_dosen
-                'role' => 'dosen', // Atur role langsung ke 'dosen'
+                'role' => 'kaprodi', // Atur role langsung ke 'kaprodi'
             ]);
 
             // dd($user);
 
-            // Buat entri dosen baru
-            Dosen::create([
+            // Buat entri kaprodi baru
+            Kaprodi::create([
                 'kode_dosen' => $kode_dosen,
                 'nama' => $request->nama,
                 'program_studi_id' => $request->program_studi_id,
@@ -95,7 +93,7 @@ class DosenController extends Controller
             ]);
         });
 
-        return redirect()->route('admin.dosen.index')->with('success', 'Data berhasil ditambahkan!');
+        return redirect()->route('admin.kaprodi.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
 
@@ -104,10 +102,10 @@ class DosenController extends Controller
         // get prodi
         $prodi = ProgramStudi::all();
 
-        $dosen = Dosen::with('prodi')->find($id);
+        $kaprodi = Kaprodi::with('prodi')->find($id);
 
-        return  view('admin.pages.dosen.edit', [
-            'dosen' => $dosen,
+        return  view('admin.pages.kaprodi.edit', [
+            'kaprodi' => $kaprodi,
             'prodi' => $prodi
         ]);
     }
@@ -128,21 +126,23 @@ class DosenController extends Controller
             'email.required' => 'email wajib diisi',
         ]);
 
-        // update data dosen
-        $dosen = Dosen::findOrFail($id);
-        $dosen->update([
+        // update data Kaprodi
+        $kaprodi = Kaprodi::findOrFail($id);
+        $kaprodi->update([
             'nama' => $request->nama,
             'program_studi_id' => $request->program_studi_id,
         ]);
 
-        //update data user
-        $user = User::findOrFail($dosen->user_id);
+        //update data di tabel user user
+        $user = User::findOrFail($kaprodi->user_id);
 
         $user->update([
             'email' => $request->email,
         ]);
 
-        return redirect()->route('admin.dosen.index')->with('success', 'Data berhasil diupdate!');
+        // dd($user);
+
+        return redirect()->route('admin.kaprodi.index')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
@@ -150,14 +150,14 @@ class DosenController extends Controller
      */
     public function destroy($id)
     {
-        // Cari data mahasiswa berdasarkan ID
-        $dosen = Dosen::findOrFail($id);
+        // Cari data kaprodi berdasarkan ID
+        $kaprodi = Kaprodi::findOrFail($id);
 
-        // Cari data user terkait berdasarkan user_id di tabel dosen
-        $user = User::findOrFail($dosen->user_id);
+        // Cari data user terkait berdasarkan user_id di tabel kaprodi
+        $user = User::findOrFail($kaprodi->user_id);
 
-        // Hapus data dosen
-        $dosen->delete();
+        // Hapus data Kaprodi
+        $kaprodi->delete();
 
         // Hapus data user terkait
         $user->delete();

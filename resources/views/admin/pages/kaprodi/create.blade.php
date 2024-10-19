@@ -1,5 +1,5 @@
 @extends('admin.layout.app')
-@section('title', 'Tambah Dosen ')
+@section('title', 'Tambah Kaprodi ')
 
 @section('main')
     <div class="pagetitle">
@@ -7,7 +7,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item">User</li>
-                <li class="breadcrumb-item">Dosen</li>
+                <li class="breadcrumb-item">Kaprodi</li>
                 <li class="breadcrumb-item active">Tambah</li>
             </ol>
         </nav>
@@ -19,12 +19,12 @@
                 <div class="card overflow-auto">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <a href="{{ route('admin.dosen.index') }}" class="btn btn-sm btn-outline-primary"><i
+                            <a href="{{ route('admin.kaprodi.index') }}" class="btn btn-sm btn-outline-primary"><i
                                     class="bi bi-arrow-left"></i> Kembali</a>
                             <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
-                        <form action="{{ route('admin.dosen.store') }}" method="post">
+                        <form action="{{ route('admin.kaprodi.store') }}" method="post">
                             @csrf
 
                             <div class="mb-3">
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Dosen</label>
+                                <label for="nama" class="form-label">Nama Kaprodi</label>
                                 <input type="text" name="nama" id="nama"
                                     class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}">
                                 @error('nama')

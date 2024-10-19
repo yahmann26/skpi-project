@@ -60,7 +60,7 @@ class KegiatanController extends Controller
                 })
                 ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('pencapaian', function ($row) {
-                    return '<div>' . $row->jabatan . '</div><div class="small text-muted">tingkat: ' . $row->tingkat . '</div>';
+                    return '<div>' . $row->pencapaian . '</div><div class="small text-muted">tingkat: ' . $row->tingkat . '</div>';
                 })
                 ->addColumn('penyelenggara', function ($row) {
                     return '<div>' . $row->penyelenggara . '</div><div class="small fst-italic text-muted">di: ' . $row->tingkat . '</div>';
@@ -92,7 +92,7 @@ class KegiatanController extends Controller
             'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
             'penyelenggara' => 'required',
             'deskripsi' => 'required',
-            'jabatan' => 'required',
+            'pencapaian' => 'required',
             'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:1024',
         ], [
             'kategori_kegiatan_id.required' => 'Kategori Kegiatan Wajib Dipilih',
@@ -103,7 +103,7 @@ class KegiatanController extends Controller
             'tgl_selesai.required' => 'Tanggal Selesai kegiatan harus diisi',
             'penyelenggara.required' => 'Penyelenggara kegiatan harus diisi',
             'deskripsi.required' => 'deskripsi kegiatan harus diisi',
-            'jabatan.required' => 'jabatan harus diisi',
+            'pencapaian.required' => 'pencapaian harus diisi',
             'file_sertifikat.required_if' => 'File sertifikat kegiatan harus diisi jika opsi \'file\' dipilih',
             'file_sertifikat.file' => 'File sertifikat kegiatan tidak valid',
             'file_sertifikat.mimes' => 'File sertifikat kegiatan harus berupa file PDF, JPG, JPEG, PNG',
@@ -120,7 +120,7 @@ class KegiatanController extends Controller
         $kegiatan->tgl_selesai = $request->tgl_selesai;
         $kegiatan->penyelenggara = $request->penyelenggara;
         $kegiatan->deskripsi = $request->deskripsi;
-        $kegiatan->jabatan = $request->jabatan;
+        $kegiatan->pencapaian = $request->pencapaian;
 
         // Mengelola upload file sertifikat
         if ($request->hasFile('file_sertifikat')) {
@@ -163,7 +163,7 @@ class KegiatanController extends Controller
             'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
             'penyelenggara' => 'required',
             'deskripsi' => 'required',
-            'jabatan' => 'required',
+            'pencapaian' => 'required',
             'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:1024',
         ], [
             'kategori_kegiatan_id.required' => 'Kategori Kegiatan Wajib Dipilih',
@@ -174,7 +174,7 @@ class KegiatanController extends Controller
             'tgl_selesai.required' => 'Tanggal Selesai kegiatan harus diisi',
             'penyelenggara.required' => 'Penyelenggara kegiatan harus diisi',
             'deskripsi.required' => 'deskripsi kegiatan harus diisi',
-            'jabatan.required' => 'jabatan harus diisi',
+            'pencapaian.required' => 'pencapaian harus diisi',
             'file_sertifikat.required_if' => 'File sertifikat kegiatan harus diisi jika opsi \'file\' dipilih',
             'file_sertifikat.file' => 'File sertifikat kegiatan tidak valid',
             'file_sertifikat.mimes' => 'File sertifikat kegiatan harus berupa file PDF, JPG, JPEG, PNG',
@@ -189,7 +189,7 @@ class KegiatanController extends Controller
         $kegiatan->tgl_selesai = $request->tgl_selesai;
         $kegiatan->penyelenggara = $request->penyelenggara;
         $kegiatan->deskripsi = $request->deskripsi;
-        $kegiatan->jabatan = $request->jabatan;
+        $kegiatan->pencapaian = $request->pencapaian;
 
         // Mengelola upload file sertifikat jika ada file baru
         if ($request->hasFile('file_sertifikat')) {

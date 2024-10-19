@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\ProgramStudi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Dosen extends Model
+class Kaprodi extends Model
 {
     use HasFactory;
 
-    protected $table = 'dosen';
+    protected $table = 'kaprodi';
 
     protected $guarded = [];
 

@@ -47,7 +47,7 @@ class KegiatanController extends Controller
                 ->addColumn('status', fn($row) => getStatusColor($row->status)) // Panggil fungsi getStatusColor
                 ->addColumn('prodi', fn($row) => ($row->mahasiswa->prodi->nama))
                 ->addColumn('pencapaian', function ($row) {
-                    return '<div>' . $row->jabatan . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
+                    return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
                 })
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
@@ -94,13 +94,13 @@ class KegiatanController extends Controller
         //     'kategori_kegiatan_id' => 'required',
         //     'nama' => 'required',
         //     'tingkat' => 'required',
-        //     'jabatan' => 'required',
+        //     'pencapaian' => 'required',
         //     'bobot' => 'required',
         // ], [
         //     'kategori_kegiatan_id.required' => 'Kategori Wajib Dipilih',
         //     'nama.required' => 'Nama kegiatan wajib diisi',
         //     'tingkat.required' => 'Tingkat kegiatan wajib diisi',
-        //     'jabatan.required' => 'Jabatan wajib diisi',
+        //     'pencapaian.required' => 'pencapaian wajib diisi',
         //     'bobot.required' => 'Bobot wajib diisi',
 
         // ]);
@@ -109,7 +109,7 @@ class KegiatanController extends Controller
         //     'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
         //     'nama' => $request->nama,
         //     'tingkat' => $request->tingkat,
-        //     'jabatan' => $request->jabatan,
+        //     'pencapaian' => $request->pencapaian,
         //     'bobot' => $request->bobot,
 
         // ];
@@ -163,7 +163,7 @@ class KegiatanController extends Controller
             'kategori_kegiatan_id' => 'required',
             'nama' => 'required',
             'nama_en' => 'required',
-            'jabatan' => 'required',
+            'pencapaian' => 'required',
             'tingkat' => 'required',
             'tgl_mulai' => 'required',
             'tgl_selesai' => 'required',
@@ -184,7 +184,7 @@ class KegiatanController extends Controller
         $kegiatan->tgl_selesai = $request->tgl_selesai;
         $kegiatan->penyelenggara = $request->penyelenggara;
         $kegiatan->deskripsi = $request->deskripsi;
-        $kegiatan->jabatan = $request->jabatan;
+        $kegiatan->pencapaian = $request->pencapaian;
         $kegiatan->catatan_status = $request->catatan_status;
 
         // Mengelola upload file sertifikat jika ada file baru

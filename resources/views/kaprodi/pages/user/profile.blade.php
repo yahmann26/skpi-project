@@ -1,12 +1,11 @@
-@extends('dosen.layout.app')
+@extends('kaprodi.layout.app')
 @section('title', ' Profile ')
 
 @section('main')
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dosen.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item ">Dosen</li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item active">Profile</li>
             </ol>
         </nav>
@@ -34,7 +33,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('dosen.user.update-profile') }}" method="post">
+                        <form action="{{ route('kaprodi.user.update-profile') }}" method="post">
                             @csrf
                             @method('PUT')
 
@@ -43,7 +42,7 @@
                                 <label for="kode_dosen" class="col-sm-2 col-form-label">Kode Dosen</label>
                                 <div class="col-sm-10">
                                     <input type="number" class="form-control" disabled name="kode_dosen"
-                                        value="{{ $user->dosen->kode_dosen }}" id="kode_dosen">
+                                        value="{{ $user->kaprodi->kode_dosen }}" id="kode_dosen">
                                 </div>
                             </div>
 
@@ -52,7 +51,7 @@
                                 <label for="nama" class="col-sm-2 col-form-label">Nama</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" disabled name="nama"
-                                        value="{{ $user->dosen->nama }}" id="nama">
+                                        value="{{ $user->kaprodi->nama }}" id="nama">
                                 </div>
                             </div>
 
@@ -100,7 +99,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('dosen.user.update-password') }}" method="post">
+                        <form action="{{ route('kaprodi.user.update-password') }}" method="post">
                             @csrf
                             @method('PUT')
 

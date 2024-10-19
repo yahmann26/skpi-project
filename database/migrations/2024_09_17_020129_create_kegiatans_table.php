@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('tingkat'); // himpunan, univ, kota, provinsi
             $table->date('tgl_mulai');
             $table->date('tgl_selesai');
-            $table->string('jabatan'); // peserta, anggota, juara 1, dll
+            $table->string('pencapaian'); // peserta, anggota, juara 1, dll
             $table->string('penyelenggara'); // kementrian, pemda, fakultas
             $table->string('file_sertifikat')->nullable();
             $table->string('deskripsi')->nullable();

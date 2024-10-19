@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dosen;
+namespace App\Http\Controllers\Kaprodi;
 
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
@@ -32,13 +32,13 @@ class KegiatanController extends Controller
         // Jika request adalah AJAX (untuk datatables)
         if ($request->ajax()) {
 
-            $prodi_dosen = Auth::user()->dosen->program_studi_id;
+            $prodi_kaprodi = Auth::user()->kaprodi->program_studi_id;
 
-            // Ambil data kegiatan semua mahasiswa dengan relasi kategoriKegiatan dan mahasiswa, filter berdasarkan prodi dosen
+            // Ambil data kegiatan semua mahasiswa dengan relasi kategoriKegiatan dan mahasiswa, filter berdasarkan prodi kaprodi
             $kegiatan = Kegiatan::with(['kategoriKegiatan', 'mahasiswa'])
-                ->whereHas('mahasiswa', function ($query) use ($prodi_dosen) {
-                    $query->whereHas('prodi', function ($query) use ($prodi_dosen) {
-                        $query->where('id', $prodi_dosen);
+                ->whereHas('mahasiswa', function ($query) use ($prodi_kaprodi) {
+                    $query->whereHas('prodi', function ($query) use ($prodi_kaprodi) {
+                        $query->where('id', $prodi_kaprodi);
                     });
                 })
                 ->select('kegiatan.*')
@@ -54,15 +54,15 @@ class KegiatanController extends Controller
                 ->addColumn('status', fn($row) => getStatusColor($row->status)) // Panggil fungsi getStatusColor
                 ->addColumn('prodi', fn($row) => ($row->mahasiswa->prodi->nama))
                 ->addColumn('pencapaian', function ($row) {
-                    return '<div>' . $row->jabatan . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
+                    return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
                 })
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
                 })
                 ->addColumn('aksi', function ($row) {
-                    $editUrl = route('admin.kegiatan.edit', $row->id);
-                    $showUrl = route('admin.kegiatan.show', $row->id);
-                    $deleteUrl = route('admin.kegiatan.destroy', $row->id);
+                    $editUrl = route('kaprodi.kegiatan.edit', $row->id);
+                    $showUrl = route('kaprodi.kegiatan.show', $row->id);
+                    $deleteUrl = route('kaprodi.kegiatan.destroy', $row->id);
                     return '
                     <a href="' . $showUrl . '" class="edit btn btn-light btn-sm"><i class="bi bi-search"></i></a>
                     <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
@@ -76,7 +76,7 @@ class KegiatanController extends Controller
                 ->make(true);
         }
 
-        // Render view halaman admin untuk pengajuan kegiatan mahasiswa
-        return view('dosen.pages.kegiatan.index');
+        // Render view halaman kaprodi untuk pengajuan kegiatan mahasiswa
+        return view('kaprodi.pages.kegiatan.index');
     }
 }

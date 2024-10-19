@@ -4,7 +4,7 @@
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
-    
+
 @endpush
 
 @section('main')
@@ -102,8 +102,8 @@
                         name: 'nama'
                     },
                     {
-                        data: 'jabatan',
-                        name: 'jabatan'
+                        data: 'pencapaian',
+                        name: 'pencapaian'
                     }, // For Pencapaian
                     {
                         data: 'penyelenggara',

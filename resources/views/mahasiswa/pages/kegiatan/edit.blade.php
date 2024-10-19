@@ -69,12 +69,12 @@
 
                             {{-- pencapaian --}}
                             <div class="mb-3">
-                                <label for="jabatan" class="form-label">Pencapaian <span
+                                <label for="pencapaian" class="form-label">Pencapaian <span
                                         class="text-danger">*</span></label>
-                                <input type="text" name="jabatan" id="jabatan"
-                                    class="form-control @error('jabatan') is-invalid @enderror"
-                                    value="{{ $kegiatan->jabatan }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
-                                @error('jabatan')
+                                <input type="text" name="pencapaian" id="pencapaian"
+                                    class="form-control @error('pencapaian') is-invalid @enderror"
+                                    value="{{ $kegiatan->pencapaian }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
+                                @error('pencapaian')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

@@ -3,8 +3,8 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link  {{ isRouteName('dosen.dashboard') ? '' : 'collapsed' }}"
-                href="{{ route('dosen.dashboard') }}">
+            <a class="nav-link  {{ isRouteName('kaprodi.dashboard') ? '' : 'collapsed' }}"
+                href="{{ route('kaprodi.dashboard') }}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -14,14 +14,14 @@
         <li class="nav-heading">Menu</li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName('dosen.prodi.index') ? '' : 'collapsed'}}" href="{{ route('dosen.prodi.index') }}">
+            <a class="nav-link {{ isRouteName('kaprodi.prodi.index') ? '' : 'collapsed'}}" href="{{ route('kaprodi.prodi.index') }}">
                 <i class="bi bi-printer"></i>
                 <span>Prodi</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isROuteName('dosen.kegiatan.index') ? '' : 'collapsed' }}" href="{{ route('dosen.kegiatan.index') }}">
+            <a class="nav-link {{ isROuteName('kaprodi.kegiatan.index') ? '' : 'collapsed' }}" href="{{ route('kaprodi.kegiatan.index') }}">
                 <i class="bi bi-printer"></i>
                 <span>Kegiatan</span>
             </a>
@@ -38,9 +38,9 @@
         <li class="nav-heading">Setting</li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName('dosen.user.profile') ? '' : 'collapsed' }}"
-                href="{{ route('dosen.user.profile') }}"
-                class="{{ isRouteName('dosen.user.profile') ? 'active' : '' }}">
+            <a class="nav-link {{ isRouteName('kaprodi.user.profile') ? '' : 'collapsed' }}"
+                href="{{ route('kaprodi.user.profile') }}"
+                class="{{ isRouteName('kaprodi.user.profile') ? 'active' : '' }}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>

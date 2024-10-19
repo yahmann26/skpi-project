@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\DosenMiddleware;
+use App\Http\Middleware\KaprodiMiddleware;
 use App\Http\Middleware\MahasiswaMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'isAdmin' => AdminMiddleware::class,
             'isMahasiswa' => MahasiswaMiddleware::class,
-            'isDosen' => DosenMiddleware::class,
+            'isKaprodi' => KaprodiMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

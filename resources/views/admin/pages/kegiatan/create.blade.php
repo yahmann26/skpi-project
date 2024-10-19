@@ -63,11 +63,11 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="jabatan" class="form-label">Jabatan</label>
-                                <input type="text" name="jabatan" id="jabatan"
-                                    class="form-control @error('jabatan') is-invalid @enderror"
-                                    value="{{ old('jabatan') }}">
-                                @error('jabatan')
+                                <label for="pencapaian" class="form-label">pencapaian</label>
+                                <input type="text" name="pencapaian" id="pencapaian"
+                                    class="form-control @error('pencapaian') is-invalid @enderror"
+                                    value="{{ old('pencapaian') }}">
+                                @error('pencapaian')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

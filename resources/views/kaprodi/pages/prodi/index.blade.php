@@ -1,4 +1,4 @@
-@extends('dosen.layout.app')
+@extends('kaprodi.layout.app')
 
 @section('title', 'Prodi')
 
@@ -11,9 +11,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item ">Data Master</li>
-                <li class="breadcrumb-item ">Program Studi</li>
-                <li class="breadcrumb-item active">List</li>
+                <li class="breadcrumb-item active">Program Studi</li>
             </ol>
         </nav>
     </div>
@@ -78,7 +76,7 @@
         function deleteProdi(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 $.ajax({
-                    url: 'dosen/prodi/' + id,
+                    url: 'kaprodi/prodi/' + id,
                     type: 'DELETE',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
@@ -99,7 +97,7 @@
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('dosen.prodi.index') }}",
+                ajax: "{{ route('kaprodi.prodi.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',

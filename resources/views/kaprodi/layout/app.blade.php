@@ -31,7 +31,7 @@ if (!function_exists('isRouteName')) {
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Dosen &mdash; @yield('title')</title>
+    <title>kaprodi &mdash; @yield('title')</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.png') }}">
 
@@ -51,9 +51,9 @@ if (!function_exists('isRouteName')) {
 </head>
 
 <body>
-    @include('dosen.components.header')
+    @include('kaprodi.components.header')
 
-    @include('dosen.components.sidebar')
+    @include('kaprodi.components.sidebar')
 
     <main id="main" class="main">
 
@@ -61,7 +61,7 @@ if (!function_exists('isRouteName')) {
 
     </main>
 
-    @include('dosen.components.footer')
+    @include('kaprodi.components.footer')
 
     <!-- Scripts -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

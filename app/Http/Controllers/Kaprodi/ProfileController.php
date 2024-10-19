@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dosen;
+namespace App\Http\Controllers\Kaprodi;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -8,12 +8,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class ProfileController extends Controller
 {
     public function profile(Request $request)
     {
         $user = Auth::user();
-        return view('dosen.pages.user.profile', compact('user'));
+        return view('kaprodi.pages.user.profile', compact('user'));
     }
 
     public function updateProfile(Request $request)
@@ -50,7 +50,7 @@ class UserController extends Controller
             'password' => [
                 'required',
                 'string',
-                'min:8',
+                'min:6',
                 'max:100',
                 'confirmed',
             ],

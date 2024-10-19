@@ -1,4 +1,4 @@
-@extends('dosen.layout.app')
+@extends('kaprodi.layout.app')
 
 @section('title', 'Dashboard')
 
@@ -6,7 +6,7 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dosen.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
                 </li>
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
@@ -16,7 +16,7 @@
     <section class="section dashboard">
         <div class="row">
 
-            <h1>Welcome {{ Auth::user()->dosen->nama }} !!!</h1>
+            <h1>Selamat Datang {{ Auth::user()->kaprodi->nama }} !!!</h1>
             {{-- <div class="col-lg-12 col-md-8 col-sm-12 ">
                 <div class="row">
                     @include('admin.components.card', [

@@ -110,7 +110,7 @@
                                         <tr>
                                             <th>Pencapaian</th>
                                             <td>:</td>
-                                            <td>{{ $kegiatan->jabatan }}</td>
+                                            <td>{{ $kegiatan->pencapaian }}</td>
                                         </tr>
                                         <tr>
                                             <th>Penyelenggara</th>

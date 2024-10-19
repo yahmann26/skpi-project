@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dosen;
+namespace App\Http\Controllers\Kaprodi;
 
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
@@ -14,8 +14,8 @@ class ProdiController extends Controller
     public function index(Request $request)
     {
 
-        $dosen = Auth::user()->dosen;
-        $prodi = $dosen->program_studi_id;
+        $kaprodi = Auth::user()->kaprodi;
+        $prodi = $kaprodi->program_studi_id;
 
         if ($request->ajax()) {
             $data = ProgramStudi::query()->where('id', $prodi)->get();
@@ -41,8 +41,8 @@ class ProdiController extends Controller
                     <div class="fst-italic small text-secondary">' . $row->jenjangPendidikan->jenjang_lanjutan_en . '</div>'
                 )
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('dosen.prodi.edit', $row->id);
-                    $editCpl = route('dosen.prodi.edit-cpl', $row->id);
+                    $editUrl = route('kaprodi.prodi.edit', $row->id);
+                    $editCpl = route('kaprodi.prodi.edit-cpl', $row->id);
                     return '
                         <a title="Ubah CPL" href="' . $editCpl . '" class="edit btn btn-light text-success fw-bold"><i class="bi bi-pencil-square"></i> CPL</a>
                         <a title="Ubah" href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>';
@@ -51,7 +51,7 @@ class ProdiController extends Controller
                 ->make(true);
         }
 
-        return view('dosen.pages.prodi.index');
+        return view('kaprodi.pages.prodi.index');
     }
 
     public function edit($id)
@@ -62,7 +62,7 @@ class ProdiController extends Controller
         // get detail data
         $detailData = ProgramStudi::findOrFail($id);
 
-        return view('dosen.pages.prodi.edit', [
+        return view('kaprodi.pages.prodi.edit', [
             'jenjangPendidikan' => $jenjangPendidikan,
             'detailData' => $detailData
         ]);
@@ -104,7 +104,7 @@ class ProdiController extends Controller
         ]);
 
         // redirect back
-        return redirect()->route('dosen.prodi.index')->with('success', 'Program studi berhasil diperbarui');
+        return redirect()->route('kaprodi.prodi.index')->with('success', 'Program studi berhasil diperbarui');
     }
 
     public function editCpl(Request $request, $prodiId)
@@ -112,7 +112,7 @@ class ProdiController extends Controller
         // get detail data
         $detailData = ProgramStudi::findOrFail($prodiId);
 
-        return view('dosen.pages.prodi.cpl', [
+        return view('kaprodi.pages.prodi.cpl', [
             'detailData' => $detailData,
         ]);
     }
@@ -125,10 +125,10 @@ class ProdiController extends Controller
         ]);
 
         if ($request->from == 'add-prodi') {
-            return redirect()->route('dosen.prodi.index')->with('success', 'Data Prodi dan CPL-nya berhasil disimpan');
+            return redirect()->route('kaprodi.prodi.index')->with('success', 'Data Prodi dan CPL-nya berhasil disimpan');
         }
 
         // redirect back
-        return redirect()->route('dosen.prodi.index')->with('success', 'CPL berhasil diperbarui');
+        return redirect()->route('kaprodi.prodi.index')->with('success', 'CPL berhasil diperbarui');
     }
 }
