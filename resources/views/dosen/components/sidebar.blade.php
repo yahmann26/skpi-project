@@ -14,14 +14,14 @@
         <li class="nav-heading">Menu</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="">
+            <a class="nav-link {{ isRouteName('dosen.prodi.index') ? '' : 'collapsed'}}" href="{{ route('dosen.prodi.index') }}">
                 <i class="bi bi-printer"></i>
-                <span>Mahasiswa</span>
+                <span>Prodi</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="">
+            <a class="nav-link {{ isROuteName('dosen.kegiatan.index') ? '' : 'collapsed' }}" href="{{ route('dosen.kegiatan.index') }}">
                 <i class="bi bi-printer"></i>
                 <span>Kegiatan</span>
             </a>

@@ -16,7 +16,8 @@ use App\Http\Controllers\Mahasiswa\UserController as MahasiswaUserController;
 
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Dosen\UserController as DosenProfileController;
-
+use App\Http\Controllers\Dosen\KegiatanController as DosenKegiatanController;
+use App\Http\Controllers\Dosen\ProdiController as DosenProdiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -135,13 +136,23 @@ Route::middleware(['isDosen', 'verified'])->prefix('dosen')->group(function () {
     Route::get('kata-sandi', [DosenProfileController::class, 'password'])->name('dosen.user.password');
     Route::put('kata-sandi', [DosenProfileController::class, 'updatePassword'])->name('dosen.user.update-password');
 
-    // // mahasiswa kegiatan
-    // Route::get('kegiatan', [MahasiswaKegiatanController::class, 'index'])->name('mahasiswa.kegiatan.index');
-    // Route::get('kegiatan/tambah', [MahasiswaKegiatanController::class, 'create'])->name('mahasiswa.kegiatan.create');
-    // Route::post('kegiatan', [MahasiswaKegiatanController::class, 'store'])->name('mahasiswa.kegiatan.store');
-    // Route::get('kegiatan/{id}/ubah', [MahasiswaKegiatanController::class, 'edit'])->name('mahasiswa.kegiatan.edit');
-    // Route::put('kegiatan/{id}', [MahasiswaKegiatanController::class, 'update'])->name('mahasiswa.kegiatan.update');
-    // Route::delete('kegiatan/{id}', [MahasiswaKegiatanController::class, 'destroy'])->name('mahasiswa.kegiatan.destroy');
+    // mahasiswa kegiatan
+    Route::get('kegiatan', [DosenKegiatanController::class, 'index'])->name('dosen.kegiatan.index');
+    Route::get('kegiatan/tambah', [DosenKegiatanController::class, 'create'])->name('dosen.kegiatan.create');
+    Route::post('kegiatan', [DosenKegiatanController::class, 'store'])->name('dosen.kegiatan.store');
+    Route::get('kegiatan/{id}/ubah', [DosenKegiatanController::class, 'edit'])->name('dosen.kegiatan.edit');
+    Route::put('kegiatan/{id}', [DosenKegiatanController::class, 'update'])->name('dosen.kegiatan.update');
+    Route::delete('kegiatan/{id}', [DosenKegiatanController::class, 'destroy'])->name('dosen.kegiatan.destroy');
+
+    // prodi
+
+    Route::get('prodi', [DosenProdiController::class, 'index'])->name('dosen.prodi.index');
+    Route::get('/prodi/{id}/ubah', [DosenProdiController::class, 'edit'])->name('dosen.prodi.edit');
+    Route::put('/prodi/{id}', [DosenProdiController::class, 'update'])->name('dosen.prodi.update');
+
+    // prodi CPL (capaian pembelajaran)
+    Route::get('/prodi/{id}/edit-cpl', [DosenProdiController::class, 'editCpl'])->name('dosen.prodi.edit-cpl');
+    Route::put('/prodi/{id}/cpl', [DosenProdiController::class, 'updateCpl'])->name('dosen.prodi.update-cpl');
 
     // // mahasiswa dokumen skpi
     // Route::get('/dokumen', [MahasiswaDokumenController::class, 'index'])->name('mahasiswa.dokumen.index');

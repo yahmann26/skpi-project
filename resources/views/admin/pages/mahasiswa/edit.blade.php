@@ -116,7 +116,7 @@
                                     <select class="form-select" name="program_studi_id" id="program_studi_id">
                                         @foreach ($prodi as $prodi)
                                             <option value="{{ $prodi->id }}"
-                                                {{ $mahasiswa->prodi_id == $prodi->id ? 'selected' : '' }}>
+                                                {{ $mahasiswa->program_studi_id == $prodi->id ? 'selected' : '' }}>
                                                 {{ $prodi->nama }}
                                             </option>
                                         @endforeach

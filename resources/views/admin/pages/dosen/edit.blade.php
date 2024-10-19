@@ -73,10 +73,10 @@
                                 <label class="col-sm-2 col-form-label">Prodi</label>
                                 <div class="col-sm-10">
                                     <select class="form-select" name="program_studi_id" id="program_studi_id">
-                                        @foreach ($prodi as $prodi)
-                                            <option value="{{ $prodi->id }}"
-                                                {{ $dosen->prodi_id == $prodi->id ? 'selected' : '' }}>
-                                                {{ $prodi->nama }}
+                                        @foreach ($prodi as $p)
+                                            <option value="{{ $p->id }}"
+                                                {{ $dosen->program_studi_id == $p->id ? 'selected' : '' }}>
+                                                {{ $p->nama }}
                                             </option>
                                         @endforeach
                                     </select>
