@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Kaprodi;
 
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
+use App\Models\KategoriKegiatan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class KegiatanController extends Controller
 {
@@ -20,10 +22,10 @@ class KegiatanController extends Controller
                 switch ($status) {
                     case 'diproses':
                         return '<span class="badge bg-warning">Diproses</span>';
-                    case 'ditolak':
+                    case 'tolak':
                         return '<span class="badge bg-danger">Ditolak</span>';
-                    case 'diterima':
-                        return '<span class="badge bg-success">Diterima</span>';
+                    case 'validasi':
+                        return '<span class="badge bg-success">Validasi</span>';
                     default:
                         return '<span class="badge bg-secondary">Tidak diketahui</span>';
                 }
@@ -78,5 +80,120 @@ class KegiatanController extends Controller
 
         // Render view halaman kaprodi untuk pengajuan kegiatan mahasiswa
         return view('kaprodi.pages.kegiatan.index');
+    }
+
+    public function show(string $id)
+    {
+        $kategori = KategoriKegiatan::all();
+
+        $kegiatan = Kegiatan::with('kategoriKegiatan')->findOrFail($id);
+
+        // dd($kegiatan);
+
+        return view('kaprodi.pages.kegiatan.show', [
+            'kategoriKegiatan' => $kategori,
+            'kegiatan' => $kegiatan
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        // get kategori Kegiatan
+        $kategori = KategoriKegiatan::all();
+
+        $kegiatan = Kegiatan::with('kategoriKegiatan')->find($id);
+
+        return  view('kaprodi.pages.kegiatan.edit', [
+            'kategori' => $kategori,
+            'kegiatan' => $kegiatan
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'kategori_kegiatan_id' => 'required',
+            'nama' => 'required',
+            'nama_en' => 'required',
+            'pencapaian' => 'required',
+            'tingkat' => 'required',
+            'tgl_mulai' => 'required',
+            'tgl_selesai' => 'required',
+            'file_sertifikat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+
+        $kegiatan = Kegiatan::find($id);
+
+        if (!$kegiatan) {
+            return redirect()->route('kaprodi.kegiatan.index')->with('error', 'Kegiatan tidak ditemukan');
+        }
+
+        $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
+        $kegiatan->nama = $request->nama;
+        $kegiatan->nama_en = $request->nama_en;
+        $kegiatan->tingkat = $request->tingkat;
+        $kegiatan->tgl_mulai = $request->tgl_mulai;
+        $kegiatan->tgl_selesai = $request->tgl_selesai;
+        $kegiatan->penyelenggara = $request->penyelenggara;
+        $kegiatan->deskripsi = $request->deskripsi;
+        $kegiatan->pencapaian = $request->pencapaian;
+        $kegiatan->catatan_status = $request->catatan_status;
+
+        // Mengelola upload file sertifikat jika ada file baru
+        if ($request->hasFile('file_sertifikat')) {
+            // Hapus file lama jika perlu
+            if ($kegiatan->file_sertifikat) {
+                Storage::disk('public')->delete($kegiatan->file_sertifikat);
+            }
+
+            // Upload file baru
+            $file = $request->file('file_sertifikat');
+            $fileName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $filePath = $file->storeAs('kegiatan', $fileName, 'public');
+            $kegiatan->file_sertifikat = $filePath;
+        }
+
+        // dd($kegiatan);
+
+        $kegiatan->save();
+
+        return redirect()->route('kaprodi.kegiatan.index')->with('success', 'Berhasil Mengupdate Data');
+    }
+
+    public function destroy(string $id)
+    {
+        Kegiatan::where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Berhasil menghapus data');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Validasi input jika diperlukan (opsional)
+        $request->validate([
+            'status' => 'required|in:validasi,tolak',
+        ]);
+
+        // Ambil data kegiatan berdasarkan ID
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        // Update status kegiatan
+        $kegiatan->status = $request->status;
+
+        // dd($kegiatan);
+
+        $kegiatan->save();
+
+        // Cek status dan redirect sesuai kebutuhan
+        if ($request->status === 'validasi') {
+            return redirect()->route('kaprodi.kegiatan.edit', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
+        } elseif ($request->status === 'tolak') {
+            return redirect()->route('kaprodi.kegiatan.index')->with('success', 'Kegiatan telah ditolak.');
+        }
     }
 }

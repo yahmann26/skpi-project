@@ -144,6 +144,7 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::post('kegiatan', [KaprodiKegiatanController::class, 'store'])->name('kaprodi.kegiatan.store');
     Route::get('kegiatan/{id}/lihat', [KaprodiKegiatanController::class, 'show'])->name('kaprodi.kegiatan.show');
     Route::get('kegiatan/{id}/ubah', [KaprodiKegiatanController::class, 'edit'])->name('kaprodi.kegiatan.edit');
+    Route::put('kegiatan/{id}/status', [KaprodiKegiatanController::class, 'updateStatus'])->name('kaprodi.kegiatan.update-status');
     Route::put('kegiatan/{id}', [KaprodiKegiatanController::class, 'update'])->name('kaprodi.kegiatan.update');
     Route::delete('kegiatan/{id}', [KaprodiKegiatanController::class, 'destroy'])->name('kaprodi.kegiatan.destroy');
 

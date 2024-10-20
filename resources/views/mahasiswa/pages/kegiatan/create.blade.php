@@ -24,10 +24,9 @@
                             <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
-                        <form class="row g-1" action="{{ route('mahasiswa.kegiatan.update', $kegiatan->id) }}" method="post"
+                        <form class="row g-1" action="{{ route('mahasiswa.kegiatan.store') }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
 
                             <div class="mb-3">
                                 <label for="kategori_kegiatan_id" class="form-label">Kategori Kegiatan</label>
@@ -36,7 +35,7 @@
                                     <option value="">-- Pilih Kategori Kegiatan --</option>
                                     @foreach ($kategori as $k)
                                         <option value="{{ $k->id }}"
-                                            {{ old('kategori_kegiatan_id', $kegiatan->kategori_kegiatan_id) == $k->id ? 'selected' : '' }}>
+                                            {{ old('kategori_kegiatan_id') == $k->id ? 'selected' : '' }}>
                                             {{ $k->nama }}</option>
                                     @endforeach
                                 </select>
@@ -51,7 +50,7 @@
                                 <div class="input-group mb-3 @error('nama') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
                                     <input type="text" name="nama" class="form-control" aria-describedby="nama-addon"
-                                        value="{{ old('nama', $kegiatan->nama) }}" autofocus
+                                        value="{{ old('nama') }}" autofocus
                                         placeholder="Nama Kegiatan">
                                 </div>
                                 @error('nama')
@@ -61,7 +60,7 @@
                                 <div class="input-group mb-3 @error('nama_en') is-invalid @enderror">
                                     <span class="input-group-text">EN</span>
                                     <input type="text" name="nama_en" class="form-control"
-                                        aria-describedby="nama_en-addon" value="{{ old('nama_en', $kegiatan->nama_en) }}"
+                                        aria-describedby="nama_en-addon" value="{{ old('nama_en') }}"
                                         autofocus placeholder="Nama Kegiatan (english)">
                                 </div>
                                 @error('nama_en')
@@ -74,7 +73,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="text" name="pencapaian" id="pencapaian"
                                     class="form-control @error('pencapaian') is-invalid @enderror"
-                                    value="{{ old('pencapaian', $kegiatan->pencapaian) }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
+                                    value="{{ old('pencapaian') }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
                                 @error('pencapaian')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -85,7 +84,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="text" name="tingkat" id="tingkat"
                                     class="form-control @error('tingkat') is-invalid @enderror"
-                                    value="{{ old('tingkat', $kegiatan->tingkat) }}" placeholder="Misal: himpunan, univ, kabupaten dsb">
+                                    value="{{ old('tingkat') }}" placeholder="Misal: himpunan, univ, kabupaten dsb">
                                 @error('tingkat')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -96,7 +95,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="text" name="penyelenggara" id="penyelenggara"
                                     class="form-control @error('penyelenggara') is-invalid @enderror"
-                                    value="{{ old('penyelenggara', $kegiatan->penyelenggara) }}"
+                                    value="{{ old('penyelenggara') }}"
                                     placeholder="Misal: fakultas, kementrian, pemda dsb">
                                 @error('penyelenggara')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -107,7 +106,7 @@
                                 <label for="deskripsi" class="form-label">Deskripsi<span
                                         class="text-danger">*</span></label>
                                 <textarea name="deskripsi" id="deskripsi"
-                                    class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi', $kegiatan->deskripsi) }}</textarea>
+                                    class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi') }}</textarea>
                                 @error('deskripsi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -117,7 +116,6 @@
                                 <label for="file_sertifikat" class="col-sm-2 col-form-label">Bukti Sertifikat</label>
                                 <div class="col-sm-12">
                                     <input class="form-control" type="file" id="file_sertifikat" name="file_sertifikat">
-                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah sertifikat.</small>
                                 </div>
                             </div>
 
@@ -126,7 +124,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="date" name="tgl_mulai" id="tgl_mulai"
                                     class="form-control @error('tgl_mulai') is-invalid @enderror"
-                                    value="{{ old('tgl_mulai', $kegiatan->tgl_mulai) }}">
+                                    value="{{ old('tgl_mulai') }}">
                                 @error('tgl_mulai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -137,7 +135,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="date" name="tgl_selesai" id="tgl_selesai"
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"
-                                    value="{{ old('tgl_selesai', $kegiatan->tgl_selesai) }}">
+                                    value="{{ old('tgl_selesai') }}">
                                 @error('tgl_selesai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

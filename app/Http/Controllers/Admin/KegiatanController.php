@@ -24,10 +24,10 @@ class KegiatanController extends Controller
                 switch ($status) {
                     case 'diproses':
                         return '<span class="badge bg-warning">Diproses</span>';
-                    case 'ditolak':
+                    case 'tolak':
                         return '<span class="badge bg-danger">Ditolak</span>';
-                    case 'diterima':
-                        return '<span class="badge bg-success">Diterima</span>';
+                    case 'validasi':
+                        return '<span class="badge bg-success">Validasi</span>';
                     default:
                         return '<span class="badge bg-secondary">Tidak diketahui</span>';
                 }
@@ -221,7 +221,7 @@ class KegiatanController extends Controller
     {
         // Validasi input jika diperlukan (opsional)
         $request->validate([
-            'status' => 'required|in:diterima,ditolak',
+            'status' => 'required|in:validasi,tolak',
         ]);
 
         // Ambil data kegiatan berdasarkan ID

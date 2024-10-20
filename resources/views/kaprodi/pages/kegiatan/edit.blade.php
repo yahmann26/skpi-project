@@ -1,14 +1,16 @@
-@extends('mahasiswa.layout.app')
-@section('title', 'Edit Kegiatan ')
+@extends('kaprodi.layout.app')
+
+@section('title', 'Ubah Kegiatan ')
 
 @section('main')
+
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
                 </li>
                 <li class="breadcrumb-item ">Kegiatan</li>
-                <li class="breadcrumb-item active">Edit</li>
+                <li class="breadcrumb-item active">List</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -17,32 +19,32 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card overflow-auto">
-                    <div class="card-body" style="min-height: 300px">
+                    <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <a href="{{ route('mahasiswa.kegiatan.index') }}" class="btn btn-sm btn-outline-primary"><i
+                            <a href="{{ route('kaprodi.kegiatan.index') }}" class="btn btn-sm btn-outline-primary"><i
                                     class="bi bi-arrow-left"></i> Kembali</a>
                             <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
-                        <form class="row g-1" action="{{ route('mahasiswa.kegiatan.update', ['id' => $kegiatan->id]) }}"
-                            method="post" enctype="multipart/form-data">
+                        <form class="row g-1" action="{{ route('kaprodi.kegiatan.update',['id' => $kegiatan->id]) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
-                            {{-- Kategori Kegiatan --}}
                             <div class="mb-3">
-                                <label class="form-label">Kategori Kegiatan</label>
-                                <select class="form-select" name="kategori_kegiatan_id" id="kategori_kegiatan_id">
+                                <label for="kategori_kegiatan_id" class="form-label">Kategori Kegiatan</label>
+                                <select name="kategori_kegiatan_id" id="kategori_kegiatan_id"
+                                    class="form-select @error('kategori_kegiatan_id') is-invalid @enderror">
                                     @foreach ($kategori as $kategori)
                                         <option value="{{ $kategori->id }}"
                                             {{ $kegiatan->kategori_kegiatan_id == $kategori->id ? 'selected' : '' }}>
-                                            {{ $kategori->nama }}
-                                        </option>
+                                            {{ $kategori->nama }}</option>
                                     @endforeach
                                 </select>
+                                @error('kategori_kegiatan_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            {{-- Nama Kegiatan --}}
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Kegiatan <span
                                         class="text-danger">*</span></label>
@@ -59,15 +61,14 @@
                                 <div class="input-group mb-3 @error('nama_en') is-invalid @enderror">
                                     <span class="input-group-text">EN</span>
                                     <input type="text" name="nama_en" class="form-control"
-                                        aria-describedby="nama_en-addon" class="form-control" value="{{ $kegiatan->nama_en }}"
-                                        autofocus placeholder="Nama Kegiatan (english)">
+                                        aria-describedby="nama_en-addon" class="form-control"
+                                        value="{{ $kegiatan->nama_en }}" autofocus placeholder="Nama Kegiatan (english)">
                                 </div>
                                 @error('nama_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            {{-- pencapaian --}}
                             <div class="mb-3">
                                 <label for="pencapaian" class="form-label">Pencapaian <span
                                         class="text-danger">*</span></label>
@@ -124,7 +125,6 @@
                                 </div>
                             </div>
 
-
                             <div class="col-md-6">
                                 <label for="tgl_mulai" class="form-label">Tanggal Mulai<span
                                         class="text-danger">*</span></label>
@@ -150,14 +150,14 @@
                             <hr class="my-4">
 
                             <div class="mb-3">
-                                <div class="alert alert-info">
-                                    <strong>Info!</strong> Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
-                                    atau
-                                    dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
-                                    Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
-                                    Admin yang akan ditampilkan.
-                                </div>
+                                <label for="catatan_status" class="form-label">Catatan</label>
+                                <textarea name="catatan_status" id="catatan_status" class="form-control @error('catatan_status') is-invalid @enderror">{{ old('catatan_status', $kegiatan->catatan_status) }}</textarea>
+                                @error('catatan_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
+
+                            <hr class="my-4">
 
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -167,56 +167,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <div class="card overflow-auto">
-                    <div class="card-body" style="min-height: 300px">
-
-                        <hr class="my-3">
-                        <div class="alert alert-info">
-                            <strong>Info!</strong>
-                            <br>Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
-                            atau
-                            dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
-                            Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
-                            Admin yang akan ditampilkan.
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
 @endsection
-
-@push('script')
-    <script>
-        $(function() {
-            $(document).ready(function() {
-
-                var message = $('.success__msg');
-                $('#fileUploadForm').ajaxForm({
-                    beforeSend: function() {
-                        var percentage = '0';
-                    },
-                    uploadProgress: function(event, position, total, percentComplete) {
-                        var percentage = percentComplete;
-                        $('.progress .progress-bar').css("width", percentage + '%', function() {
-                            return $(this).attr("aria-valuenow", percentage) + "%";
-                        })
-                    },
-                    complete: function(xhr) {
-                        console.log('File has uploaded');
-                        message.fadeIn().removeClass('alert-danger').addClass('alert-success');
-                        message.text("Uploaded File successfully.");
-                        setTimeout(function() {
-                            message.fadeOut();
-                        }, 2000);
-                        form.find('input:not([type="submit"]), textarea').val('');
-                        var percentage = '0';
-                    }
-                });
-            });
-        });
-    </script>
-@endpush

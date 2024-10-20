@@ -6,10 +6,10 @@
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
     <style>
         thead input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
     </style>
 @endpush
 
@@ -17,7 +17,8 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                </li>
                 <li class="breadcrumb-item ">Kegiatan</li>
                 <li class="breadcrumb-item active">List</li>
             </ol>
@@ -34,8 +35,8 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data Kegiatan</div>
-                            <a href="{{ route('kaprodi.kegiatan.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a>
+                            {{-- <a href="{{ route('kaprodi.kegiatan.create') }}" class="btn btn-sm btn-primary"><i
+                                    class="bi bi-plus"></i> Tambah</a> --}}
                         </div>
 
                         <table class="table table-bordered table-striped datatable">
@@ -84,8 +85,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('kaprodi.kegiatan.index') }}",
-                columns: [
-                    {
+                columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
@@ -147,4 +147,16 @@
             });
         });
     </script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 @endpush

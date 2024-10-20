@@ -35,7 +35,7 @@
                             <div class="row mb-3">
                                 <label for="nim" class="col-sm-2 col-form-label">NIM</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" disabled name="nim"
+                                    <input type="number" class="form-control" name="nim"
                                         value="{{ $mahasiswa->nim }}" id="nim">
                                 </div>
                             </div>

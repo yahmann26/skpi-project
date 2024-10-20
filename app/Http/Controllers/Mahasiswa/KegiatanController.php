@@ -22,10 +22,10 @@ class KegiatanController extends Controller
                 switch ($status) {
                     case 'diproses':
                         return '<span class="badge bg-warning">Diproses</span>';
-                    case 'ditolak':
+                    case 'tolak':
                         return '<span class="badge bg-danger">Ditolak</span>';
-                    case 'diterima':
-                        return '<span class="badge bg-success">Diterima</span>';
+                    case 'validasi':
+                        return '<span class="badge bg-success">Validasi</span>';
                     default:
                         return '<span class="badge bg-secondary">Tidak diketahui</span>';
                 }
@@ -59,13 +59,13 @@ class KegiatanController extends Controller
                         : '<span class="badge bg-secondary">Tidak ada</span>';
                 })
                 ->addColumn('status', fn($row) => getStatusColor($row->status))
+                ->addColumn('nama', function ($row) {
+                    return '<div>' . $row->nama . '</div><div class="fst-italic text-muted">' . $row->nama_en . '</div>';
+                })
                 ->addColumn('pencapaian', function ($row) {
                     return '<div>' . $row->pencapaian . '</div><div class="small text-muted">tingkat: ' . $row->tingkat . '</div>';
                 })
-                ->addColumn('penyelenggara', function ($row) {
-                    return '<div>' . $row->penyelenggara . '</div><div class="small fst-italic text-muted">di: ' . $row->tingkat . '</div>';
-                })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'penyelenggara', 'status']) // Untuk merender HTML
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian','nama', 'status'])
                 ->make(true);
         }
 
@@ -122,7 +122,7 @@ class KegiatanController extends Controller
         $kegiatan->deskripsi = $request->deskripsi;
         $kegiatan->pencapaian = $request->pencapaian;
 
-        // Mengelola upload file sertifikat
+        // upload file sertifikat
         if ($request->hasFile('file_sertifikat')) {
             $file = $request->file('file_sertifikat');
             $fileName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
@@ -132,6 +132,8 @@ class KegiatanController extends Controller
             $kegiatan->file_sertifikat = $request->kegiatan_sertifikat_url;
         }
 
+        // dd($kegiatan);
+
         $kegiatan->save();
 
         return redirect()->route('mahasiswa.kegiatan.index')->with('success', 'Kegiatan berhasil ditambahkan');
@@ -139,7 +141,7 @@ class KegiatanController extends Controller
 
     public function edit($id)
     {
-        // get prodi
+        // get kategori
         $kategori = KategoriKegiatan::all();
 
         $kegiatan = Kegiatan::with('kategoriKegiatan')->find($id);

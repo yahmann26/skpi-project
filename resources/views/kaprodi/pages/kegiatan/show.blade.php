@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('kaprodi.layout.app')
 
 @section('title', '')
 
@@ -7,7 +7,8 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                </li>
                 <li class="breadcrumb-item">Kegiatan</li>
                 <li class="breadcrumb-item">Mahasiswa</li>
                 <li class="breadcrumb-item active">Lihat</li>
@@ -22,7 +23,7 @@
                 <div class="card overflow-auto">
                     <div class="card-body">
                         <div class="card-title">
-                            <a href="{{ route('admin.kegiatan.index') }}" class="btn btn-sm btn-outline-primary"><i
+                            <a href="{{ route('kaprodi.kegiatan.index') }}" class="btn btn-sm btn-outline-primary"><i
                                     class="bi bi-arrow-left"></i> Kembali</a>
                         </div>
 
@@ -53,7 +54,8 @@
 
                                     {{-- form validasi atau tolak --}}
                                     <form id="updateStatusForm-{{ $kegiatan->id }}"
-                                        action="{{ route('admin.kegiatan.update-status', $kegiatan->id) }}" method="POST">
+                                        action="{{ route('kaprodi.kegiatan.update-status', $kegiatan->id) }}"
+                                        method="POST">
 
                                         @csrf
                                         @method('PUT')
@@ -79,7 +81,6 @@
                                             </button>
                                         @endif
                                     </form>
-
 
                                 </div>
                             </div>
@@ -202,12 +203,26 @@
     </script>
 
     <script>
-        function submitForm(id, status) {
-            // Set nilai status
-            document.getElementById('status-' + id).value = status;
-
-            // Submit form secara langsung
-            document.getElementById('updateStatusForm-' + id).submit();
+        function submitForm(id, action) {
+            
+            // Tampilkan SweetAlert2 konfirmasi
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin ' + (action === 'validasi' ? 'validasi' : 'menolak') +
+                    ' kegiatan ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, lanjutkan!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika dikonfirmasi, set nilai status dan submit form
+                    document.getElementById('status-' + id).value = action;
+                    document.getElementById('updateStatusForm-' + id).submit();
+                }
+            });
         }
     </script>
 @endpush

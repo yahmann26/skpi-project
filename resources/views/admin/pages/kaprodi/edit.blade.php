@@ -35,7 +35,7 @@
                             <div class="row mb-3">
                                 <label for="kode_dosen" class="col-sm-2 col-form-label">Kode Dosen</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" disabled name="kode_dosen"
+                                    <input type="number" class="form-control" name="kode_dosen"
                                         value="{{ $kaprodi->kode_dosen }}" id="kode_dosen">
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
 
                             {{-- page emial Kaprodi --}}
                             <div class="row mb-3">
-                                <label for="email" class="col-sm-2 col-form-label">Email Kaprodi</label>
+                                <label for="email" class="col-sm-2 col-form-label">Email</label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
                                         name="email" value="{{ $kaprodi->user->email }}" id="email">
@@ -70,7 +70,7 @@
 
                             {{-- page prodi --}}
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Prodi</label>
+                                <label class="col-sm-2 col-form-label">Program Studi</label>
                                 <div class="col-sm-10">
                                     <select class="form-select" name="program_studi_id" id="program_studi_id">
                                         @foreach ($prodi as $p)
