@@ -19,20 +19,6 @@
             <div class="col-md-12">
                 <div class="card overflow-auto" id="app">
                     <div class="card-body">
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
                         <form
                             action="{{ route('admin.prodi.update-cpl', ['id' => $detailData->id, 'from' => request()->query('from')]) }}"
                             method="post">
@@ -107,20 +93,6 @@
 
                                     <table class="table table-bordered" v-else>
                                         <tbody v-for="(item, index) in kualifikasiCplData">
-                                            {{-- <tr>
-                                            <th class="text-center bg-secondary text-white" style="width: 15px">A</th>
-                                            <th class="bg-secondary">
-                                                <input type="text"
-                                                    :name="`pengaturan_hasil_capaian_data[${index}][judul]`"
-                                                    class="form-control" v-model="item.judul">
-                                            </th>
-                                            <th class="bg-secondary">
-                                                <input type="text"
-                                                    :name="`pengaturan_hasil_capaian_data[${index}][judul_en]`"
-                                                    class="form-control" v-model="item.judul_en">
-                                            </th>
-                                            <th style="width: 15px"></th>
-                                        </tr> --}}
                                             <template v-if="item && item.subs">
                                                 <template v-for="(subItem, subIndex) in item.subs">
                                                     <tr>

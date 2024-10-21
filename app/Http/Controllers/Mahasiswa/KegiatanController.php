@@ -46,12 +46,12 @@ class KegiatanController extends Controller
                     $editUrl = route('mahasiswa.kegiatan.edit', $row->id);
                     $deleteUrl = route('mahasiswa.kegiatan.destroy', $row->id);
                     return '
-                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                    <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                        ' . csrf_field() . '
-                        ' . method_field("DELETE") . '
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                    </form>';
+                        <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                            ' . csrf_field() . '
+                            ' . method_field("DELETE") . '
+                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
+                        </form>';
                 })
                 ->addColumn('sertifikat', function ($row) {
                     return $row->file_sertifikat
@@ -65,7 +65,7 @@ class KegiatanController extends Controller
                 ->addColumn('pencapaian', function ($row) {
                     return '<div>' . $row->pencapaian . '</div><div class="small text-muted">tingkat: ' . $row->tingkat . '</div>';
                 })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian','nama', 'status'])
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nama', 'status'])
                 ->make(true);
         }
 
@@ -220,10 +220,8 @@ class KegiatanController extends Controller
         // menghapus file
         $file = $kegiatan->file_sertifikat;
 
-        if($file && $file != '')
-        {
-            if(Storage::exists('public/' . $file))
-            {
+        if ($file && $file != '') {
+            if (Storage::exists('public/' . $file)) {
                 Storage::delete('public/' . $file);
             }
         }

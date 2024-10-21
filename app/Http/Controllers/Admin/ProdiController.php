@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helper\Skpi;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Models\Cp;
 use App\Models\JenjangPendidikan;
 use App\Models\Pengaturan;
-use Exception;
-use Illuminate\Support\Facades\DB;
 
 class ProdiController extends Controller
 {
@@ -43,13 +39,13 @@ class ProdiController extends Controller
                     $editCpl = route('admin.prodi.edit-cpl', $row->id);
                     $deleteUrl = route('admin.prodi.destroy', $row->id);
                     return '
-                        <a title="Ubah CPL" href="' . $editCpl . '" class="edit btn btn-light text-success fw-bold"><i class="bi bi-pencil-square"></i> CPL</a>
-                        <a title="Ubah" href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                        <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                            ' . csrf_field() . '
-                            ' . method_field("DELETE") . '
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                        </form>';
+                        <a href="' . $editCpl . '" class="show btn btn-light btn-sm"><i class="bi bi-search"></i> CPL</a>
+                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                        ' . csrf_field() . '
+                        ' . method_field("DELETE") . '
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
+                    </form>';
                 })
                 ->rawColumns(['nama', 'gelar', 'jenjang', 'jenjang_lanjutan', 'action'])
                 ->make(true);

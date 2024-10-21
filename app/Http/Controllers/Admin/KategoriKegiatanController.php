@@ -24,12 +24,12 @@ class KategoriKegiatanController extends Controller
                 $editUrl = route('admin.kategoriKegiatan.edit', $row->id);
                 $deleteUrl = route('admin.kategoriKegiatan.destroy', $row->id);
                 return '
-                <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                    ' . csrf_field() . '
-                    ' . method_field("DELETE") . '
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                </form>';
+                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                        ' . csrf_field() . '
+                        ' . method_field("DELETE") . '
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
+                    </form>';
             })
             ->rawColumns(['action'])
             ->make(true);

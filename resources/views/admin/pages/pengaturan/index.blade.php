@@ -114,21 +114,7 @@
                                 aria-labelledby="universitas-tab">
                                 <div class="row">
                                     <div class="col-md-6">
-
-                                        {{-- @if ($errors->any())
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Whoops!</strong> Terdapat kesalahan saat mengisi form.
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    @endif --}}
-
+                                        
                                         <form
                                             action="{{ route('admin.pengaturan.update', ['category' => 'universitas']) }}"
                                             method="post" class="mt-3" enctype="multipart/form-data">

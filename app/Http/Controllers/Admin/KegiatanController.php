@@ -57,12 +57,12 @@ class KegiatanController extends Controller
                     $showUrl = route('admin.kegiatan.show', $row->id);
                     $deleteUrl = route('admin.kegiatan.destroy', $row->id);
                     return '
-                    <a href="' . $showUrl . '" class="edit btn btn-light btn-sm"><i class="bi bi-search"></i></a>
+                    <a href="' . $showUrl . '" class="show btn btn-light btn-sm"><i class="bi bi-search"></i></a>
                     <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                    <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                    <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
                         ' . csrf_field() . '
                         ' . method_field("DELETE") . '
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
                     </form>';
                 })
                 ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama']) // Merender HTML

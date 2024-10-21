@@ -18,21 +18,6 @@
                     <div class="card-body" style="min-height: 300px">
                         <div class="card-title">Ubah Profil</div>
 
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                {!! session('success') !!}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                {!! session('error') !!}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-
                         <form action="{{ route('kaprodi.user.update-profile') }}" method="post">
                             @csrf
                             @method('PUT')
@@ -83,21 +68,6 @@
                 <div class="card overflow-auto">
                     <div class="card-body" style="min-height: 300px">
                         <div class="card-title">Ubah Password</div>
-
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                {!! session('success') !!}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                {!! session('error') !!}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
 
                         <form action="{{ route('kaprodi.user.update-password') }}" method="post">
                             @csrf

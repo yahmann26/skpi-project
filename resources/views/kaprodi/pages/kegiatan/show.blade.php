@@ -108,7 +108,7 @@
                                         <tr>
                                             <th>Tanggal</th>
                                             <td>:</td>
-                                            <td>{{ $kegiatan->tgl_mulai }} sampai {{ $kegiatan->tgl_selesai }}</td>
+                                            <td>{{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_mulai) }} s/d {{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_selesai) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Pencapaian</th>
@@ -204,7 +204,7 @@
 
     <script>
         function submitForm(id, action) {
-            
+
             // Tampilkan SweetAlert2 konfirmasi
             Swal.fire({
                 title: 'Konfirmasi',

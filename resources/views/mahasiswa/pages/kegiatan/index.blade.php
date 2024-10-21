@@ -4,7 +4,6 @@
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
-
 @endpush
 
 @section('main')
@@ -32,21 +31,6 @@
                             <a href="{{ route('mahasiswa.kegiatan.create') }}" class="btn btn-sm btn-primary"><i
                                     class="bi bi-plus"></i> Tambah</a>
                         </div>
-
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
 
                         <table class="table table-bordered table-striped datatable">
                             <thead>
@@ -130,7 +114,7 @@
                         targets: '_all',
                         className: 'align-middle'
                     } // Add custom class to align columns
-                ]
+                ],
             });
 
             // Event untuk membuka file di tab baru
@@ -141,12 +125,5 @@
         });
     </script>
 
-    {{-- <script>
-        $(document).ready(function() {
-            $('.open-file').on('click', function() {
-                var url = $(this).data('url');
-                window.open(url, '_blank');
-            });
-        });
-    </script> --}}
+    
 @endpush
