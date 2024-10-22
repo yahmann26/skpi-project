@@ -38,7 +38,7 @@
                     <a class="nav-link " href="{{ route('admin.pt.index') }}"
                         class="{{ isRouteName('admin.pt.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i>
-                        <span>Perguruan Tinggi</span>
+                        <span>Pendidikan Tinggi</span>
                     </a>
                 </li>
             </ul>
