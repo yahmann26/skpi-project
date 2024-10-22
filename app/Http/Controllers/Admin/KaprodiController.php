@@ -55,7 +55,7 @@ class KaprodiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_dosen' => 'required|numeric|unique:dosen,kode_dosen',
+            'kode_dosen' => 'required|numeric|unique:kaprodi,kode_dosen',
             'nama' => 'required',
             'program_studi_id' => 'required',
             'email' => 'required|email',

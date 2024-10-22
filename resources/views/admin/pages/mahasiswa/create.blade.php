@@ -24,7 +24,7 @@
                             <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
-                        <form action="{{ route('admin.mahasiswa.store') }}" method="post">
+                        <form class="row g-1" action="{{ route('admin.mahasiswa.store') }}" method="post">
                             @csrf
 
                             <div class="mb-3">
@@ -70,7 +70,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
                                 <input type="text" name="tempat_lahir" id="tempat_lahir"
                                     class="form-control @error('tempat_lahir') is-invalid @enderror"
@@ -80,7 +80,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
                                 <input type="date" name="tgl_lahir" id="tgl_lahir"
                                     class="form-control @error('tgl_lahir') is-invalid @enderror"
@@ -102,6 +102,52 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="md-3">
+                                <label for="jenis_pendaftaran" class="form-label">Jenis Pendaftaran</label>
+                                <div class="input-group md-3 @error('jenis_pendaftaran') is-invalid @enderror">
+                                    <span class="input-group-text">&nbsp;ID</span>
+                                    <input type="text" name="jenis_pendaftaran" class="form-control" aria-describedby="jenis_pendaftaran-addon"
+                                        class="form-control" value="{{ old('jenis_pendaftaran') }}" autofocus
+                                        placeholder="Jenis Pendaftaran">
+                                </div>
+                                @error('jenis_pendaftaran')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group md-3 @error('jenis_pendaftaran_en') is-invalid @enderror">
+                                    <span class="input-group-text">EN</span>
+                                    <input type="text" name="jenis_pendaftaran_en" class="form-control"
+                                        aria-describedby="jenis_pendaftaran_en-addon" class="form-control" value="{{ old('jenis_pendaftaran_en') }}"
+                                        autofocus placeholder="Jenis Pendaftaran (english)">
+                                </div>
+                                @error('jenis_pendaftaran_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="tgl_masuk" class="form-label">Tanggal Masuk</label>
+                                <input type="date" name="tgl_masuk" id="tgl_masuk"
+                                    class="form-control @error('tgl_masuk') is-invalid @enderror"
+                                    value="{{ old('tgl_masuk') }}">
+                                @error('tgl_masuk')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="tgl_lulus" class="form-label">Tanggal Lulus</label>
+                                <input type="date" name="tgl_lulus" id="tgl_lulus"
+                                    class="form-control @error('tgl_lulus') is-invalid @enderror"
+                                    value="{{ old('tgl_lulus') }}">
+                                @error('tgl_lulus')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <hr class="my-4">
 
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Simpan</button>

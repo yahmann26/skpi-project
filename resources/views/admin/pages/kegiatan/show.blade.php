@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title', '')
+@section('title', 'Lihat Kegiatan')
 
 @section('main')
     {{-- Page Titile --}}
@@ -100,6 +100,11 @@
                                             <td>{{ $kegiatan->nama }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Pencapaian</th>
+                                            <td>:</td>
+                                            <td>{{ $kegiatan->pencapaian }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>Tingkat</th>
                                             <td>:</td>
                                             <td>{{ $kegiatan->tingkat }}</td>
@@ -107,12 +112,7 @@
                                         <tr>
                                             <th>Tanggal</th>
                                             <td>:</td>
-                                            <td>{{ $kegiatan->tgl_mulai }} sampai {{ $kegiatan->tgl_selesai }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Pencapaian</th>
-                                            <td>:</td>
-                                            <td>{{ $kegiatan->pencapaian }}</td>
+                                            <td>{{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_mulai) }} s/d {{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_selesai) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Penyelenggara</th>

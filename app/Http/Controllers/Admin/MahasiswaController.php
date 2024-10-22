@@ -99,6 +99,10 @@ class MahasiswaController extends Controller
                 'tgl_lahir' => $request->tgl_lahir,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'program_studi_id' => $request->program_studi_id,
+                'jenis_pendaftaran' => $request->jenis_pendaftaran,
+                'jenis_pendaftaran_en' => $request->jenis_pendaftaran_en,
+                'tgl_masuk' => $request->tgl_masuk,
+                'tgl_lulus' => $request->tgl_lulus,
                 'user_id' => $user->id,
             ]);
 
@@ -138,6 +142,7 @@ class MahasiswaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'nim' => 'required',
             'nama' => 'required',
             'tempat_lahir' => 'required',
             'tgl_lahir' => 'required|date',
@@ -157,12 +162,19 @@ class MahasiswaController extends Controller
         // update data mahasiswa
         $mahasiswa = Mahasiswa::findOrFail($id);
         $mahasiswa->update([
+            'nim' => $request->nim,
             'nama' => $request->nama,
             'tempat_lahir' =>$request->tempat_lahir,
             'tgl_lahir' =>$request->tgl_lahir,
+            'tgl_masuk' =>$request->tgl_masuk,
+            'tgl_lulus' =>$request->tgl_lulus,
             'jenis_kelamin' =>$request->jenis_kelamin,
+            'jenis_pendaftaran' =>$request->jenis_pendaftaran,
+            'jenis_pendaftaran_en' =>$request->jenis_pendaftaran_en,
             'program_studi_id' =>$request->program_studi_id,
         ]);
+
+        // dd($mahasiswa);
 
         //update data user
         $user = User::findOrFail($mahasiswa->user_id);
@@ -173,8 +185,11 @@ class MahasiswaController extends Controller
         // }
 
         $user->update([
+            'uid' => $request->nim,
             'email' => $request->email,
         ]);
+
+        // dd($user);
 
         return redirect()->route('admin.mahasiswa.index')->with('success', 'Data berhasil diupdate!');
     }

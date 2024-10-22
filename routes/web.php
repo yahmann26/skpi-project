@@ -7,7 +7,8 @@ use App\Http\Controllers\Admin\ProdiController as AdminProdiController;
 use App\Http\Controllers\Admin\KategoriKegiatanController as AdminKategoriKegiatanController;
 use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
 use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
-use App\Http\Controllers\Admin\KaprodiController;
+use App\Http\Controllers\Admin\KaprodiController as AdminKaprodiController;
+use App\Http\Controllers\Admin\PtController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
@@ -92,12 +93,21 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::delete('mahasiswa/{id}', [AdminMahasiswaController::class, 'destroy'])->name('admin.mahasiswa.destroy');
 
     // Kaprodi
-    Route::get('kaprodi', [KaprodiController::class, 'index'])->name('admin.kaprodi.index');
-    Route::get('kaprodi/tambah', [KaprodiController::class, 'create'])->name('admin.kaprodi.create');
-    Route::post('kaprodi', [KaprodiController::class, 'store'])->name('admin.kaprodi.store');
-    Route::get('kaprodi/{id}/ubah', [KaprodiController::class, 'edit'])->name('admin.kaprodi.edit');
-    Route::put('kaprodi/{id}', [KaprodiController::class, 'update'])->name('admin.kaprodi.update');
-    Route::delete('kaprodi/{id}', [KaprodiController::class, 'destroy'])->name('admin.kaprodi.destroy');
+    Route::get('kaprodi', [AdminKaprodiController::class, 'index'])->name('admin.kaprodi.index');
+    Route::get('kaprodi/tambah', [AdminKaprodiController::class, 'create'])->name('admin.kaprodi.create');
+    Route::post('kaprodi', [AdminKaprodiController::class, 'store'])->name('admin.kaprodi.store');
+    Route::get('kaprodi/{id}/ubah', [AdminKaprodiController::class, 'edit'])->name('admin.kaprodi.edit');
+    Route::put('kaprodi/{id}', [AdminKaprodiController::class, 'update'])->name('admin.kaprodi.update');
+    Route::delete('kaprodi/{id}', [AdminKaprodiController::class, 'destroy'])->name('admin.kaprodi.destroy');
+
+    // pt
+
+    Route::get('pt', [PtController::class, 'index'])->name('admin.pt.index');
+    Route::get('pt/tambah', [PtController::class, 'create'])->name('admin.pt.create');
+    Route::post('pt', [PtController::class, 'store'])->name('admin.pt.store');
+    Route::get('pt/{id}/ubah', [PtController::class, 'edit'])->name('admin.pt.edit');
+    Route::put('pt/{id}', [PtController::class, 'update'])->name('admin.pt.update');
+    Route::delete('pt/{id}', [PtController::class, 'destroy'])->name('admin.pt.destroy');
 });
 
 /* MAHASISWA */

@@ -1,6 +1,6 @@
 @extends('kaprodi.layout.app')
 
-@section('title', '')
+@section('title', 'Lihat Kegiatan')
 
 @section('main')
     {{-- Page Titile --}}
@@ -101,6 +101,11 @@
                                             <td>{{ $kegiatan->nama }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Pencapaian</th>
+                                            <td>:</td>
+                                            <td>{{ $kegiatan->pencapaian }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>Tingkat</th>
                                             <td>:</td>
                                             <td>{{ $kegiatan->tingkat }}</td>
@@ -109,11 +114,6 @@
                                             <th>Tanggal</th>
                                             <td>:</td>
                                             <td>{{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_mulai) }} s/d {{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_selesai) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Pencapaian</th>
-                                            <td>:</td>
-                                            <td>{{ $kegiatan->pencapaian }}</td>
                                         </tr>
                                         <tr>
                                             <th>Penyelenggara</th>
@@ -130,7 +130,7 @@
                                                         data-bs-toggle="modal" data-bs-target="#previewModal"
                                                         data-url="{{ asset('storage/' . $kegiatan->file_sertifikat) }}"
                                                         data-type="{{ pathinfo($kegiatan->file_sertifikat, PATHINFO_EXTENSION) }}">
-                                                        <i class="bi bi-file-earmark"></i> Lihat
+                                                        <i class="bi bi-file"></i> Lihat
                                                     </button>
                                                 @else
                                                     <span class="badge bg-secondary">Tidak ada</span>

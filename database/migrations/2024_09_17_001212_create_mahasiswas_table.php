@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('tgl_lulus')->nullable();
             $table->string('no_ijazah')->nullable();
             $table->string('jenis_pendaftaran')->nullable();
+            $table->string('jenis_pendaftaran_en')->nullable();
             $table->timestamps();
         });
     }

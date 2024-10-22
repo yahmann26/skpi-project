@@ -1,5 +1,3 @@
-
-
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
@@ -16,7 +14,7 @@
         <li class="nav-heading">Menu</li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index', 'admin.kategoriKegiatan.index']) ? '' : 'collapsed' }}"
+            <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index', 'admin.pt.index']) ? '' : 'collapsed' }}"
                 data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
@@ -34,20 +32,15 @@
                         <i class="bi bi-circle"></i><span>Program Studi</span>
                     </a>
                 </li>
-
-                <li>
-                    <a href="{{ route('admin.kategoriKegiatan.index') }}"
-                        class="{{ isRouteName('admin.kategoriKegiatan.index') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Kategori Kegiatan</span>
-                    </a>
                 </li>
 
-                {{-- <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ url('admin/pt')}}">
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('admin.pt.index') }}"
+                        class="{{ isRouteName('admin.pt.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i>
                         <span>Perguruan Tinggi</span>
                     </a>
-                </li> --}}
+                </li>
             </ul>
         </li>
 
@@ -74,12 +67,24 @@
         <!-- End User Nav -->
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName('admin.kegiatan.index') ? '' : 'collapsed' }}"
-                href="{{ route('admin.kegiatan.index') }}"
-                class="{{ isRouteName('admin.kegiatan.index') ? 'active' : '' }}">
-                <i class="bi bi-gear"></i>
-                <span>Kegiatan</span>
+            <a class="nav-link {{ isRouteName(['admin.kegiatan.index', 'admin.kategoriKegiatan.index']) ? '' : 'collapsed' }}"
+                data-bs-target="#kegiatan-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-people"></i><span>Kegiatan</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            <ul id="kegiatan-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.kategoriKegiatan.index') }}"
+                        class="{{ isRouteName('admin.kategoriKegiatan.index') ? 'active' : ' ' }}">
+                        <i class="bi bi-circle"></i><span>Kategori Kegiatan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.kegiatan.index') }}"
+                        class="{{ isRouteName('admin.kegiatan.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Kegiatan</span>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="nav-item">
@@ -103,7 +108,9 @@
 
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName('admin.user.profile') ? '' : 'collapsed' }}" href="{{ route('admin.user.profile') }}" class="{{ isRouteName('admin.user.profile') ? 'active' : '' }}">
+            <a class="nav-link {{ isRouteName('admin.user.profile') ? '' : 'collapsed' }}"
+                href="{{ route('admin.user.profile') }}"
+                class="{{ isRouteName('admin.user.profile') ? 'active' : '' }}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
