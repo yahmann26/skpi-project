@@ -32,5 +32,9 @@ class Mahasiswa extends Model
         return $this->hasMany(Kegiatan::class);
     }
 
+    public function  skpi() {
+        return $this->hasOne(Skpi::class);
+    }
+
 
 }

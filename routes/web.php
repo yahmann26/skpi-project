@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
 use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
 use App\Http\Controllers\Admin\KaprodiController as AdminKaprodiController;
 use App\Http\Controllers\Admin\PtController;
+use App\Http\Controllers\Admin\SkpiController as AdminSkpiController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
@@ -25,8 +26,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('welcome', ['title' => 'SKPI FASTIKOM UNSIQ']);
+})->name('welcome');
 
 // Admin
 
@@ -108,6 +109,14 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('pt/{id}/ubah', [PtController::class, 'edit'])->name('admin.pt.edit');
     Route::put('pt/{id}', [PtController::class, 'update'])->name('admin.pt.update');
     Route::delete('pt/{id}', [PtController::class, 'destroy'])->name('admin.pt.destroy');
+
+    // skpi
+    Route::get('skpi', [AdminSkpiController::class, 'index'])->name('admin.skpi.index');
+    Route::get('skpi/tambah', [AdminSkpiController::class, 'create'])->name('admin.skpi.create');
+    Route::post('skpi', [AdminSkpiController::class, 'store'])->name('admin.skpi.store');
+    Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
+    Route::put('skpi/{id}', [AdminSkpiController::class, 'update'])->name('admin.skpi.update');
+    Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
 });
 
 /* MAHASISWA */

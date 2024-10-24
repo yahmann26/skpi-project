@@ -33,7 +33,7 @@ if (!function_exists('isRouteName')) {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Admin &mdash; @yield('title')</title>
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.png') }}">
+    <link href="{{ asset('images/unsiq.png') }}" rel="icon">
 
     <!-- Preconnect and Preload Optimization -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -75,7 +75,7 @@ if (!function_exists('isRouteName')) {
         function confirmDelete(id) {
             Swal.fire({
                 title: 'Konfirmasi Hapus',
-                text: 'Apakah Anda yakin ingin menghapus kegiatan ini?',
+                text: 'Apakah Anda yakin ingin menghapus Data ini?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

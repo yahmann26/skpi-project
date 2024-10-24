@@ -36,7 +36,7 @@
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "20%">Kode kaprodi</th>
+                                    <th width = "20%">Kode Dosen</th>
                                     <th width = "20%">Nama Kaprodi</th>
                                     <th width = "20%">Program Studi</th>
                                     <th width = "10%">Aksi</th>

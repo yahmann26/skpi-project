@@ -29,7 +29,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data Program Studi</div>
                             <a href="{{ route('admin.prodi.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a>
+                                    clas    s="bi bi-plus"></i> Tambah</a>
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
@@ -37,10 +37,10 @@
                                 <tr>
                                     <th width = "5%">No</th>
                                     <th width = "15%">Nama</th>
-                                    <th width = "15%">Jenis Pendidikan</th>
+                                    <th width = "20%">Jenis Pendidikan</th>
                                     <th width = "10%">Akreditasi</th>
-                                    <th width = "20%">Gelar</th>
-                                    <th width = "15%">Jenjang Lanjutan</th>
+                                    <th width = "15%">Gelar</th>
+                                    <th width = "20%">Jenjang Lanjutan</th>
                                     <th width = "15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -52,6 +52,7 @@
             </div>
         </div>
     </section>
+    
 
 @endsection
 

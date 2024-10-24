@@ -56,7 +56,7 @@ class PengaturanSeeder extends Seeder
                     ],
                     [
                         'nama' => 'nama_universitas_en',
-                        'nilai' => 'Sains alquran University',
+                        'nilai' => 'Sains Al-Quran University',
                         'tipe' => 'text'
                     ],
                     [
@@ -177,6 +177,31 @@ class PengaturanSeeder extends Seeder
                             ]
                         ],
                     ]
+                ]
+            ],
+            [
+                'nama' => 'Tanda Tangan',
+                'pengaturan' => [
+                    [
+                        'nama' => 'nama_penandatangan',
+                        'nilai' => 'NASYIIN FAQIH, S.T., M.T',
+                        'tipe' => 'text',
+                    ],
+                    [
+                        'nama' => 'nip_penandatangan',
+                        'nilai' => '0629077202',
+                        'tipe' => 'number',
+                    ],
+                    [
+                        'nama' => 'jabatan_penandatangan',
+                        'nilai' => 'Dekan',
+                        'tipe' => 'text',
+                    ],
+                    [
+                        'nama' => 'gambar_tandatangan_cap',
+                        'nilai' => '',
+                        'tipe' => 'image',
+                    ],
                 ]
             ]
         ];

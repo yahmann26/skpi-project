@@ -35,7 +35,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('admin.pt.index') }}"
+                    <a href="{{ route('admin.pt.index') }}"
                         class="{{ isRouteName('admin.pt.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i>
                         <span>Pendidikan Tinggi</span>
@@ -88,7 +88,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="">
+            <a class="nav-link {{ isRouteName('admin.skpi.index') ? '' : 'collapsed' }}" href="{{ route('admin.skpi.index') }}">
                 <i class="bi bi-printer"></i>
                 <span>SKPI</span>
             </a>

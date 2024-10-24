@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('jenjang_pendidikan_id')->constrained('jenjang_pendidikan', 'id')->cascadeOnDelete();
             $table->string('nama', 100);
             $table->string('nama_en', 100)->nullable();
+            $table->string('singkatan');
             $table->string('akreditasi', 10)->nullable();
             $table->string('bhs_pengantar_kuliah')->nullable();
             $table->string('bhs_pengantar_kuliah_en')->nullable();

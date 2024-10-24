@@ -14,15 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'uid' => 'admin',
-            'email' => 'test@example.com',
-            'password' => Hash::make('admin'),
-            'role' => 'admin',
-        ]);
-
+        $this->call(DataSeeder::class);
         $this->call(PengaturanSeeder::class);
     }
 }

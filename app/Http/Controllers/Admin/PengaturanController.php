@@ -126,7 +126,7 @@ class PengaturanController extends Controller
             Skpi::updateSettingByName($key, $value);
         }
 
-        return redirect()->route('admin.pengaturan.index', ['tab' => 'dasar'])->with('success', 'Pengaturan berhasil diperbarui');
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'dasar'])->with('success', 'Pengaturan Dasar berhasil diperbarui');
     }
 
     private function __updateuniversitas(Request $request)
@@ -201,7 +201,7 @@ class PengaturanController extends Controller
             Skpi::updateSettingByName($key, $value);
         }
 
-        return redirect()->route('admin.pengaturan.index', ['tab' => 'universitas'])->with('success', 'Pengaturan berhasil diperbarui');
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'universitas'])->with('success', 'Pengaturan Universitas berhasil diperbarui');
     }
 
     private function __updateKurikulum(Request $request)
@@ -272,6 +272,6 @@ class PengaturanController extends Controller
             Skpi::updateSettingByName($key, $value);
         }
 
-        return redirect()->route('admin.pengaturan.index', ['tab' => 'tandatangan'])->with('success', 'Pengaturan tandatangan berhasil diperbarui');
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'tandatangan'])->with('success', 'Pengaturan Tandatangan berhasil diperbarui');
     }
 }

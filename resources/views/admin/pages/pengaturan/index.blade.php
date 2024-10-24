@@ -4,7 +4,6 @@
 
 @section('main')
     <div class="pagetitle">
-        <h1>Pengaturan</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
@@ -31,11 +30,6 @@
                                     data-bs-target="#universitas" type="button" role="tab" aria-controls="universitas"
                                     aria-selected="false">Universitas</button>
                             </li>
-                            {{-- <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="kurikulum-tab" data-bs-toggle="tab" data-bs-target="#kurikulum"
-                                type="button" role="tab" aria-controls="kurikulum"
-                                aria-selected="false">Kurikulum</button>
-                        </li> --}}
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tandatangan-tab" data-bs-toggle="tab"
                                     data-bs-target="#tandatangan" type="button" role="tab" aria-controls="tandatangan"
@@ -114,7 +108,7 @@
                                 aria-labelledby="universitas-tab">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        
+
                                         <form
                                             action="{{ route('admin.pengaturan.update', ['category' => 'universitas']) }}"
                                             method="post" class="mt-3" enctype="multipart/form-data">
@@ -301,39 +295,6 @@
                                 </div>
                             </div>
 
-                            {{-- <div class="tab-pane fade" id="kurikulum" role="tabpanel" aria-labelledby="kurikulum-tab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <form action="{{ route('admin.pengaturan.update', ['category' => 'kurikulum']) }}"
-                                        method="post" class="mt-3" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="mb-3">
-                                            <label for="tahun_kurikulum" class="form-label">Tahun Kurikulum <span
-                                                    class="text-danger">*</span></label>
-                                            <select type="text" name="tahun_kurikulum" id="tahun_kurikulum"
-                                                class="form-control @error('tahun_kurikulum') is-invalid @enderror">
-                                                <option value="">Pilih Tahun Kurikulum</option>
-                                                @for ($i = date('Y'); $i >= 2015; $i--)
-                                                <option value="{{ $i }}" @if (old('tahun_kurikulum', $pengaturan['tahun_kurikulum']) == $i) selected @endif>{{ $i }}
-                                                </option>
-                                                @endfor
-                                            </select>
-                                            @error('tahun_kurikulum')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <hr style="margin-top: 100px" />
-
-                                        <button type="submit" class="btn btn-primary btn-sm py-2">
-                                            <i class="bi bi-save me-1"></i>
-                                            Simpan Perubahan
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div> --}}
-
                             <div class="tab-pane fade" id="tandatangan" role="tabpanel"
                                 aria-labelledby="tandatangan-tab">
                                 <div class="row">
@@ -417,7 +378,7 @@
 
                                             <button type="submit" class="btn btn-primary btn-sm py-2">
                                                 <i class="bi bi-save me-1"></i>
-                                                Simpan Perubahan
+                                                Simpan
                                             </button>
                                         </form>
                                     </div>
@@ -437,7 +398,7 @@
 
 @endsection
 
-@push('scripts')
+@push('script')
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

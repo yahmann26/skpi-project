@@ -109,7 +109,7 @@ class MahasiswaController extends Controller
 
         });
 
-        return redirect()->route('admin.mahasiswa.index')->with('success', 'Data berhasil ditambahkan!');
+        return redirect()->route('admin.mahasiswa.index')->with('success', 'Data Mahasiswa berhasil ditambahkan!');
     }
 
     /**
@@ -191,7 +191,7 @@ class MahasiswaController extends Controller
 
         // dd($user);
 
-        return redirect()->route('admin.mahasiswa.index')->with('success', 'Data berhasil diupdate!');
+        return redirect()->route('admin.mahasiswa.index')->with('success', 'Data Mahasiswa berhasil diupdate!');
     }
 
     /**
@@ -211,6 +211,6 @@ class MahasiswaController extends Controller
         // Hapus data user terkait
         $user->delete();
 
-        return redirect()->back()->with('success', 'Data berhasil dihapus!');
+        return redirect()->back()->with('success', 'Data Mahasiswa berhasil dihapus!');
     }
 }
