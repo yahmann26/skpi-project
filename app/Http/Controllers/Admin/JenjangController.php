@@ -23,6 +23,16 @@ class JenjangController extends Controller
                 ->addColumn('DT_RowIndex', function ($row) {
                     return '';
                 })
+                ->addColumn(
+                    'nama',
+                    fn($row) =>
+                    '<div>' . $row->nama . '</div><div class="fst-italic small text-secondary">' . $row->nama_en . '</div>'
+                )
+                ->addColumn(
+                    'jenjang_lanjutan',
+                    fn($row) =>
+                    '<div>' . $row->jenjang_lanjutan . '</div><div class="fst-italic small text-secondary">' . $row->jenjang_lanjutan_en . '</div>'
+                )
                 ->addColumn('action', function ($row) {
                     $showUrl = route('admin.jenjang.show', $row->id);
                     $editUrl = route('admin.jenjang.edit', $row->id);
@@ -36,7 +46,7 @@ class JenjangController extends Controller
                     <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
                     </form>';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'nama', 'jenjang_lanjutan'])
                 ->make(true);
         }
         return view('admin.pages.jenjang.index');
@@ -61,9 +71,11 @@ class JenjangController extends Controller
             'nama_en' => 'required|min:3|unique:jenjang_pendidikan,nama_en',
             'singkatan' => 'required',
             'kualifikasi_kkni' => 'required',
-            'syarat_masuk' => 'nullable',
-            'syarat_masuk_en' => 'nullable',
+            'jenis_pendidikan' => 'nullable',
+            'jenis_pendidikan_en' => 'nullable',
             'lama_studi_reguler' => 'nullable',
+            'jenis_lanjutan' => 'nullable',
+            'jenis_lanjutan_en' => 'nullable',
             'jenjang_lanjutan' => 'nullable',
             'jenjang_lanjutan_en' => 'nullable',
         ], [
@@ -82,15 +94,17 @@ class JenjangController extends Controller
             'nama_en' => $request->nama_en,
             'singkatan' => $request->singkatan,
             'kualifikasi_kkni' => $request->kualifikasi_kkni,
-            'syarat_masuk' => $request->syarat_masuk,
-            'syarat_masuk_en' => $request->syarat_masuk_en,
+            'jenis_pendidikan' => $request->jenis_pendidikan,
+            'jenis_pendidikan_en' => $request->jenis_pendidikan_en,
             'lama_studi_reguler' => $request->lama_studi_reguler,
+            'jenis_lanjutan' => $request->jenis_lanjutan,
+            'jenis_lanjutan_en' => $request->jenis_lanjutan_en,
             'jenjang_lanjutan' => $request->jenjang_lanjutan,
             'jenjang_lanjutan_en' => $request->jenjang_lanjutan_en,
         ]);
 
         // redirect back
-        return redirect()->route('admin.jenjang.index')->with('success', 'Jenjang berhasil ditambahkan');
+        return redirect()->route('admin.jenjang.index')->with('success', 'Jenjang Pendidikan berhasil ditambahkan');
     }
 
     /**
@@ -125,8 +139,8 @@ class JenjangController extends Controller
             'nama_en' => 'required|min:3',
             'singkatan' => 'required',
             'kualifikasi_kkni' => 'required',
-            'syarat_masuk' => 'nullable',
-            'syarat_masuk_en' => 'nullable',
+            'jenis_pendidikan' => 'nullable',
+            'jenis_pendidikan_en' => 'nullable',
             'lama_studi_reguler' => 'nullable',
             'jenjang_lanjutan' => 'nullable',
             'jenjang_lanjutan_en' => 'required',
@@ -146,15 +160,17 @@ class JenjangController extends Controller
             'nama_en' => $request->nama_en,
             'singkatan' => $request->singkatan,
             'kualifikasi_kkni' => $request->kualifikasi_kkni,
-            'syarat_masuk' => $request->syarat_masuk,
-            'syarat_masuk_en' => $request->syarat_masuk_en,
+            'jenis_pendidikan' => $request->jenis_pendidikan,
+            'jenis_pendidikan_en' => $request->jenis_pendidikan_en,
             'lama_studi_reguler' => $request->lama_studi_reguler,
+            'jenis_lanjutan' => $request->jenjang_lanjutan,
+            'jenis_lanjutan_en' => $request->jenjang_lanjutan_en,
             'jenjang_lanjutan' => $request->jenjang_lanjutan,
             'jenjang_lanjutan_en' => $request->jenjang_lanjutan_en,
         ]);
 
         // redirect back
-        return redirect()->route('admin.jenjang.index')->with('success', 'Jenjang berhasil diubah');
+        return redirect()->route('admin.jenjang.index')->with('success', 'Jenjang Pendidikan berhasil diubah');
     }
 
     /**

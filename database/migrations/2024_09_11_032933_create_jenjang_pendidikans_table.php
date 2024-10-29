@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('jenjang_pendidikan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 100);
-            $table->string('nama_en', 100)->nullable();
-            $table->string('singkatan', 10)->nullable();
-            $table->string('kualifikasi_kkni')->nullable();
-            $table->string('syarat_masuk')->nullable();
-            $table->string('syarat_masuk_en')->nullable();
+            $table->string('nama');
+            $table->string('nama_en')->nullable();
+            $table->string('singkatan')->nullable();
+            $table->string('jenis_pendidikan')->nullable();
+            $table->string('jenis_pendidikan_en')->nullable();
+            $table->string('kualifikasi_kkni');
             $table->string('lama_studi_reguler')->nullable();
+            $table->string('jenis_lanjutan')->nullable();
+            $table->string('jenis_lanjutan_en')->nullable();
             $table->string('jenjang_lanjutan')->nullable();
             $table->string('jenjang_lanjutan_en')->nullable();
             $table->timestamps();

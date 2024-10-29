@@ -234,7 +234,11 @@ class KegiatanController extends Controller
 
         $kegiatan->save();
 
-        // Kirim pesan sukses dan redirect kembali
-        return redirect()->route('admin.kegiatan.edit', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
+        // Cek status dan redirect sesuai kebutuhan
+        if ($request->status === 'validasi') {
+            return redirect()->route('admin.kegiatan.edit', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
+        } elseif ($request->status === 'tolak') {
+            return redirect()->route('admin.kegiatan.index')->with('success', 'Kegiatan telah ditolak.');
+        }
     }
 }

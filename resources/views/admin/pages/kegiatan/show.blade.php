@@ -112,7 +112,8 @@
                                         <tr>
                                             <th>Tanggal</th>
                                             <td>:</td>
-                                            <td>{{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_mulai) }} s/d {{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_selesai) }}</td>
+                                            <td>{{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_mulai) }} s/d
+                                                {{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_selesai) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Penyelenggara</th>
@@ -202,12 +203,26 @@
     </script>
 
     <script>
-        function submitForm(id, status) {
-            // Set nilai status
-            document.getElementById('status-' + id).value = status;
+        function submitForm(id, action) {
 
-            // Submit form secara langsung
-            document.getElementById('updateStatusForm-' + id).submit();
+            // Tampilkan SweetAlert2 konfirmasi
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin ' + (action === 'validasi' ? 'validasi' : 'menolak') +
+                    ' kegiatan ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, lanjutkan!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika dikonfirmasi, set nilai status dan submit form
+                    document.getElementById('status-' + id).value = action;
+                    document.getElementById('updateStatusForm-' + id).submit();
+                }
+            });
         }
     </script>
 @endpush

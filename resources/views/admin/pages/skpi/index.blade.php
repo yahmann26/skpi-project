@@ -11,6 +11,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item ">User</li>
                 <li class="breadcrumb-item ">Skpi</li>
                 <li class="breadcrumb-item active">List</li>
             </ol>
@@ -93,8 +94,8 @@
                         name: 'nim'
                     },
                     {
-                        data: 'mahasiswa',
-                        name: 'mahasiswa'
+                        data: 'nama',
+                        name: 'nama'
                     },
                     {
                         data: 'prodi',

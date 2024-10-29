@@ -14,16 +14,18 @@ return new class extends Migration
         Schema::create('program_studi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('jenjang_pendidikan_id')->constrained('jenjang_pendidikan', 'id')->cascadeOnDelete();
-            $table->string('nama', 100);
-            $table->string('nama_en', 100)->nullable();
+            $table->string('nama');
+            $table->string('nama_en');
             $table->string('singkatan');
-            $table->string('akreditasi', 10)->nullable();
+            $table->string('akreditasi');
+            $table->string('sk_akreditasi');
             $table->string('bhs_pengantar_kuliah')->nullable();
             $table->string('bhs_pengantar_kuliah_en')->nullable();
-            $table->string('sistem_penilaian')->nullable();
-            $table->string('sistem_penilaian_en')->nullable();
-            $table->string('gelar', 100)->nullable();
-            $table->string('gelar_en', 100)->nullable();
+            $table->string('sistem_penilaian');
+            $table->string('sistem_penilaian_en');
+            $table->string('gelar')->nullable();
+            $table->string('gelar_en')->nullable();
+            $table->string('gelar_singkat')->nullable();
             $table->text('kualifikasi_cpl')->nullable();
             $table->timestamps();
         });

@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use Carbon\Carbon;
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,8 +57,8 @@ class Skpi
         // if not valid url?
 
         // check if path is exists in storage
-        if (Storage::exists('public/'.$path)) {
-            return url(Storage::url('public/'.$path));
+        if (Storage::exists('public/' . $path)) {
+            return url(Storage::url('public/' . $path));
         }
 
 
@@ -94,4 +95,8 @@ class Skpi
         return $date;
     }
 
+    static  function dateEN($date)
+    {
+        return Carbon::parse($date)->format('F j, Y');
+    }
 }

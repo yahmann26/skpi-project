@@ -24,14 +24,12 @@
                 <span>Kegiatan</span>
             </a>
         </li>
-        {{-- <li class="nav-item">
-            <a class="nav-link {{ isRouteName('mahasiswa.dokumen.index') ? '' : 'collapsed'  }}"
-                href="{{ route('mahasiswa.dokumen.index') }}"
-                class="{{ isRouteName('mahasiswa.dokumen.index') ? 'active' : ''  }}">
-                <i class="bi bi-file-earmark"></i>
-                <span>Dokumen SKPI</span>
+        <li class="nav-item">
+            <a class="nav-link {{ isRouteName('mahasiswa.skpi.index') ? '' : 'collapsed' }}" href="{{ route('mahasiswa.skpi.index') }}">
+                <i class="bi bi-printer"></i>
+                <span>SKPI</span>
             </a>
-        </li> --}}
+        </li>
         <!-- End Kegiatan Nav -->
 
         <li class="nav-heading">Setting</li>

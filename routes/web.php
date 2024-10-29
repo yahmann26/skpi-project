@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Mahasiswa\KegiatanController as MahasiswaKegiatanController;
 use App\Http\Controllers\Mahasiswa\UserController as MahasiswaUserController;
+use App\Http\Controllers\Mahasiswa\SkpiController as MahasiswaSkpiController;
 
 use App\Http\Controllers\Kaprodi\DashboardController as KaprodiDashboardController;
 use App\Http\Controllers\Kaprodi\ProfileController as KaprodiProfileController;
@@ -113,10 +114,12 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     // skpi
     Route::get('skpi', [AdminSkpiController::class, 'index'])->name('admin.skpi.index');
     Route::get('skpi/tambah', [AdminSkpiController::class, 'create'])->name('admin.skpi.create');
+    Route::get('skpi/{id}/lihat', [AdminSkpiController::class, 'show'])->name('admin.skpi.show');
     Route::post('skpi', [AdminSkpiController::class, 'store'])->name('admin.skpi.store');
     Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
     Route::put('skpi/{id}', [AdminSkpiController::class, 'update'])->name('admin.skpi.update');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
+    Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
 });
 
 /* MAHASISWA */
@@ -137,12 +140,14 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
     Route::put('kegiatan/{id}', [MahasiswaKegiatanController::class, 'update'])->name('mahasiswa.kegiatan.update');
     Route::delete('kegiatan/{id}', [MahasiswaKegiatanController::class, 'destroy'])->name('mahasiswa.kegiatan.destroy');
 
-    // // mahasiswa dokumen skpi
-    // Route::get('/dokumen', [MahasiswaDokumenController::class, 'index'])->name('mahasiswa.dokumen.index');
-    // Route::post('/dokumen/request', [MahasiswaDokumenController::class, 'request'])->name('mahasiswa.dokumen.request');
+    // SKPI
 
-    // // mahasiswa request skpi
-    // Route::get('/pengajuan', [MahasiswaPengajuanController::class, 'index'])->name('mahasiswa.pengajuan.index');
+    Route::get('skpi', [MahasiswaSkpiController::class, 'index'])->name('mahasiswa.skpi.index');
+    Route::get('skpi/tambah', [MahasiswaSkpiController::class, 'create'])->name('mahasiswa.skpi.create');
+    Route::post('skpi', [MahasiswaSkpiController::class, 'store'])->name('mahasiswa.skpi.store');
+    Route::get('skpi/{id}/ubah', [MahasiswaSkpiController::class, 'edit'])->name('mahasiswa.skpi.edit');
+    Route::put('skpi/{id}', [MahasiswaSkpiController::class, 'update'])->name('mahasiswa.skpi.update');
+    Route::delete('skpi/{id}', [MahasiswaSkpiController::class, 'destroy'])->name('mahasiswa.skpi.destroy');
 });
 
 

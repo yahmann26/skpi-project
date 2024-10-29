@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('skpi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mahasiswa')->constrained('mahasiswa', 'id')->cascadeOnDelete();
-            $table->string('nomor');
+            $table->foreignId('mahasiswa_id')->constrained('mahasiswa', 'id')->cascadeOnDelete();
+            $table->string('nomor')->nullable();
             $table->date('tanggal');
-            $table->string('file', 255);
+            $table->string('status')->default('pengajuan');
             $table->timestamps();
         });
     }
