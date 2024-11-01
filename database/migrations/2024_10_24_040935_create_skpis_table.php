@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('mahasiswa_id')->constrained('mahasiswa', 'id')->cascadeOnDelete();
             $table->string('nomor')->nullable();
-            $table->date('tanggal');
+            $table->date('tanggal')->nullable();
             $table->string('status')->default('pengajuan');
             $table->timestamps();
         });

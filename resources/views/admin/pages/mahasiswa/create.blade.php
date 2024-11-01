@@ -61,7 +61,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" name="email" id="email"
                                     class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
@@ -70,7 +70,16 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
+                                <label for="no_ijazah" class="form-label">No Ijazah</label>
+                                <input type="text" name="no_ijazah" id="no_ijazah"
+                                    class="form-control @error('no_ijazah') is-invalid @enderror" value="{{ old('no_ijazah') }}">
+                                @error('no_ijazah')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
                                 <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
                                 <input type="text" name="tempat_lahir" id="tempat_lahir"
                                     class="form-control @error('tempat_lahir') is-invalid @enderror"
@@ -80,7 +89,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
                                 <input type="date" name="tgl_lahir" id="tgl_lahir"
                                     class="form-control @error('tgl_lahir') is-invalid @enderror"

@@ -13,6 +13,7 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         $user = Auth::user();
+        
         return view('mahasiswa.pages.user.profile', compact('user'));
     }
 

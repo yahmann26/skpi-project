@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('kaprodi.layout.app')
 
 @section('title', 'Lihat SKPI')
 
@@ -11,7 +11,7 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item">SKPI</li>
                 <li class="breadcrumb-item active">Lihat</li>
             </ol>
@@ -25,7 +25,7 @@
                 <div class="card overflow-auto">
                     <div class="card-body">
                         <div class="card-title">
-                            <a href="{{ route('admin.skpi.index') }}" class="btn btn-sm btn-outline-primary"><i
+                            <a href="{{ route('kaprodi.skpi.index') }}" class="btn btn-sm btn-outline-primary"><i
                                     class="bi bi-arrow-left"></i> Kembali</a>
                         </div>
 
@@ -73,7 +73,7 @@
 
                                     {{-- form validasi atau tolak --}}
                                     <form id="updateStatusForm-{{ $skpi->id }}"
-                                        action="{{ route('admin.skpi.update-status', $skpi->id) }}" method="POST">
+                                        action="{{ route('kaprodi.skpi.update-status', $skpi->id) }}" method="POST">
 
                                         @csrf
                                         @method('PUT')
@@ -193,7 +193,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{{ route('admin.skpi.show', $skpi->id) }}', // Pastikan $skpi->id tidak null
+                    url: '{{ route('kaprodi.skpi.show', $skpi->id) }}', // Pastikan $skpi->id tidak null
                     type: 'GET'
                 },
                 columns: [{

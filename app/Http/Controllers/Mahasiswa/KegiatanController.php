@@ -93,7 +93,7 @@ class KegiatanController extends Controller
             'penyelenggara' => 'required',
             'deskripsi' => 'required',
             'pencapaian' => 'required',
-            'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:1024',
+            'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:3072',
         ], [
             'kategori_kegiatan_id.required' => 'Kategori Kegiatan Wajib Dipilih',
             'nama.required' => 'Nama kegiatan harus diisi',
@@ -107,7 +107,7 @@ class KegiatanController extends Controller
             'file_sertifikat.required_if' => 'File sertifikat kegiatan harus diisi jika opsi \'file\' dipilih',
             'file_sertifikat.file' => 'File sertifikat kegiatan tidak valid',
             'file_sertifikat.mimes' => 'File sertifikat kegiatan harus berupa file PDF, JPG, JPEG, PNG',
-            'file_sertifikat.max' => 'File sertifikat kegiatan maksimal 1 MB (1024 KB)',
+            'file_sertifikat.max' => 'File sertifikat kegiatan maksimal 3 MB (3000 KB)',
         ]);
 
         $kegiatan = new kegiatan();

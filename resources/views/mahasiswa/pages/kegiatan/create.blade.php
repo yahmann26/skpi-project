@@ -8,7 +8,7 @@
                 <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}"><i class="bi bi-house-door"></i></a>
                 </li>
                 <li class="breadcrumb-item">Kegiatan</li>
-                <li class="breadcrumb-item active">Edit</li>
+                <li class="breadcrumb-item active">Tambah</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -50,8 +50,7 @@
                                 <div class="input-group mb-3 @error('nama') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
                                     <input type="text" name="nama" class="form-control" aria-describedby="nama-addon"
-                                        value="{{ old('nama') }}" autofocus
-                                        placeholder="Nama Kegiatan">
+                                        value="{{ old('nama') }}" autofocus placeholder="Nama Kegiatan">
                                 </div>
                                 @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -60,8 +59,8 @@
                                 <div class="input-group mb-3 @error('nama_en') is-invalid @enderror">
                                     <span class="input-group-text">EN</span>
                                     <input type="text" name="nama_en" class="form-control"
-                                        aria-describedby="nama_en-addon" value="{{ old('nama_en') }}"
-                                        autofocus placeholder="Nama Kegiatan (english)">
+                                        aria-describedby="nama_en-addon" value="{{ old('nama_en') }}" autofocus
+                                        placeholder="Nama Kegiatan (english)">
                                 </div>
                                 @error('nama_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -105,8 +104,7 @@
                             <div class="mb-3">
                                 <label for="deskripsi" class="form-label">Deskripsi<span
                                         class="text-danger">*</span></label>
-                                <textarea name="deskripsi" id="deskripsi"
-                                    class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi') }}</textarea>
+                                <textarea name="deskripsi" id="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi') }}</textarea>
                                 @error('deskripsi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -115,7 +113,9 @@
                             <div class="mb-3">
                                 <label for="file_sertifikat" class="col-sm-2 col-form-label">Bukti Sertifikat</label>
                                 <div class="col-sm-12">
-                                    <input class="form-control" type="file" id="file_sertifikat" name="file_sertifikat">
+                                    <input class="form-control" type="file" id="file_sertifikat"
+                                        name="file_sertifikat">
+                                        <small class="text-danger">Maksimal ukuran file: 3 MB</small>
                                 </div>
                             </div>
 
@@ -144,16 +144,6 @@
                             <hr class="my-4">
 
                             <div class="mb-3">
-                                <div class="alert alert-info">
-                                    <strong>Info!</strong> Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
-                                    atau
-                                    dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
-                                    Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
-                                    Admin yang akan ditampilkan.
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
 
@@ -169,11 +159,8 @@
                         <hr class="my-3">
                         <div class="alert alert-info">
                             <strong>Info!</strong>
-                            <br>Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
-                            atau
-                            dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
-                            Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
-                            Admin yang akan ditampilkan.
+                            <br>Pilih Kategori Kegiatan<br> Sesuaikan Nama Kegiatan Dengan Kategori Kegiatan !!<br><br>
+                            <b>Hanya Kegiatan yang Lolos Validasi yang akan ditampilkan di SKPI</b>
                         </div>
                     </div>
                 </div>

@@ -21,6 +21,7 @@ use App\Http\Controllers\Kaprodi\DashboardController as KaprodiDashboardControll
 use App\Http\Controllers\Kaprodi\ProfileController as KaprodiProfileController;
 use App\Http\Controllers\Kaprodi\ProdiController as KaprodiProdiController;
 use App\Http\Controllers\Kaprodi\KegiatanController as KaprodiKegiatanController;
+use App\Http\Controllers\Kaprodi\SkpiController as KaprodiSkpiController;
 
 
 use App\Http\Controllers\ProfileController;
@@ -117,9 +118,10 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('skpi/{id}/lihat', [AdminSkpiController::class, 'show'])->name('admin.skpi.show');
     Route::post('skpi', [AdminSkpiController::class, 'store'])->name('admin.skpi.store');
     Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
-    Route::put('skpi/{id}', [AdminSkpiController::class, 'update'])->name('admin.skpi.update');
+    // Route::put('skpi/{id}', [AdminSkpiController::class, 'update'])->name('admin.skpi.update');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
     Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
+    Route::put('skpi/{id}/status', [AdminSkpiController::class, 'updateStatus'])->name('admin.skpi.update-status');
 });
 
 /* MAHASISWA */
@@ -140,14 +142,14 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
     Route::put('kegiatan/{id}', [MahasiswaKegiatanController::class, 'update'])->name('mahasiswa.kegiatan.update');
     Route::delete('kegiatan/{id}', [MahasiswaKegiatanController::class, 'destroy'])->name('mahasiswa.kegiatan.destroy');
 
+
     // SKPI
 
     Route::get('skpi', [MahasiswaSkpiController::class, 'index'])->name('mahasiswa.skpi.index');
-    Route::get('skpi/tambah', [MahasiswaSkpiController::class, 'create'])->name('mahasiswa.skpi.create');
+    Route::get('skpi/status', [MahasiswaSkpiController::class, 'checkSkpiStatus'])->name('mahasiswa.skpi.status');
+    Route::get('skpi/create', [MahasiswaSkpiController::class, 'create'])->name('mahasiswa.skpi.create');
+    Route::get('skpi/lihat', [MahasiswaSkpiController::class, 'show'])->name('mahasiswa.skpi.show');
     Route::post('skpi', [MahasiswaSkpiController::class, 'store'])->name('mahasiswa.skpi.store');
-    Route::get('skpi/{id}/ubah', [MahasiswaSkpiController::class, 'edit'])->name('mahasiswa.skpi.edit');
-    Route::put('skpi/{id}', [MahasiswaSkpiController::class, 'update'])->name('mahasiswa.skpi.update');
-    Route::delete('skpi/{id}', [MahasiswaSkpiController::class, 'destroy'])->name('mahasiswa.skpi.destroy');
 });
 
 
@@ -182,12 +184,15 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::get('/prodi/{id}/edit-cpl', [KaprodiProdiController::class, 'editCpl'])->name('kaprodi.prodi.edit-cpl');
     Route::put('/prodi/{id}/cpl', [KaprodiProdiController::class, 'updateCpl'])->name('kaprodi.prodi.update-cpl');
 
-    // // mahasiswa dokumen skpi
-    // Route::get('/dokumen', [MahasiswaDokumenController::class, 'index'])->name('mahasiswa.dokumen.index');
-    // Route::post('/dokumen/request', [MahasiswaDokumenController::class, 'request'])->name('mahasiswa.dokumen.request');
-
-    // // mahasiswa request skpi
-    // Route::get('/pengajuan', [MahasiswaPengajuanController::class, 'index'])->name('mahasiswa.pengajuan.index');
+    // SKPI
+    Route::get('skpi', [KaprodiSkpiController::class, 'index'])->name('kaprodi.skpi.index');
+    Route::get('skpi/{id}/lihat', [KaprodiSkpiController::class, 'show'])->name('kaprodi.skpi.show');
+    Route::post('skpi', [KaprodiSkpiController::class, 'store'])->name('kaprodi.skpi.store');
+    Route::get('skpi/{id}/ubah', [KaprodiSkpiController::class, 'edit'])->name('kaprodi.skpi.edit');
+    // Route::put('skpi/{id}', [KaprodiSkpiController::class, 'update'])->name('kaprodi.skpi.update');
+    Route::get('skpi/cetak/{id}', [KaprodiSkpiController::class, 'cetak'])->name('kaprodi.skpi.cetak');
+    Route::put('skpi/{id}/status', [KaprodiSkpiController::class, 'updateStatus'])->name('kaprodi.skpi.update-status');
+    Route::delete('skpi/{id}', [KaprodiSkpiController::class, 'destroy'])->name('kaprodi.skpi.destroy');
 });
 
 Route::middleware('auth')->group(function () {

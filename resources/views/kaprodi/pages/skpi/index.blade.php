@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('kaprodi.layout.app')
 
 @section('title', 'SKPI')
 
@@ -10,7 +10,7 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item ">User</li>
                 <li class="breadcrumb-item ">Skpi</li>
                 <li class="breadcrumb-item active">List</li>
@@ -28,8 +28,8 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data SKPI</div>
-                            <a href="{{ route('admin.skpi.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a>
+                            {{-- <a href="{{ route('kaprodi.skpi.create') }}" class="btn btn-sm btn-primary"><i
+                                    class="bi bi-plus"></i> Tambah</a> --}}
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
@@ -38,7 +38,7 @@
                                     <th width = "5%">No</th>
                                     <th width = "10%">NIM</th>
                                     <th width = "20%">Nama Mahasiswa</th>
-                                    <th width = "20%">Program Studi</th>
+                                    <th width = "20%">No Ijazah</th>
                                     <th width = "20%">Nomor SKPI</th>
                                     <th width = "10%">Status</th>
                                     <th width = "15%">Aksi</th>
@@ -65,7 +65,7 @@
         function deleteskpi(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 $.ajax({
-                    url: 'admin/skpi/' + id,
+                    url: 'kaprodi/skpi/' + id,
                     type: 'DELETE',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
@@ -86,7 +86,7 @@
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.skpi.index') }}",
+                ajax: "{{ route('kaprodi.skpi.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -100,8 +100,8 @@
                         name: 'nama'
                     },
                     {
-                        data: 'prodi',
-                        name: 'prodi'
+                        data: 'no_ijazah',
+                        name: 'no_ijazah'
                     },
                     {
                         data: 'nomor',

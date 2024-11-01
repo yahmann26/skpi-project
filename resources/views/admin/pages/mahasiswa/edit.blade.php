@@ -72,10 +72,22 @@
                             {{-- page emial mahasiswa --}}
                             <div class="row mb-3">
                                 <label for="email" class="col-sm-2 col-form-label">Email Mahasiswa</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-4">
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
                                         name="email" value="{{ $mahasiswa->user->email }}" id="email">
                                     @error('email')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
+
+                                <label for="inputText" class="col-sm-2 col-form-label">No Ijazah</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control @error('no_ijazah') is-invalid @enderror"
+                                        name="no_ijazah" value="{{ $mahasiswa->no_ijazah }}" id="no_ijazah">
+                                    @error('no_ijazah')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>

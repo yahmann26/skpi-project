@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Mahasiswa;
 
-use App\Http\Controllers\Controller;
+use App\Models\Pt;
 use App\Models\Skpi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SkpiController extends Controller
 {
@@ -58,7 +59,15 @@ class SkpiController extends Controller
         return view('mahasiswa.pages.skpi.index');
     }
 
-    public function create() {
+    public function store(Request $request)
+    {
+        $skpi = new Skpi();
+        $skpi->mahasiswa_id = Auth::user()->mahasiswa->id;
 
+        $skpi->save();
+
+        // dd($cpl);
+
+        return response()->json(['success' => true, 'message' => 'SKPI berhasil diajukan.']);
     }
 }
