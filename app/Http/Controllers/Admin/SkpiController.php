@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Pt;
+use Dompdf\Dompdf;
 use App\Models\Skpi;
+use App\Models\Kegiatan;
+use Barryvdh\DomPDF\PDF;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use  App\Helper\Skpi as HelperSkpi;
 use App\Http\Controllers\Controller;
-use App\Models\Kegiatan;
-use App\Models\Pt;
 
 class SkpiController extends Controller
 {
@@ -57,7 +60,7 @@ class SkpiController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.skpi.edit', $row->id);
                     $deleteUrl = route('admin.mahasiswa.destroy', $row->id);
-                    $cetakSkpi = route('admin.skpi.cetak', $row->id);
+                    $cetakSkpi = route('admin.skpi.cetakPdf', $row->id);
                     $showSkpi = route('admin.skpi.show', $row->id); // Adjust this route as needed
 
                     // Check the validation status
@@ -143,11 +146,82 @@ class SkpiController extends Controller
         $cpl = json_decode($prodi->kualifikasi_cpl, true);
         $jenjangPendidikan = $prodi->jenjangPendidikan;
         $kegiatan = $skpi->mahasiswa->kegiatan;
+        $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
+        $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
+        $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
+        $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
+        $logoUniv = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_universitas'));
 
         // dd($cpl);
 
-        return view('admin.pages.skpi.cetak', compact('skpi', 'mahasiswa', 'prodi', 'jenjangPendidikan', 'kegiatan', 'pt', 'cpl'));
+        return view('admin.pages.skpi.cetak', compact('skpi', 'mahasiswa', 'prodi', 'jenjangPendidikan', 'kegiatan', 'pt', 'cpl', 'namaUniv', 'namaUnivEn', 'ttd', 'nidn', 'logoUniv'));
     }
+
+    public function cetakPdf($id)
+    {
+        $pt = Pt::where('id', 1)->first();
+
+        $skpi = Skpi::with([
+            'mahasiswa.prodi.jenjangPendidikan',
+            'mahasiswa.kegiatan' => function ($query) {
+                $query->where('status', 'validasi');
+            }
+        ])->find($id);
+
+        if (!$skpi) {
+            return redirect()->back()->with('error', 'SKPI not found');
+        }
+
+        $mahasiswa = $skpi->mahasiswa;
+        $prodi = $mahasiswa->prodi;
+        $cpl = json_decode($prodi->kualifikasi_cpl, true);
+        $jenjangPendidikan = $prodi->jenjangPendidikan;
+        $kegiatan = $mahasiswa->kegiatan;
+        $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
+        $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
+        $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
+        $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
+        $logoUniv = asset('images/unsiq.png');
+        $data = [
+            'pt' => $pt,
+            'skpi' => $skpi,
+            'mahasiswa' => $mahasiswa,
+            'prodi' => $prodi,
+            'cpl' => $cpl,
+            'jenjangPendidikan' => $jenjangPendidikan,
+            'kegiatan' => $kegiatan,
+            'namaUniv' => $namaUniv,
+            'namaUnivEn' => $namaUnivEn,
+            'ttd' => $ttd,
+            'nidn' => $nidn,
+            'logoUniv' => $logoUniv,
+        ];
+
+        $pdf = app('dompdf.wrapper')->loadView('admin.pages.skpi.cetakPdf', $data);
+
+        return $pdf->stream();
+        // $logoPath = public_path(HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_universitas')));
+
+        // $data = [
+        //     'title' => '',
+        //     'content' => '',
+        //     'logoUniv' =>$logoPath
+        // ];
+
+        // // dd($data);
+
+        // // Mengatur ukuran kertas dan margin
+        // $pdf = app('dompdf.wrapper')->loadView('admin.pages.skpi.cetakPdf', $data);
+        // $pdf->setPaper('A4', 'portrait');
+        // $pdf->set_option('margin-top', 3);
+        // $pdf->set_option('margin-bottom', 3);
+        // $pdf->set_option('margin-left', 3);
+        // $pdf->set_option('margin-right', 3);
+
+        // return $pdf->stream();
+    }
+
+
 
     public function updateStatus(Request $request, $id)
     {

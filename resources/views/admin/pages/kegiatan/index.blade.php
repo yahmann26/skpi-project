@@ -25,7 +25,7 @@
     </div>
 
 
-    <section class="section dashboard">     
+    <section class="section dashboard">
         <div class="row">
             <div class="col-12">
                 <div class="card overflow-auto">
@@ -34,8 +34,6 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data Kegiatan</div>
-                            <a href="{{ route('admin.kegiatan.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a>
                         </div>
 
                         <table class="table table-bordered table-striped datatable">

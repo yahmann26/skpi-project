@@ -243,13 +243,13 @@ class PengaturanController extends Controller
             ]
         ]);
 
-        $namaPenandatangan = $request->input('nama_pendandatangan');
+        $namaPenandatangan = $request->input('nama_penandatangan');
         $nipPenandatangan = $request->input('nip_penandatangan');
         $jabatanPenandatangan = $request->input('jabatan_penandatangan');
         $gambarTandatanganCap = $request->file('gambar_tandatangan_cap');
 
         $dataPengaturan = [
-            'nama_pendandatangan' => $namaPenandatangan,
+            'nama_penandatangan' => $namaPenandatangan,
             'nip_penandatangan' => $nipPenandatangan,
             'jabatan_penandatangan' => $jabatanPenandatangan,
             'gambar_tandatangan_cap' => Skpi::getSettingByName('gambar_tandatangan_cap'),

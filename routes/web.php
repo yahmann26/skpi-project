@@ -23,8 +23,6 @@ use App\Http\Controllers\Kaprodi\ProdiController as KaprodiProdiController;
 use App\Http\Controllers\Kaprodi\KegiatanController as KaprodiKegiatanController;
 use App\Http\Controllers\Kaprodi\SkpiController as KaprodiSkpiController;
 
-
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -51,7 +49,6 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('jenjang/tambah', [AdminJenjangController::class, 'create'])->name('admin.jenjang.create');
     Route::post('jenjang', [AdminJenjangController::class, 'store'])->name('admin.jenjang.store');
     Route::get('jenjang/{id}/ubah', [AdminJenjangController::class, 'edit'])->name('admin.jenjang.edit');
-    Route::get('jenjang/{id}/lihat', [AdminJenjangController::class, 'show'])->name('admin.jenjang.show');
     Route::put('jenjang/{id}', [AdminJenjangController::class, 'update'])->name('admin.jenjang.update');
     Route::delete('jenjang/{id}', [AdminJenjangController::class, 'destroy'])->name('admin.jenjang.destroy');
 
@@ -78,7 +75,6 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
 
     // kegiatan
     Route::get('kegiatan', [AdminKegiatanController::class, 'index'])->name('admin.kegiatan.index');
-    Route::get('kegiatan/tambah', [AdminKegiatanController::class, 'create'])->name('admin.kegiatan.create');
     Route::post('kegiatan', [AdminKegiatanController::class, 'store'])->name('admin.kegiatan.store');
     Route::get('kegiatan/{id}/ubah', [AdminKegiatanController::class, 'edit'])->name('admin.kegiatan.edit');
     Route::get('kegiatan/{id}/lihat', [AdminKegiatanController::class, 'show'])->name('admin.kegiatan.show');
@@ -121,6 +117,7 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     // Route::put('skpi/{id}', [AdminSkpiController::class, 'update'])->name('admin.skpi.update');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
     Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
+    Route::get('skpi/cetakPdf/{id}', [AdminSkpiController::class, 'cetakPdf'])->name('admin.skpi.cetakPdf');
     Route::put('skpi/{id}/status', [AdminSkpiController::class, 'updateStatus'])->name('admin.skpi.update-status');
 });
 
@@ -146,8 +143,8 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
     // SKPI
 
     Route::get('skpi', [MahasiswaSkpiController::class, 'index'])->name('mahasiswa.skpi.index');
-    Route::get('skpi/status', [MahasiswaSkpiController::class, 'checkSkpiStatus'])->name('mahasiswa.skpi.status');
-    Route::get('skpi/create', [MahasiswaSkpiController::class, 'create'])->name('mahasiswa.skpi.create');
+    Route::get('skpi/cetak', [MahasiswaSkpiController::class, 'cetak'])->name('mahasiswa.skpi.cetak');
+    Route::get('skpi/cetak1', [MahasiswaSkpiController::class, 'cetak1'])->name('mahasiswa.skpi.cetak1');
     Route::get('skpi/lihat', [MahasiswaSkpiController::class, 'show'])->name('mahasiswa.skpi.show');
     Route::post('skpi', [MahasiswaSkpiController::class, 'store'])->name('mahasiswa.skpi.store');
 });
@@ -193,12 +190,6 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::get('skpi/cetak/{id}', [KaprodiSkpiController::class, 'cetak'])->name('kaprodi.skpi.cetak');
     Route::put('skpi/{id}/status', [KaprodiSkpiController::class, 'updateStatus'])->name('kaprodi.skpi.update-status');
     Route::delete('skpi/{id}', [KaprodiSkpiController::class, 'destroy'])->name('kaprodi.skpi.destroy');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';

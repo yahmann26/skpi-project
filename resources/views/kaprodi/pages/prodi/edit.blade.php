@@ -108,6 +108,16 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label for="sk_akreditasi" class="form-label">SK Akreditasi</label>
+                                    <input type="text" name="sk_akreditasi" id="sk_akreditasi"
+                                        class="form-control @error('sk_akreditasi') is-invalid @enderror"
+                                        value="{{ $detailData->sk_akreditasi }}" placeholder="Misal: A, B, dsb">
+                                    @error('sk_akreditasi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="sistem_penilaian" class="form-label">Sistem Penilaian <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group mb-3 @error('sistem_penilaian') is-invalid @enderror">

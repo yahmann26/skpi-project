@@ -48,23 +48,17 @@ class Skpi
 
     static function getAssetUrl($path)
     {
-
-        // is valid url
         if (filter_var($path, FILTER_VALIDATE_URL)) {
             return $path;
         }
 
-        // if not valid url?
-
-        // check if path is exists in storage
         if (Storage::exists('public/' . $path)) {
-            return url(Storage::url('public/' . $path));
+            return url('storage/' . $path);
         }
 
-
-        // if not storage
         return asset($path);
     }
+
 
     /**
      * @param $date

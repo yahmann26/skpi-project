@@ -83,8 +83,8 @@
                         name: 'status'
                     },
                     {
-                        data: 'aksi',
-                        name: 'aksi',
+                        data: 'action',
+                        name: 'action',
                         orderable: false,
                         searchable: false
                     }

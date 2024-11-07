@@ -75,6 +75,7 @@ class ProdiController extends Controller
             'sistem_penilaian' => 'required',
             'sistem_penilaian_en' => 'required',
             'akreditasi' => 'required',
+            'Sk_akreditasi' => 'required',
             'gelar' => 'required',
             'gelar_en' => 'required',
         ], [
@@ -88,6 +89,7 @@ class ProdiController extends Controller
             'bhs_pengantar_kuliah.required' => 'Sistem Penilaian Harus Diisi',
             'bhs_pengantar_kuliah_en.required' => 'Sistem Penilaian Harus Diisi',
             'akreditasi.required' => 'Akreditasi Harus Diisi',
+            'sk_akreditasi.required' => 'SK Akreditasi Harus Diisi',
             'gelar.required' => 'Gelar Harus Diisi',
             'gelar_en.required' => 'Gelar Harus Diisi',
         ]);
@@ -102,6 +104,7 @@ class ProdiController extends Controller
             'sistem_penilaian' => $request->sistem_penilaian,
             'sistem_penilaian_en' => $request->sistem_penilaian_en,
             'akreditasi' => $request->akreditasi,
+            'sk_akreditasi' => $request->sk_akreditasi,
             'gelar' => $request->gelar,
             'gelar_en' => $request->gelar_en
         ]);
@@ -146,6 +149,7 @@ class ProdiController extends Controller
             'nama_en.required' => 'Nama program studi (English) harus diisi',
             'nama_en.unique' => 'Nama program studi (English) sudah terdaftar',
             'akreditasi.required' => 'Akreditasi harus diisi',
+            'sk_akreditasi.required' => 'SK Akreditasi harus diisi',
             'gelar.required' => 'Gelar harus diisi',
             'gelar_en.required' => 'Gelar (English) harus diisi'
         ]);
@@ -158,6 +162,7 @@ class ProdiController extends Controller
             'bhs_pengantar_kuliah' => $request->bhs_pengantar_kuliah,
             'bhs_pengantar_kuliah_en' => $request->bhs_pengantar_kuliah_en,
             'akreditasi' => $request->akreditasi,
+            'sk_akreditasi' => $request->sk_akreditasi,
             'sistem_penilaian' => $request->sistem_penilaian,
             'sistem_penilaian_en' => $request->sistem_penilaian_en,
             'gelar' => $request->gelar,

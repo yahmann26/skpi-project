@@ -16,41 +16,36 @@
     <section class="section dashboard">
         <div class="row">
 
-            <h1>Selamat Datang {{ Auth::user()->kaprodi->nama }} !!!</h1>
-            {{-- <div class="col-lg-12 col-md-8 col-sm-12 ">
+            {{-- <h1>Selamat Datang {{ Auth::user()->kaprodi->nama }} !!!</h1> --}}
+            <div class="col-lg-12 col-md-8 col-sm-12 ">
                 <div class="row">
-                    @include('admin.components.card', [
-                        'title' => 'Total dosen',
+                    @include('kaprodi.components.card', [
+                        'title' => 'Total Mahasiswa',
                         'icon' => 'bi bi-person-fill',
-                        'count' => $jmlMahasiswa,
+                        'count' => $jmlMhs,
                         'subtitle' => 'Mahasiswa',
                     ])
-                    @include('admin.components.card', [
-                        'title' => 'Total Dosen',
-                        'icon' => 'bi bi-person',
-                        'count' => $jmlDosen,
-                        'subtitle' => 'Dosen',
-                    ])
-                    @include('admin.components.card', [
-                        'title' => 'Total Prodi',
-                        'icon' => 'bi bi-bookmarks',
-                        'count' => $jmlProdi,
-                        'subtitle' => 'Program Studi',
-                    ])
-                    @include('admin.components.card', [
-                        'title' => 'Total Kategori kegiatan',
+                    @include('kaprodi.components.card', [
+                        'title' => 'Total Pengajuan Kegiatan',
                         'icon' => 'bi bi-journals',
-                        'count' => $jmlKategori,
-                        'subtitle' => 'Kategori',
-                    ])
-                    @include('admin.components.card', [
-                        'title' => 'Total Data Kegiatan',
-                        'icon' => 'bi bi-journal-text',
                         'count' => $jmlKegiatan,
-                        'subtitle' => 'Data Kegiatan',
+                        'subtitle' => 'Kegiatan',
+                    ])
+
+                    @include('kaprodi.components.card', [
+                        'title' => 'Total Kegiatan Divalidasi',
+                        'icon' => 'bi bi-journal-text',
+                        'count' => $jmlKegiatanValidasi,
+                        'subtitle' => 'Kegiatan',
+                    ])
+                    @include('kaprodi.components.card', [
+                        'title' => 'Total Kegiatan Ditolak',
+                        'icon' => 'bi bi-journal-x',
+                        'count' => $jmlKegiatanTolak,
+                        'subtitle' => ' Kegiatan',
                     ])
                 </div>
-            </div> --}}
+            </div>
         </div>
     </section>
 

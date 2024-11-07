@@ -1,29 +1,31 @@
 <?php
 
 use App\Helper\Skpi;
+use Illuminate\Support\Facades\Route;
 
 if (!function_exists('isRouteName')) {
     function isRouteName($routeNames)
     {
+        // Get the current route name
+        $currentRouteName = Route::currentRouteName();
+
+        // Check if $routeNames is an array
         if (is_array($routeNames)) {
-            foreach ($routeNames as $routeName) {
-                if (Route::currentRouteName() == $routeName) {
-                    return true;
-                }
-            }
-        } else {
-            if (Route::currentRouteName() == $routeNames) {
-                return true;
-            }
+            return in_array($currentRouteName, $routeNames);
         }
+
+        // Check if it's a single route name
+        return $currentRouteName === $routeNames;
     }
 }
 
+// Uncomment and use these lines as needed
 // $logoAplikasiUrl = Skpi::getAssetUrl(Skpi::getSettingByName('logo_universitas'));
 // $namaAplikasi = Skpi::getSettingByName('nama_aplikasi');
 // $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

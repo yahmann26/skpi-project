@@ -34,11 +34,9 @@ class JenjangController extends Controller
                     '<div>' . $row->jenjang_lanjutan . '</div><div class="fst-italic small text-secondary">' . $row->jenjang_lanjutan_en . '</div>'
                 )
                 ->addColumn('action', function ($row) {
-                    $showUrl = route('admin.jenjang.show', $row->id);
                     $editUrl = route('admin.jenjang.edit', $row->id);
                     $deleteUrl = route('admin.jenjang.destroy', $row->id);
                     return '
-                    <a href="' . $showUrl . '" class="show btn btn-light btn-sm"><i class="bi bi-search"></i></a>
                     <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                     <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
                         ' . csrf_field() . '

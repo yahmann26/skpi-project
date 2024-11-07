@@ -19,9 +19,9 @@ if (!function_exists('isRouteName')) {
     }
 }
 
-// $logoAplikasiUrl = Skpi::getAssetUrl(Skpi::getSettingByName('logo_universitas'));
-// $namaAplikasi = Skpi::getSettingByName('nama_aplikasi');
-// $namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
+$logoAplikasiUrl = Skpi::getAssetUrl(Skpi::getSettingByName('logo_aplikasi'));
+$namaAplikasi = Skpi::getSettingByName('nama_aplikasi');
+$namaInstitusiSingkat = Skpi::getSettingByName('nama_universitas_singkat');
 
 ?>
 
@@ -33,7 +33,7 @@ if (!function_exists('isRouteName')) {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Mahasiswa &mdash; @yield('title')</title>
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ $logoAplikasiUrl }}">
 
     <!-- Preconnect and Preload Optimization -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -67,7 +67,7 @@ if (!function_exists('isRouteName')) {
     <!-- Scripts -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
      {{-- sweet alert --}}
