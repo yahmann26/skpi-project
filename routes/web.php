@@ -24,7 +24,6 @@ use App\Http\Controllers\Kaprodi\KegiatanController as KaprodiKegiatanController
 use App\Http\Controllers\Kaprodi\SkpiController as KaprodiSkpiController;
 
 use Illuminate\Support\Facades\Route;
-
 Route::get('/', function () {
     return view('welcome', ['title' => 'SKPI FASTIKOM UNSIQ']);
 })->name('welcome');
@@ -114,10 +113,10 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('skpi/{id}/lihat', [AdminSkpiController::class, 'show'])->name('admin.skpi.show');
     Route::post('skpi', [AdminSkpiController::class, 'store'])->name('admin.skpi.store');
     Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
-    // Route::put('skpi/{id}', [AdminSkpiController::class, 'update'])->name('admin.skpi.update');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
     Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
     Route::get('skpi/cetakPdf/{id}', [AdminSkpiController::class, 'cetakPdf'])->name('admin.skpi.cetakPdf');
+
     Route::put('skpi/{id}/status', [AdminSkpiController::class, 'updateStatus'])->name('admin.skpi.update-status');
 });
 

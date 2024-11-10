@@ -14,7 +14,7 @@
         body {
             font-family: Arial, sans-serif;
             padding: 0;
-            margin: 40mm;
+            margin: 0;
         }
 
         .a4 {
@@ -23,17 +23,16 @@
             box-sizing: border-box;
             margin: 0;
             position: relative;
-            /* Added for positioning header and footer */
         }
     </style>
 
 </head>
 
 <body class="bg-white">
-    <div class="a4 border border-gray-300 p-6">
+    <div class="a4 p-6">
         <div class="flex justify-between items-center mb-2">
             <div class="flex items-center">
-                <img src="{{ $logoUniv }}" alt="University logo" class="mr-0" width="110"
+                <img src="images/unsiq.png" alt="University logo" class="mr-0" width="110"
                     height="110">
                 <div class="text-green-700">
                     <h1 class="text-lg font-bold">UNIVERSITAS <br> SAINS AL-QUR'AN</h1>

@@ -60,7 +60,6 @@
 
                                         <input type="hidden" name="status" id="status-{{ $kegiatan->id }}" value="">
 
-                                        <!-- Cek status saat ini untuk menentukan visibilitas tombol -->
                                         @if ($kegiatan->status === 'validasi' || $kegiatan->status === 'tolak')
                                             {{-- <p>Status : {{ $kegiatan->status }}</p> --}}
                                         @else
@@ -125,7 +124,6 @@
                                             <td>:</td>
                                             <td>
                                                 @if ($kegiatan->file_sertifikat)
-                                                    <!-- Tombol untuk membuka modal dan melihat file sertifikat -->
                                                     <button type="button" class="btn btn-sm btn-success"
                                                         data-bs-toggle="modal" data-bs-target="#previewModal"
                                                         data-url="{{ asset('storage/' . $kegiatan->file_sertifikat) }}"
@@ -161,7 +159,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- Konten akan dimuat berdasarkan tipe file (gambar/PDF) -->
                         <div id="filePreviewContent"></div>
                     </div>
                     <div class="modal-footer">
@@ -183,14 +180,12 @@
             var filePreviewContent = document.getElementById('filePreviewContent');
 
             previewModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget; // Tombol yang diklik
-                var fileUrl = button.getAttribute('data-url'); // URL file sertifikat
-                var fileType = button.getAttribute('data-type'); // Tipe file (pdf/jpg/png)
+                var button = event.relatedTarget;
+                var fileUrl = button.getAttribute('data-url');
+                var fileType = button.getAttribute('data-type');
 
-                // Kosongkan konten sebelumnya
                 filePreviewContent.innerHTML = '';
 
-                // Render preview berdasarkan tipe file
                 if (fileType === 'pdf') {
                     filePreviewContent.innerHTML = '<iframe src="' + fileUrl +
                         '" frameborder="0" width="100%" height="750px"></iframe>';
@@ -218,7 +213,6 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Jika dikonfirmasi, set nilai status dan submit form
                     document.getElementById('status-' + id).value = action;
                     document.getElementById('updateStatusForm-' + id).submit();
                 }

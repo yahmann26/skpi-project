@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Pt;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Models\Skpi;
-use App\Models\Kegiatan;
-use Barryvdh\DomPDF\PDF;
-use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
 use  App\Helper\Skpi as HelperSkpi;
 use App\Http\Controllers\Controller;
@@ -92,33 +91,33 @@ class SkpiController extends Controller
         return view('admin.pages.skpi.index');
     }
 
-    public function show(Request $request, string $id)
-    {
-        $mahasiswa = Mahasiswa::all();
-        $skpi = Skpi::with('mahasiswa.prodi.jenjangPendidikan')->findOrFail($id);
+    // public function show(Request $request, string $id)
+    // {
+    //     $mahasiswa = Mahasiswa::all();
+    //     $skpi = Skpi::with('mahasiswa.prodi.jenjangPendidikan')->findOrFail($id);
 
-        // dd($skpi);
+    //     // dd($skpi);
 
-        if ($request->ajax()) {
-            $kegiatan = $skpi->mahasiswa->kegiatan()->with('kategoriKegiatan')
-                ->where('status', 'validasi')
-                ->get();
+    //     if ($request->ajax()) {
+    //         $kegiatan = $skpi->mahasiswa->kegiatan()->with('kategoriKegiatan')
+    //             ->where('status', 'validasi')
+    //             ->get();
 
-            return DataTables::of($kegiatan)
-                ->addIndexColumn()
-                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A') // Gunakan null coalescing untuk menghindari kesalahan
-                ->addColumn('nama', function ($row) {
-                    return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
-                })
-                ->addColumn('pencapaian', function ($row) {
-                    return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
-                })
-                ->rawColumns(['kategori', 'nama', 'pencapaian'])
-                ->make(true);
-        }
+    //         return DataTables::of($kegiatan)
+    //             ->addIndexColumn()
+    //             ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A') // Gunakan null coalescing untuk menghindari kesalahan
+    //             ->addColumn('nama', function ($row) {
+    //                 return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
+    //             })
+    //             ->addColumn('pencapaian', function ($row) {
+    //                 return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
+    //             })
+    //             ->rawColumns(['kategori', 'nama', 'pencapaian'])
+    //             ->make(true);
+    //     }
 
-        return view('admin.pages.skpi.show', compact('mahasiswa', 'skpi'));
-    }
+    //     return view('admin.pages.skpi.show', compact('mahasiswa', 'skpi'));
+    // }
 
     public function cetak($id)
     {
@@ -140,7 +139,6 @@ class SkpiController extends Controller
 
         // dd($skpi);
 
-        // Ambil data yang diperlukan
         $mahasiswa = $skpi->mahasiswa;
         $prodi = $mahasiswa->prodi;
         $cpl = json_decode($prodi->kualifikasi_cpl, true);
@@ -181,7 +179,10 @@ class SkpiController extends Controller
         $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
         $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
         $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
-        $logoUniv = asset('images/unsiq.png');
+
+        // $logoUniv = asset('images/unsiq.png');
+        $imagePath = public_path('images/unsiq.png');
+        $logoUniv = base64_encode(file_get_contents($imagePath));
         $data = [
             'pt' => $pt,
             'skpi' => $skpi,
@@ -198,30 +199,15 @@ class SkpiController extends Controller
         ];
 
         $pdf = app('dompdf.wrapper')->loadView('admin.pages.skpi.cetakPdf', $data);
+        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
 
         return $pdf->stream();
-        // $logoPath = public_path(HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_universitas')));
-
-        // $data = [
-        //     'title' => '',
-        //     'content' => '',
-        //     'logoUniv' =>$logoPath
-        // ];
-
-        // // dd($data);
-
-        // // Mengatur ukuran kertas dan margin
-        // $pdf = app('dompdf.wrapper')->loadView('admin.pages.skpi.cetakPdf', $data);
-        // $pdf->setPaper('A4', 'portrait');
-        // $pdf->set_option('margin-top', 3);
-        // $pdf->set_option('margin-bottom', 3);
-        // $pdf->set_option('margin-left', 3);
-        // $pdf->set_option('margin-right', 3);
-
-        // return $pdf->stream();
     }
 
-
+    public function show()
+    {
+        return view('admin.pages.skpi.cetakPdf');
+    }
 
     public function updateStatus(Request $request, $id)
     {
