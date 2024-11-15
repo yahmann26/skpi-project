@@ -28,8 +28,7 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data SKPI</div>
-                            <a href="{{ route('admin.skpi.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a>
+
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
@@ -56,7 +55,6 @@
 @endsection
 
 @push('script')
-
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>

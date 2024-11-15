@@ -34,14 +34,14 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('dashboard', [AdminDasboardController::class, 'index'])->name('admin.dashboard');
 
     // pengaturan
-    Route::get('/pengaturan', [AdminPengaturanController::class, 'index'])->name('admin.pengaturan.index');
-    Route::post('/pengaturan', [AdminPengaturanController::class, 'update'])->name('admin.pengaturan.update');
+    Route::get('pengaturan', [AdminPengaturanController::class, 'index'])->name('admin.pengaturan.index');
+    Route::post('pengaturan', [AdminPengaturanController::class, 'update'])->name('admin.pengaturan.update');
 
     // profile
     Route::get('user/profil', [AdminUserController::class, 'profile'])->name('admin.user.profile');
-    Route::put('/user/profil', [AdminUserController::class, 'updateProfile'])->name('admin.user.update-profile');
-    Route::get('/user/kata-sandi', [AdminUserController::class, 'password'])->name('admin.user.password');
-    Route::put('/user/kata-sandi', [AdminUserController::class, 'updatePassword'])->name('admin.user.update-password');
+    Route::put('user/profil', [AdminUserController::class, 'updateProfile'])->name('admin.user.update-profile');
+    Route::get('user/kata-sandi', [AdminUserController::class, 'password'])->name('admin.user.password');
+    Route::put('user/kata-sandi', [AdminUserController::class, 'updatePassword'])->name('admin.user.update-password');
 
     // jenjang
     Route::get('jenjang', [AdminJenjangController::class, 'index'])->name('admin.jenjang.index');
@@ -52,23 +52,23 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::delete('jenjang/{id}', [AdminJenjangController::class, 'destroy'])->name('admin.jenjang.destroy');
 
     // prodi
-    Route::get('/prodi', [AdminProdiController::class, 'index'])->name('admin.prodi.index');
-    Route::get('/prodi/tambah', [AdminProdiController::class, 'create'])->name('admin.prodi.create');
-    Route::post('/prodi', [AdminProdiController::class, 'store'])->name('admin.prodi.store');
-    Route::get('/prodi/{id}/ubah', [AdminProdiController::class, 'edit'])->name('admin.prodi.edit');
-    Route::put('/prodi/{id}', [AdminProdiController::class, 'update'])->name('admin.prodi.update');
-    Route::delete('/prodi/{id}', [AdminProdiController::class, 'destroy'])->name('admin.prodi.destroy');
+    Route::get('prodi', [AdminProdiController::class, 'index'])->name('admin.prodi.index');
+    Route::get('prodi/tambah', [AdminProdiController::class, 'create'])->name('admin.prodi.create');
+    Route::post('prodi', [AdminProdiController::class, 'store'])->name('admin.prodi.store');
+    Route::get('prodi/{id}/ubah', [AdminProdiController::class, 'edit'])->name('admin.prodi.edit');
+    Route::put('prodi/{id}', [AdminProdiController::class, 'update'])->name('admin.prodi.update');
+    Route::delete('prodi/{id}', [AdminProdiController::class, 'destroy'])->name('admin.prodi.destroy');
 
     // prodi CPL (capaian pembelajaran)
-    Route::get('/prodi/{id}/edit-cpl', [AdminProdiController::class, 'editCpl'])->name('admin.prodi.edit-cpl');
-    Route::put('/prodi/{id}/cpl', [AdminProdiController::class, 'updateCpl'])->name('admin.prodi.update-cpl');
+    Route::get('prodi/{id}/edit-cpl', [AdminProdiController::class, 'editCpl'])->name('admin.prodi.edit-cpl');
+    Route::put('prodi/{id}/cpl', [AdminProdiController::class, 'updateCpl'])->name('admin.prodi.update-cpl');
 
     //kategori kegiatan
     Route::get('kategoriKegiatan', [AdminKategoriKegiatanController::class, 'index'])->name('admin.kategoriKegiatan.index');
     Route::get('kategoriKegiatan/tambah', [AdminKategoriKegiatanController::class, 'create'])->name('admin.kategoriKegiatan.create');
-    Route::post('/kategoriKegiatan', [AdminKategoriKegiatanController::class, 'store'])->name('admin.kategoriKegiatan.store');
-    Route::get('/kategoriKegiatan/{id}/ubah', [AdminKategoriKegiatanController::class, 'edit'])->name('admin.kategoriKegiatan.edit');
-    Route::put('/kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'update'])->name('admin.kategoriKegiatan.update');
+    Route::post('kategoriKegiatan', [AdminKategoriKegiatanController::class, 'store'])->name('admin.kategoriKegiatan.store');
+    Route::get('kategoriKegiatan/{id}/ubah', [AdminKategoriKegiatanController::class, 'edit'])->name('admin.kategoriKegiatan.edit');
+    Route::put('kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'update'])->name('admin.kategoriKegiatan.update');
     Route::delete('/kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'destroy'])->name('admin.kategoriKegiatan.destroy');
 
 
@@ -79,7 +79,7 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('kegiatan/{id}/lihat', [AdminKegiatanController::class, 'show'])->name('admin.kegiatan.show');
     Route::put('kegiatan/{id}/status', [AdminKegiatanController::class, 'updateStatus'])->name('admin.kegiatan.update-status');
     Route::put('kegiatan/{id}', [AdminKegiatanController::class, 'update'])->name('admin.kegiatan.update');
-    Route::delete('/kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
+    Route::delete('kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
 
 
     // Mahasiswa
@@ -109,12 +109,10 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
 
     // skpi
     Route::get('skpi', [AdminSkpiController::class, 'index'])->name('admin.skpi.index');
-    Route::get('skpi/tambah', [AdminSkpiController::class, 'create'])->name('admin.skpi.create');
     Route::get('skpi/{id}/lihat', [AdminSkpiController::class, 'show'])->name('admin.skpi.show');
     Route::post('skpi', [AdminSkpiController::class, 'store'])->name('admin.skpi.store');
     Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
-    Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
     Route::get('skpi/cetakPdf/{id}', [AdminSkpiController::class, 'cetakPdf'])->name('admin.skpi.cetakPdf');
 
     Route::put('skpi/{id}/status', [AdminSkpiController::class, 'updateStatus'])->name('admin.skpi.update-status');
@@ -140,10 +138,8 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
 
 
     // SKPI
-
     Route::get('skpi', [MahasiswaSkpiController::class, 'index'])->name('mahasiswa.skpi.index');
-    Route::get('skpi/cetak', [MahasiswaSkpiController::class, 'cetak'])->name('mahasiswa.skpi.cetak');
-    Route::get('skpi/cetak1', [MahasiswaSkpiController::class, 'cetak1'])->name('mahasiswa.skpi.cetak1');
+    Route::get('skpi/cetakPdf', [MahasiswaSkpiController::class, 'cetakPdf'])->name('mahasiswa.skpi.cetakPdf');
     Route::get('skpi/lihat', [MahasiswaSkpiController::class, 'show'])->name('mahasiswa.skpi.show');
     Route::post('skpi', [MahasiswaSkpiController::class, 'store'])->name('mahasiswa.skpi.store');
 });
@@ -185,8 +181,7 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::get('skpi/{id}/lihat', [KaprodiSkpiController::class, 'show'])->name('kaprodi.skpi.show');
     Route::post('skpi', [KaprodiSkpiController::class, 'store'])->name('kaprodi.skpi.store');
     Route::get('skpi/{id}/ubah', [KaprodiSkpiController::class, 'edit'])->name('kaprodi.skpi.edit');
-    // Route::put('skpi/{id}', [KaprodiSkpiController::class, 'update'])->name('kaprodi.skpi.update');
-    Route::get('skpi/cetak/{id}', [KaprodiSkpiController::class, 'cetak'])->name('kaprodi.skpi.cetak');
+    Route::get('skpi/cetakPdf/{id}', [KaprodiSkpiController::class, 'cetakPdf'])->name('kaprodi.skpi.cetakPdf');
     Route::put('skpi/{id}/status', [KaprodiSkpiController::class, 'updateStatus'])->name('kaprodi.skpi.update-status');
     Route::delete('skpi/{id}', [KaprodiSkpiController::class, 'destroy'])->name('kaprodi.skpi.destroy');
 });

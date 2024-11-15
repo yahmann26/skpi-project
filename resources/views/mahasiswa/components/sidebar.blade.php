@@ -47,7 +47,8 @@
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="bi bi-box-arrow-left"></i> Sign Out
             </a>
-        </li><!-- End Logout Page Nav -->
+        </li>
+        <!-- End Logout Page Nav -->
 
     </ul>
 </aside>

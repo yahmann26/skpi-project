@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use  App\Helper\Skpi as HelperSkpi;
 
 class SkpiController extends Controller
 {
@@ -60,10 +61,9 @@ class SkpiController extends Controller
                 ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('action', function ($row) {
                     $editUrl = route('kaprodi.skpi.edit', $row->id);
-                    $cetakSkpi = route('kaprodi.skpi.cetak', $row->id);
-                    $showSkpi = route('kaprodi.skpi.show', $row->id); // Adjust this route as needed
+                    $cetakSkpi = route('kaprodi.skpi.cetakPdf', $row->id);
+                    $showSkpi = route('kaprodi.skpi.show', $row->id);
 
-                    // Check the validation status
                     if ($row->status === 'validasi') {
                         $actionButtons = '
                             <a href="' . $cetakSkpi . '" class="edit btn btn-light btn-sm"><i class="bi bi-printer"></i></a>
@@ -101,7 +101,7 @@ class SkpiController extends Controller
 
             return DataTables::of($kegiatan)
                 ->addIndexColumn()
-                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A') // Gunakan null coalescing untuk menghindari kesalahan
+                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A')
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
                 })
@@ -122,20 +122,16 @@ class SkpiController extends Controller
             'status' => 'required|in:validasi,tolak',
         ]);
 
-        // Ambil data skpi berdasarkan ID
         $skpi = Skpi::findOrFail($id);
 
-        // Update status skpi
         $skpi->status = $request->status;
 
-        // Jika status validasi, generate nomor otomatis
         if ($request->status === 'validasi') {
-            $skpi->nomor = $this->generateNomor(); // Panggil fungsi untuk mengenerate nomor
+            $skpi->nomor = $this->generateNomor();
         }
 
         $skpi->save();
 
-        // Cek status dan redirect sesuai kebutuhan
         if ($request->status === 'validasi') {
             return redirect()->route('kaprodi.skpi.index', $skpi->id)->with('success', 'Status SKPI berhasil diperbarui!!! Nomor: ' . $skpi->nomor);
         } elseif ($request->status === 'tolak') {
@@ -145,37 +141,29 @@ class SkpiController extends Controller
 
     private function generateNomor()
     {
-        // Ambil nomor terakhir dari database
         $lastSkpi = Skpi::orderBy('nomor', 'desc')->first();
 
-        // Ambil bagian nomor yang relevan untuk diincrement
         if ($lastSkpi) {
-            // Mengambil bagian angka dari nomor
             preg_match('/\d+/', $lastSkpi->nomor, $matches);
             $nextNomor = isset($matches[0]) ? intval($matches[0]) + 1 : 1;
         } else {
-            $nextNomor = 1; // Jika tidak ada, mulai dari 1
+            $nextNomor = 1;
         }
 
-        // Format nomor dengan padding 4 digit
         $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
 
-        // Cek apakah nomor sudah ada di database
         while (Skpi::where('nomor', $formattedNomor)->exists()) {
             $nextNomor++;
             $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
         }
 
-        return $formattedNomor; // Kembalikan nomor baru
+        return $formattedNomor;
     }
 
-    public function cetak($id)
+    public function cetakPdf($id)
     {
         $pt = Pt::where('id', 1)->first();
 
-        // dd($pt);
-
-        // Ambil data SKPI berdasarkan ID
         $skpi = Skpi::with([
             'mahasiswa.prodi.jenjangPendidikan',
             'mahasiswa.kegiatan' => function ($query) {
@@ -187,17 +175,38 @@ class SkpiController extends Controller
             return redirect()->back()->with('error', 'SKPI not found');
         }
 
-        // dd($skpi);
-
-        // Ambil data yang diperlukan
         $mahasiswa = $skpi->mahasiswa;
         $prodi = $mahasiswa->prodi;
         $cpl = json_decode($prodi->kualifikasi_cpl, true);
         $jenjangPendidikan = $prodi->jenjangPendidikan;
-        $kegiatan = $skpi->mahasiswa->kegiatan;
+        $kegiatan = $mahasiswa->kegiatan;
+        $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
+        $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
+        $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
+        $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
 
-        // dd($cpl);
+        // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
+        $imagePath = public_path('images/unsiq.png');
+        $logoUniv = base64_encode(file_get_contents($imagePath));
 
-        return view('kaprodi.pages.skpi.cetak', compact('skpi', 'mahasiswa', 'prodi', 'jenjangPendidikan', 'kegiatan', 'pt', 'cpl'));
+        $data = [
+            'pt' => $pt,
+            'skpi' => $skpi,
+            'mahasiswa' => $mahasiswa,
+            'prodi' => $prodi,
+            'cpl' => $cpl,
+            'jenjangPendidikan' => $jenjangPendidikan,
+            'kegiatan' => $kegiatan,
+            'namaUniv' => $namaUniv,
+            'namaUnivEn' => $namaUnivEn,
+            'ttd' => $ttd,
+            'nidn' => $nidn,
+            'logoUniv' => $logoUniv,
+        ];
+
+        $pdf = app('dompdf.wrapper')->loadView('kaprodi.pages.skpi.cetakPdf', $data);
+        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+
+        return $pdf->stream();
     }
 }

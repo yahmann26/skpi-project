@@ -17,7 +17,7 @@
             <a class="nav-link {{ isRouteName('kaprodi.prodi.index') ? 'active' : 'collapsed' }}"
                 href="{{ route('kaprodi.prodi.index') }}">
                 <i class="bi bi-book"></i>
-                <span>Prodi</span>
+                <span>Program Studi</span>
             </a>
         </li>
 

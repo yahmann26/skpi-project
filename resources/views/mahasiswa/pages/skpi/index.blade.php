@@ -27,8 +27,12 @@
                     <div class="card-body" style="min-height: 300px">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data SKPI</div>
-                            <a href="#" class="btn btn-sm btn-primary" id="btnAjukan"><i class="bi bi-plus"></i>
-                                Ajukan</a>
+                            @if (!$ajukanSkpi)
+                                <a href="#" class="btn btn-sm btn-primary" id="btnAjukan"><i class="bi bi-plus"></i>
+                                    Ajukan</a>
+                            @else
+                                <span class="badge bg-success"></span>
+                            @endif
                         </div>
                         <table class="table table-bordered table-striped datatable">
                             <thead>
@@ -41,12 +45,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Data akan diisi oleh DataTables -->
+
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div><!-- Akhir Penjualan Terbaru -->
+            </div>
         </div>
     </section>
 @endsection
@@ -63,7 +67,7 @@
             $('.datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('mahasiswa.skpi.index') }}", // URL untuk permintaan AJAX
+                ajax: "{{ route('mahasiswa.skpi.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -97,9 +101,8 @@
         });
 
         $('#btnAjukan').on('click', function(e) {
-            e.preventDefault(); // Mencegah link default
+            e.preventDefault();
 
-            // Tampilkan konfirmasi dengan SweetAlert
             Swal.fire({
                 title: 'Konfirmasi',
                 text: "Apakah Anda yakin ingin mengajukan SKPI?",
@@ -109,18 +112,15 @@
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Jika pengguna memilih "Ya", lakukan AJAX
                     $.ajax({
                         url: "{{ route('mahasiswa.skpi.store') }}",
                         type: 'POST',
                         data: {
-                            _token: '{{ csrf_token() }}', // Token CSRF
+                            _token: '{{ csrf_token() }}',
                         },
                         success: function(response) {
-                            // Tambahkan data baru ke DataTable
                             $('.datatable').DataTable().ajax.reload();
 
-                            // Tampilkan notifikasi sukses jika perlu
                             Swal.fire(
                                 'Sukses!',
                                 'Data berhasil diajukan!',
@@ -128,7 +128,6 @@
                             );
                         },
                         error: function(xhr) {
-                            // Tampilkan error jika ada
                             Swal.fire(
                                 'Error!',
                                 'Terjadi kesalahan: ' + xhr.responseText,
@@ -137,7 +136,6 @@
                         }
                     });
                 } else {
-                    // Jika pengguna memilih "Tidak"
                     Swal.fire(
                         'Dibatalkan',
                         'Pengajuan dibatalkan.',
@@ -146,29 +144,5 @@
                 }
             });
         });
-    </script>
-
-    <script>
-        function submitForm(id, action) {
-
-            // Tampilkan SweetAlert2 konfirmasi
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: 'Apakah Anda yakin ingin ' + (action === 'validasi' ? 'validasi' : 'menolak') +
-                    ' kegiatan ini?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, lanjutkan!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Jika dikonfirmasi, set nilai status dan submit form
-                    document.getElementById('status-' + id).value = action;
-                    document.getElementById('updateStatusForm-' + id).submit();
-                }
-            });
-        }
     </script>
 @endpush

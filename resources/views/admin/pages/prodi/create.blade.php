@@ -1,5 +1,5 @@
 @extends('admin.layout.app')
-@section('title', 'Tambah Program Studi - ')
+@section('title', 'Tambah Program Studi ')
 
 @section('main')
     <div class="pagetitle">
@@ -63,6 +63,17 @@
                                         autofocus placeholder="Nama program studi (english)">
                                 </div>
                                 @error('nama_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group mb-3 @error('singkatan') is-invalid @enderror">
+                                    <span class="input-group-text">Singkat</span>
+                                    <input type="text" name="singkatan" class="form-control"
+                                        aria-describedby="singkatan-addon" class="form-control" value="{{ old('singkatan') }}"
+                                        autofocus placeholder="Nama Singkat">
+                                </div>
+                                @error('singkatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -156,6 +167,17 @@
                                         value="{{ old('gelar_en') }}" autofocus placeholder="Gelar (english)">
                                 </div>
                                 @error('gelar_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group mb-3 @error('[gelar_singkat]') is-invalid @enderror">
+                                    <span class="input-group-text">Singkat</span>
+                                    <input type="text" name="[gelar_singkat]" class="form-control"
+                                        aria-describedby="[gelar_singkat]-addon" class="form-control"
+                                        value="{{ old('[gelar_singkat]') }}" autofocus placeholder="Gelar Singkat">
+                                </div>
+                                @error('[gelar_singkat]')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

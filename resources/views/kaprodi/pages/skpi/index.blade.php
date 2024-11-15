@@ -120,7 +120,7 @@
                 ]
             });
 
-            // Event delegation for dynamically added delete buttons
+            
             $('#datatable').on('click', '.btn-delete', function() {
                 var id = $(this).data('id');
                 deleteData(id);

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Pt;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use App\Models\Skpi;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
 use  App\Helper\Skpi as HelperSkpi;
 use App\Http\Controllers\Controller;
@@ -58,7 +56,7 @@ class SkpiController extends Controller
                 ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.skpi.edit', $row->id);
-                    $deleteUrl = route('admin.mahasiswa.destroy', $row->id);
+                    $deleteUrl = route('admin.skpi.destroy', $row->id);
                     $cetakSkpi = route('admin.skpi.cetakPdf', $row->id);
                     $showSkpi = route('admin.skpi.show', $row->id); // Adjust this route as needed
 
@@ -91,33 +89,33 @@ class SkpiController extends Controller
         return view('admin.pages.skpi.index');
     }
 
-    // public function show(Request $request, string $id)
-    // {
-    //     $mahasiswa = Mahasiswa::all();
-    //     $skpi = Skpi::with('mahasiswa.prodi.jenjangPendidikan')->findOrFail($id);
+    public function show(Request $request, string $id)
+    {
+        $mahasiswa = Mahasiswa::all();
+        $skpi = Skpi::with('mahasiswa.prodi.jenjangPendidikan')->findOrFail($id);
 
-    //     // dd($skpi);
+        // dd($skpi);
 
-    //     if ($request->ajax()) {
-    //         $kegiatan = $skpi->mahasiswa->kegiatan()->with('kategoriKegiatan')
-    //             ->where('status', 'validasi')
-    //             ->get();
+        if ($request->ajax()) {
+            $kegiatan = $skpi->mahasiswa->kegiatan()->with('kategoriKegiatan')
+                ->where('status', 'validasi')
+                ->get();
 
-    //         return DataTables::of($kegiatan)
-    //             ->addIndexColumn()
-    //             ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A') // Gunakan null coalescing untuk menghindari kesalahan
-    //             ->addColumn('nama', function ($row) {
-    //                 return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
-    //             })
-    //             ->addColumn('pencapaian', function ($row) {
-    //                 return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
-    //             })
-    //             ->rawColumns(['kategori', 'nama', 'pencapaian'])
-    //             ->make(true);
-    //     }
+            return DataTables::of($kegiatan)
+                ->addIndexColumn()
+                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A') // Gunakan null coalescing untuk menghindari kesalahan
+                ->addColumn('nama', function ($row) {
+                    return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
+                })
+                ->addColumn('pencapaian', function ($row) {
+                    return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
+                })
+                ->rawColumns(['kategori', 'nama', 'pencapaian'])
+                ->make(true);
+        }
 
-    //     return view('admin.pages.skpi.show', compact('mahasiswa', 'skpi'));
-    // }
+        return view('admin.pages.skpi.show', compact('mahasiswa', 'skpi'));
+    }
 
     public function cetak($id)
     {
@@ -180,9 +178,10 @@ class SkpiController extends Controller
         $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
         $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
 
-        // $logoUniv = asset('images/unsiq.png');
+        // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
+
         $data = [
             'pt' => $pt,
             'skpi' => $skpi,
@@ -204,34 +203,22 @@ class SkpiController extends Controller
         return $pdf->stream();
     }
 
-    public function show()
-    {
-        return view('admin.pages.skpi.cetakPdf');
-    }
-
     public function updateStatus(Request $request, $id)
     {
-        // Validasi input jika diperlukan (opsional)
         $request->validate([
             'status' => 'required|in:validasi,tolak',
         ]);
 
-        // Ambil data skpi berdasarkan ID
         $skpi = Skpi::findOrFail($id);
 
-        // Update status skpi
         $skpi->status = $request->status;
 
-        // Jika status validasi, generate nomor otomatis
         if ($request->status === 'validasi') {
-            $skpi->nomor = $this->generateNomor(); // Panggil fungsi untuk mengenerate nomor
+            $skpi->nomor = $this->generateNomor();
         }
 
         $skpi->save();
 
-
-
-        // Cek status dan redirect sesuai kebutuhan
         if ($request->status === 'validasi') {
             return redirect()->route('admin.skpi.index', $skpi->id)->with('success', 'Status SKPI berhasil diperbarui!!! Nomor: ' . $skpi->nomor);
         } elseif ($request->status === 'tolak') {
@@ -241,28 +228,27 @@ class SkpiController extends Controller
 
     private function generateNomor()
     {
-        // Ambil nomor terakhir dari database
         $lastSkpi = Skpi::orderBy('nomor', 'desc')->first();
 
-        // Ambil bagian nomor yang relevan untuk diincrement
         if ($lastSkpi) {
-            // Mengambil bagian angka dari nomor
             preg_match('/\d+/', $lastSkpi->nomor, $matches);
             $nextNomor = isset($matches[0]) ? intval($matches[0]) + 1 : 1;
         } else {
-            $nextNomor = 1; // Jika tidak ada, mulai dari 1
+            $nextNomor = 1;
         }
-
-        // Format nomor dengan padding 4 digit
         $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
 
-        // Cek apakah nomor sudah ada di database
         while (Skpi::where('nomor', $formattedNomor)->exists()) {
             $nextNomor++;
             $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
         }
 
-        return $formattedNomor; // Kembalikan nomor baru
+        return $formattedNomor;
+    }
 
+    public function destroy($id)
+    {
+        Skpi::where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Berhasil menghapus data');
     }
 }

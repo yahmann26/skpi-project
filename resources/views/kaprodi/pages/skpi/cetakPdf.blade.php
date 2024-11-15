@@ -57,7 +57,7 @@
                             <img class="logo" src="data:image/png;base64,{{ $logoUniv }}" alt="University logo"
                                 width="100" height="100">
                         </td>
-                        <td style="width: 40%; color: #2F9B58; padding: 0; vertical-align: left;">
+                        <td style="width: 45%; color: #2F9B58; padding: 0; vertical-align: left;">
                             <h1 style="font-size: 1.125rem; font-weight: bold; margin-top: 10px; margin-bottom: 3px;">
                                 UNIVERSITAS <br> SAINS AL-QUR'AN
                             </h1>

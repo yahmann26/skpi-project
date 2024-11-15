@@ -15,7 +15,6 @@ class SkpiController extends Controller
 {
     public function index(Request $request)
     {
-        // Fungsi untuk mendapatkan warna status
         if (!function_exists('getStatusColor')) {
             function getStatusColor($status)
             {
@@ -33,8 +32,11 @@ class SkpiController extends Controller
             }
         }
 
+        $skpi = Skpi::where('mahasiswa_id', Auth::user()->mahasiswa->id)->first();
+
+        $ajukanSkpi = $skpi ? true : false;
+
         if ($request->ajax()) {
-            // Ambil data skpi untuk mahasiswa yang sedang login
             $skpi = Skpi::where('mahasiswa_id', Auth::user()->mahasiswa->id)
                 ->select('skpi.*')
                 ->get();
@@ -42,16 +44,14 @@ class SkpiController extends Controller
             return DataTables::of($skpi)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $cetakSkpi = route('mahasiswa.skpi.cetak', $row->id);
+                    $cetakSkpi = route('mahasiswa.skpi.cetakPdf', $row->id);
 
-                    // Check the validation status
                     if ($row->status === 'validasi') {
                         return '
                             <a href="' . $cetakSkpi . '" class="edit btn btn-light btn-sm"><i class="bi bi-printer"></i></a>
                         ';
                     }
 
-                    // If status is not validasi, return nothing
                     return '';
                 })
 
@@ -61,7 +61,7 @@ class SkpiController extends Controller
                 ->make(true);
         }
 
-        return view('mahasiswa.pages.skpi.index');
+        return view('mahasiswa.pages.skpi.index', compact('ajukanSkpi'));
     }
 
     public function store(Request $request)
@@ -70,17 +70,14 @@ class SkpiController extends Controller
         $skpi->mahasiswa_id = Auth::user()->mahasiswa->id;
 
         $skpi->save();
-
-        // dd($cpl);
-
         return response()->json(['success' => true, 'message' => 'SKPI berhasil diajukan.']);
     }
 
-    public function cetak()
+    public function cetakPdf()
     {
         $mahasiswa = Auth::user()->mahasiswa;
+        $pt = Pt::where('id', 1)->first();
 
-        // Ambil data SKPI berdasarkan mahasiswa ID
         $skpi = Skpi::with([
             'mahasiswa.prodi.jenjangPendidikan',
             'mahasiswa.kegiatan' => function ($query) {
@@ -92,55 +89,38 @@ class SkpiController extends Controller
             return redirect()->back()->with('error', 'SKPI not found');
         }
 
-        // Ambil data yang diperlukan
+        $mahasiswa = $skpi->mahasiswa;
         $prodi = $mahasiswa->prodi;
         $cpl = json_decode($prodi->kualifikasi_cpl, true);
         $jenjangPendidikan = $prodi->jenjangPendidikan;
-        $kegiatan = $skpi->mahasiswa->kegiatan;
-
-        // Ambil data PT
-        $pt = Pt::where('id', 1)->first();
-
+        $kegiatan = $mahasiswa->kegiatan;
         $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
         $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
         $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
         $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
-        $logoUniv = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_universitas'));
 
-        return view('mahasiswa.pages.skpi.cetak', compact('skpi', 'mahasiswa', 'prodi', 'jenjangPendidikan', 'kegiatan', 'pt', 'cpl','logoUniv', 'ttd', 'nidn', 'namaUniv', 'namaUnivEn'));
-    }
+        // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
+        $imagePath = public_path('images/unsiq.png');
+        $logoUniv = base64_encode(file_get_contents($imagePath));
 
-    public function cetak1()
-    {
-        $mahasiswa = Auth::user()->mahasiswa;
+        $data = [
+            'pt' => $pt,
+            'skpi' => $skpi,
+            'mahasiswa' => $mahasiswa,
+            'prodi' => $prodi,
+            'cpl' => $cpl,
+            'jenjangPendidikan' => $jenjangPendidikan,
+            'kegiatan' => $kegiatan,
+            'namaUniv' => $namaUniv,
+            'namaUnivEn' => $namaUnivEn,
+            'ttd' => $ttd,
+            'nidn' => $nidn,
+            'logoUniv' => $logoUniv,
+        ];
 
-        // Ambil data SKPI berdasarkan mahasiswa ID
-        $skpi = Skpi::with([
-            'mahasiswa.prodi.jenjangPendidikan',
-            'mahasiswa.kegiatan' => function ($query) {
-                $query->where('status', 'validasi');
-            }
-        ])->where('mahasiswa_id', $mahasiswa->id)->first();
+        $pdf = app('dompdf.wrapper')->loadView('mahasiswa.pages.skpi.cetakPdf', $data);
+        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
 
-        if (!$skpi) {
-            return redirect()->back()->with('error', 'SKPI not found');
-        }
-
-        // Ambil data yang diperlukan
-        $prodi = $mahasiswa->prodi;
-        $cpl = json_decode($prodi->kualifikasi_cpl, true);
-        $jenjangPendidikan = $prodi->jenjangPendidikan;
-        $kegiatan = $skpi->mahasiswa->kegiatan;
-
-        // Ambil data PT
-        $pt = Pt::where('id', 1)->first();
-
-        $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
-        $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
-        $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
-        $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
-        $logoUniv = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_universitas'));
-
-        return view('mahasiswa.pages.skpi.cetak1', compact('skpi', 'mahasiswa', 'prodi', 'jenjangPendidikan', 'kegiatan', 'pt', 'cpl','logoUniv', 'ttd', 'nidn', 'namaUniv', 'namaUnivEn'));
+        return $pdf->stream();
     }
 }

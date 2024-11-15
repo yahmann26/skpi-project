@@ -75,7 +75,7 @@ class ProdiController extends Controller
             'sistem_penilaian' => 'required',
             'sistem_penilaian_en' => 'required',
             'akreditasi' => 'required',
-            'Sk_akreditasi' => 'required',
+            'sk_akreditasi' => 'required',
             'gelar' => 'required',
             'gelar_en' => 'required',
         ], [
@@ -92,7 +92,11 @@ class ProdiController extends Controller
             'sk_akreditasi.required' => 'SK Akreditasi Harus Diisi',
             'gelar.required' => 'Gelar Harus Diisi',
             'gelar_en.required' => 'Gelar Harus Diisi',
+            'gelar_singkat.required' => 'Gelar Singkat Harus Diisi',
+            'singkatan.required' => 'Singkatan Harus Diisi',
         ]);
+
+        // dd($request);
 
         // insert data prodi
         $newProdi = ProgramStudi::create([
@@ -106,8 +110,12 @@ class ProdiController extends Controller
             'akreditasi' => $request->akreditasi,
             'sk_akreditasi' => $request->sk_akreditasi,
             'gelar' => $request->gelar,
-            'gelar_en' => $request->gelar_en
+            'gelar_en' => $request->gelar_en,
+            'gelar_singkat' => $request->gelar_singkat,
+            'singkatan' => $request->singkatan,
         ]);
+
+        // dd($newProdi);
 
         // isi capaian pembelajaran
         $pengaturan = Pengaturan::where('nama', 'informasi_kualifikasi_dan_hasil_capaian')->first();
@@ -166,7 +174,8 @@ class ProdiController extends Controller
             'sistem_penilaian' => $request->sistem_penilaian,
             'sistem_penilaian_en' => $request->sistem_penilaian_en,
             'gelar' => $request->gelar,
-            'gelar_en' => $request->gelar_en
+            'gelar_en' => $request->gelar_en,
+            'gelar_singkat' => $request->gelar_singkat,
         ]);
 
         // redirect back

@@ -335,7 +335,7 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                            <div class="mb-3">
+                                            {{-- <div class="mb-3">
                                                 <label for="gambar_tandatangan_cap" class="form-label">Gambar Tandatangan
                                                     Bercap</label>
                                                 <div class="row">
@@ -372,7 +372,7 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <hr style="margin-top: 100px" />
 
