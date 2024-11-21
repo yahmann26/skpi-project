@@ -188,6 +188,8 @@ class SkpiController extends Controller
         // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
+        $imagePath2 = public_path('images/logo unsiq.png');
+        $logoUniv2 = base64_encode(file_get_contents($imagePath2));
 
         $data = [
             'pt' => $pt,
@@ -202,6 +204,7 @@ class SkpiController extends Controller
             'ttd' => $ttd,
             'nidn' => $nidn,
             'logoUniv' => $logoUniv,
+            'logoUniv2' => $logoUniv2,
         ];
 
         $pdf = app('dompdf.wrapper')->loadView('kaprodi.pages.skpi.cetakPdf', $data);

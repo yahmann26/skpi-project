@@ -6,18 +6,43 @@
     <style>
         @page {
             size: A4;
-            margin: 30mm 10mm 10mm 10mm;
+            margin: 0mm 10mm 10mm 10mm;
         }
 
         @page :first {
             margin-top: 0;
         }
 
+
         body {
             font-family: Arial, sans-serif;
-            /* counter-reset: page; */
+            counter-reset: page;
             margin: 0;
+            position: relative;
         }
+
+        body::after {
+            content: "Header untuk halaman kedua dan seterusnya";
+            /* Teks header */
+            display: block;
+            text-align: center;
+            /* Penempatan teks header di tengah */
+            position: fixed;
+            top: 0;
+            /* Posisi header di bagian atas */
+            left: 0;
+            right: 0;
+            font-weight: bold;
+            font-size: 12pt;
+            color: #000;
+            padding: 0;
+            /* Jarak sedikit dari tepi halaman */
+            background-color: white;
+            /* Agar teks tidak tertutup elemen lain */
+            box-sizing: border-box;
+            /* Menjaga padding tidak merusak layout */
+        }
+
 
         footer {
             position: fixed;
@@ -44,10 +69,6 @@
 </head>
 
 <body>
-
-    {{-- <header>
-        <h3>ini header</h3>
-    </header> --}}
 
     <footer>
         <div class="page-number"> <span class="page-number-text">Diploma Suplement</span></div>
@@ -611,7 +632,7 @@
 
     </div>
 
-    <div style="margin-top: 70px">
+    <div style="page-break-before: alway;">
 
         {{-- Kualifikasi dan hasil yang dicapai --}}
         <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; ">

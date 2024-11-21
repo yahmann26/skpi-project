@@ -37,11 +37,11 @@
                         <table class="table table-bordered table-striped datatable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Nomor</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
+                                    <th width = "5%">No</th>
+                                    <th width = "20%">Nama</th>
+                                    <th width = "40%">Nomor</th>
+                                    <th width = "20%">Status</th>
+                                    <th width = "15%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

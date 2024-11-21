@@ -16,7 +16,7 @@ class JenjangController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = JenjangPendidikan::query()->latest();
+            $data = JenjangPendidikan::query()->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()

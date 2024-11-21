@@ -14,7 +14,7 @@ class ProdiController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ProgramStudi::query()->latest();
+            $data = ProgramStudi::query()->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()

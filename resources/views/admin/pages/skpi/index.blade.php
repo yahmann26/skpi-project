@@ -4,6 +4,13 @@
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
+    <style>
+        thead input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
 @endpush
 
 @section('main')
@@ -41,6 +48,15 @@
                                     <th width = "20%">Nomor SKPI</th>
                                     <th width = "10%">Status</th>
                                     <th width = "15%">Aksi</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
+                                    <td><input></td>
                                 </tr>
                             </thead>
                         </table>
@@ -115,7 +131,25 @@
                         orderable: false,
                         searchable: false
                     },
-                ]
+                ],
+
+                initComplete: function() {
+                    this.api()
+                        .columns()
+                        .every(function() {
+                            var column = this;
+                            var title = column.header().textContent;
+
+                            // Create input element and add event listener
+                            $('<input type="text" placeholder="Search ' + title + '" />')
+                                .appendTo($(column.header()).empty())
+                                .on('keyup change clear', function() {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                                });
+                        });
+                },
             });
 
             // Event delegation for dynamically added delete buttons

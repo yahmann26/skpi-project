@@ -37,7 +37,7 @@ class SkpiController extends Controller
 
         if ($request->ajax()) {
             // Mengambil data mahasiswa dengan relasi ke skpi, program studi, dan jenjang pendidikan
-            $skpi = skpi::with(['mahasiswa.kegiatan', 'mahasiswa.prodi.jenjangPendidikan'])->latest();
+            $skpi = skpi::with(['mahasiswa.kegiatan', 'mahasiswa.prodi.jenjangPendidikan'])->latest()->get();
 
             return DataTables::of($skpi)
                 ->addIndexColumn()
@@ -58,7 +58,7 @@ class SkpiController extends Controller
                     $editUrl = route('admin.skpi.edit', $row->id);
                     $deleteUrl = route('admin.skpi.destroy', $row->id);
                     $cetakSkpi = route('admin.skpi.cetakPdf', $row->id);
-                    $showSkpi = route('admin.skpi.show', $row->id); // Adjust this route as needed
+                    $showSkpi = route('admin.skpi.show', $row->id);
 
                     // Check the validation status
                     if ($row->status === 'validasi') {
@@ -181,6 +181,8 @@ class SkpiController extends Controller
         // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
+        $imagePath2 = public_path('images/logo unsiq.png');
+        $logoUniv2 = base64_encode(file_get_contents($imagePath2));
 
         $data = [
             'pt' => $pt,
@@ -195,6 +197,7 @@ class SkpiController extends Controller
             'ttd' => $ttd,
             'nidn' => $nidn,
             'logoUniv' => $logoUniv,
+            'logoUniv2' => $logoUniv2,
         ];
 
         $pdf = app('dompdf.wrapper')->loadView('admin.pages.skpi.cetakPdf', $data);

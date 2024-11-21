@@ -19,7 +19,7 @@ class MahasiswaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Mahasiswa::query()->latest();
+            $data = Mahasiswa::query()->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()

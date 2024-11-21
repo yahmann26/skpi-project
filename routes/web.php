@@ -140,6 +140,7 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
     // SKPI
     Route::get('skpi', [MahasiswaSkpiController::class, 'index'])->name('mahasiswa.skpi.index');
     Route::get('skpi/cetakPdf', [MahasiswaSkpiController::class, 'cetakPdf'])->name('mahasiswa.skpi.cetakPdf');
+    Route::get('skpi/cetak', [MahasiswaSkpiController::class, 'cetak'])->name('mahasiswa.skpi.cetak');
     Route::get('skpi/lihat', [MahasiswaSkpiController::class, 'show'])->name('mahasiswa.skpi.show');
     Route::post('skpi', [MahasiswaSkpiController::class, 'store'])->name('mahasiswa.skpi.store');
 });

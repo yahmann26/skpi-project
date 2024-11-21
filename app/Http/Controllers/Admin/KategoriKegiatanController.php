@@ -15,7 +15,7 @@ class KategoriKegiatanController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $data = KategoriKegiatan::query()->latest();
+            $data = KategoriKegiatan::query()->latest()->get();
 
             return DataTables::of($data)
             ->addIndexColumn()
