@@ -113,7 +113,8 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::post('skpi', [AdminSkpiController::class, 'store'])->name('admin.skpi.store');
     Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
-    Route::get('skpi/cetakPdf/{id}', [AdminSkpiController::class, 'cetakPdf'])->name('admin.skpi.cetakPdf');
+    // Route::get('skpi/cetakPdf/{id}', [AdminSkpiController::class, 'cetakPdf'])->name('admin.skpi.cetakPdf');
+    Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
 
     Route::put('skpi/{id}/status', [AdminSkpiController::class, 'updateStatus'])->name('admin.skpi.update-status');
 });
@@ -139,7 +140,6 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
 
     // SKPI
     Route::get('skpi', [MahasiswaSkpiController::class, 'index'])->name('mahasiswa.skpi.index');
-    Route::get('skpi/cetakPdf', [MahasiswaSkpiController::class, 'cetakPdf'])->name('mahasiswa.skpi.cetakPdf');
     Route::get('skpi/cetak', [MahasiswaSkpiController::class, 'cetak'])->name('mahasiswa.skpi.cetak');
     Route::get('skpi/lihat', [MahasiswaSkpiController::class, 'show'])->name('mahasiswa.skpi.show');
     Route::post('skpi', [MahasiswaSkpiController::class, 'store'])->name('mahasiswa.skpi.store');
@@ -181,8 +181,7 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::get('skpi', [KaprodiSkpiController::class, 'index'])->name('kaprodi.skpi.index');
     Route::get('skpi/{id}/lihat', [KaprodiSkpiController::class, 'show'])->name('kaprodi.skpi.show');
     Route::post('skpi', [KaprodiSkpiController::class, 'store'])->name('kaprodi.skpi.store');
-    Route::get('skpi/{id}/ubah', [KaprodiSkpiController::class, 'edit'])->name('kaprodi.skpi.edit');
-    Route::get('skpi/cetakPdf/{id}', [KaprodiSkpiController::class, 'cetakPdf'])->name('kaprodi.skpi.cetakPdf');
+    Route::get('skpi/cetak/{id}', [KaprodiSkpiController::class, 'cetak'])->name('kaprodi.skpi.cetak');
     Route::put('skpi/{id}/status', [KaprodiSkpiController::class, 'updateStatus'])->name('kaprodi.skpi.update-status');
     Route::delete('skpi/{id}', [KaprodiSkpiController::class, 'destroy'])->name('kaprodi.skpi.destroy');
 });

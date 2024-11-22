@@ -6,13 +6,13 @@ use App\Models\Pt;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Skpi;
+use Elibyy\TCPDF\TCPDF;
 use Illuminate\Http\Request;
-use Dompdf\FrameReflower\Page;
 use Yajra\DataTables\DataTables;
 use App\Helper\Skpi as  HelperSkpi;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\View;
 
 class SkpiController extends Controller
 {
@@ -47,7 +47,7 @@ class SkpiController extends Controller
             return DataTables::of($skpi)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $cetakSkpi = route('mahasiswa.skpi.cetakPdf', $row->id);
+                    $cetakSkpi = route('mahasiswa.skpi.cetak', $row->id);
 
                     if ($row->status === 'validasi') {
                         return '
@@ -76,7 +76,7 @@ class SkpiController extends Controller
         return response()->json(['success' => true, 'message' => 'SKPI berhasil diajukan.']);
     }
 
-    public function cetakPdf()
+    public function cetak()
     {
         $mahasiswa = Auth::user()->mahasiswa;
         $pt = Pt::where('id', 1)->first();
@@ -102,7 +102,6 @@ class SkpiController extends Controller
         $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
         $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
 
-        // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
         $imagePath2 = public_path('images/logo unsiq.png');
@@ -124,40 +123,30 @@ class SkpiController extends Controller
             'logoUniv2' => $logoUniv2,
         ];
 
-        $pdf = app('dompdf.wrapper')->loadView('mahasiswa.pages.skpi.cetakPdf', $data);
-        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true, 'isPhpEnable' => true]);
+        $mpdf = new \Mpdf\Mpdf([
+            'setAutoTopMargin' => 'stretch',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+        ]);
 
-        return $pdf->stream();
-    }
+        $mpdf->SetHTMLFooter('
+            <div style="text-align: left; font-size: 12px; border-top: 2px solid; border-top: 2px solid;  padding-left: 35px;">
+                {PAGENO}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | SURAT KETERANGAN PENDAMPING IJAZAH - <span style = "font-style: italic; color: gray; ">Diploma Suplement</span>
+            </div>
+        ');
 
-    public function cetak()
-    {
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);  // Aktifkan HTML5
-        $options->set('isPhpEnabled', true);         // Aktifkan PHP di dalam HTML jika diperlukan (untuk image base64)
+        $mpdf->AddPage();
+        $html = view('mahasiswa.pages.skpi.cetak1', $data)->render();
 
-        $dompdf = new Dompdf($options);
+        $htmlHeader = view('mahasiswa.pages.skpi.header', $data)->render();
+        $mpdf->SetHTMLHeader($htmlHeader);
 
-        // Render HTML ke view dan mengirimkan data seperti logo
-        $imagePath = public_path('images/unsiq.png');
-        $logoUniv = base64_encode(file_get_contents($imagePath));
-        $data = [
-            'logoUniv2' => $logoUniv  // Pastikan logo tersedia di public/images/logo.png
-        ];
+        // $mpdf->SetMargins(10, 10, 20);
+        $html2 = view('mahasiswa.pages.skpi.cetak2', $data)->render();
+        $mpdf->WriteHTML($html);
+        $mpdf->WriteHTML($html2);
 
-        // Ambil view sebagai HTML
-        $html = view('pdf', $data)->render();
-
-        // Load HTML ke DomPDF
-        $dompdf->loadHtml($html);
-
-        // Set ukuran kertas
-        $dompdf->setPaper('A4', 'portrait');
-
-        // Render PDF (ini akan menghitung dan membuat PDF dari HTML)
-        $dompdf->render();
-
-        // Output PDF ke browser
-        $dompdf->stream('document.pdf', ['Attachment' => 0]);
+        $mpdf->Output();
     }
 }

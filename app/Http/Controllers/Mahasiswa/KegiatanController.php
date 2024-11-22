@@ -36,7 +36,7 @@ class KegiatanController extends Controller
             // Ambil data kegiatan untuk mahasiswa yang sedang login
             $kegiatan = Kegiatan::where('mahasiswa_id', Auth::user()->mahasiswa->id)
                 ->with('kategoriKegiatan')
-                ->select('kegiatan.*')
+                ->select('kegiatan.*')->orderBy('created_at', 'desc')
                 ->get();
 
             return DataTables::of($kegiatan)

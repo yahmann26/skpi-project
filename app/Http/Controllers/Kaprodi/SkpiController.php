@@ -60,8 +60,7 @@ class SkpiController extends Controller
                 })
                 ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('kaprodi.skpi.edit', $row->id);
-                    $cetakSkpi = route('kaprodi.skpi.cetakPdf', $row->id);
+                    $cetakSkpi = route('kaprodi.skpi.cetak', $row->id);
                     $showSkpi = route('kaprodi.skpi.show', $row->id);
 
                     if ($row->status === 'validasi') {
@@ -75,8 +74,7 @@ class SkpiController extends Controller
                     }
 
                     return '
-                        ' . $actionButtons . '
-                        <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>';
+                        ' . $actionButtons;
                 })
 
 
@@ -127,7 +125,7 @@ class SkpiController extends Controller
         $skpi->status = $request->status;
 
         if ($request->status === 'validasi') {
-            $skpi->nomor = $this->generateNomor();
+            $skpi->nomor = $this->generateNomor($skpi);
         }
 
         $skpi->save();
@@ -139,28 +137,23 @@ class SkpiController extends Controller
         }
     }
 
-    private function generateNomor()
+    private function generateNomor($skpi)
     {
-        $lastSkpi = Skpi::orderBy('nomor', 'desc')->first();
+        $year = date('Y');
 
-        if ($lastSkpi) {
-            preg_match('/\d+/', $lastSkpi->nomor, $matches);
-            $nextNomor = isset($matches[0]) ? intval($matches[0]) + 1 : 1;
-        } else {
-            $nextNomor = 1;
-        }
+        $sequence = str_pad($skpi->id, 5, '0', STR_PAD_LEFT); // Menghasilkan nomor urut seperti '00001'
 
-        $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
+        $prodi = $skpi->mahasiswa->prodi->singkatan ?? '';
+        $jenjang = $skpi->mahasiswa->prodi->jenjangPendidikan->singkatan ?? '';  // Misalnya 'S1.TI'
+        $nim = $skpi->mahasiswa->nim ?? ''; // Misalnya '55201'
 
-        while (Skpi::where('nomor', $formattedNomor)->exists()) {
-            $nextNomor++;
-            $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
-        }
+        // Gabungkan semua bagian untuk menghasilkan nomor SKPI
+        $nomor = "{$sequence}/SKPI/FASTIKOM/UNSIQ/{$jenjang}.{$prodi}/{$nim}/{$year}";
 
-        return $formattedNomor;
+        return $nomor;
     }
 
-    public function cetakPdf($id)
+    public function cetak($id)
     {
         $pt = Pt::where('id', 1)->first();
 
@@ -185,7 +178,6 @@ class SkpiController extends Controller
         $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
         $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
 
-        // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
         $imagePath2 = public_path('images/logo unsiq.png');
@@ -207,9 +199,30 @@ class SkpiController extends Controller
             'logoUniv2' => $logoUniv2,
         ];
 
-        $pdf = app('dompdf.wrapper')->loadView('kaprodi.pages.skpi.cetakPdf', $data);
-        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+        $mpdf = new \Mpdf\Mpdf([
+            'setAutoTopMargin' => 'stretch',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+        ]);
 
-        return $pdf->stream();
+        $mpdf->SetHTMLFooter('
+
+            <div style="text-align: left; font-size: 12px; border-top: 2px solid; border-top: 2px solid;  padding-left: 35px;">
+                {PAGENO}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | SURAT KETERANGAN PENDAMPING IJAZAH - <span style = "font-style: italic; color: gray; ">Diploma Suplement</span>
+            </div>
+        ');
+
+        $mpdf->AddPage();
+        $html = view('kaprodi.pages.skpi.cetak1', $data)->render();
+
+        $htmlHeader = view('kaprodi.pages.skpi.header', $data)->render();
+        $mpdf->SetHTMLHeader($htmlHeader);
+
+        $html2 = view('kaprodi.pages.skpi.cetak2', $data)->render();
+        $mpdf->WriteHTML($html);
+        $mpdf->WriteHTML($html2);
+
+        $mpdf->Output();
     }
 }

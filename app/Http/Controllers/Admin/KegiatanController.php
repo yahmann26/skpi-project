@@ -34,17 +34,15 @@ class KegiatanController extends Controller
             }
         }
 
-        // Jika request adalah AJAX (untuk datatables)
         if ($request->ajax()) {
-            // Ambil data kegiatan semua mahasiswa dengan relasi kategoriKegiatan dan mahasiswa
             $kegiatan = Kegiatan::with(['kategoriKegiatan', 'mahasiswa'])->select('kegiatan.*')->orderBy('created_at', 'desc')->get();
 
             return DataTables::of($kegiatan)
                 ->addIndexColumn()
-                ->addColumn('nim', fn($row) => $row->mahasiswa->nim) // Tampilkan nim mahasiswa
-                ->addColumn('mahasiswa', fn($row) => $row->mahasiswa->nama) // Tampilkan nama mahasiswa
-                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama) // Tampilkan nama kategori kegiatan
-                ->addColumn('status', fn($row) => getStatusColor($row->status)) // Panggil fungsi getStatusColor
+                ->addColumn('nim', fn($row) => $row->mahasiswa->nim)
+                ->addColumn('mahasiswa', fn($row) => $row->mahasiswa->nama)
+                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama)
+                ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('prodi', fn($row) => ($row->mahasiswa->prodi->nama))
                 ->addColumn('pencapaian', function ($row) {
                     return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
@@ -65,11 +63,10 @@ class KegiatanController extends Controller
                     <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
                     </form>';
                 })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama']) // Merender HTML
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama']) 
                 ->make(true);
         }
 
-        // Render view halaman admin untuk pengajuan kegiatan mahasiswa
         return view('admin.pages.kegiatan.index');
     }
 

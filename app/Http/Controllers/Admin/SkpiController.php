@@ -57,7 +57,7 @@ class SkpiController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.skpi.edit', $row->id);
                     $deleteUrl = route('admin.skpi.destroy', $row->id);
-                    $cetakSkpi = route('admin.skpi.cetakPdf', $row->id);
+                    $cetakSkpi = route('admin.skpi.cetak', $row->id);
                     $showSkpi = route('admin.skpi.show', $row->id);
 
                     // Check the validation status
@@ -103,7 +103,7 @@ class SkpiController extends Controller
 
             return DataTables::of($kegiatan)
                 ->addIndexColumn()
-                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A') // Gunakan null coalescing untuk menghindari kesalahan
+                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A')
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
                 })
@@ -118,42 +118,6 @@ class SkpiController extends Controller
     }
 
     public function cetak($id)
-    {
-        $pt = Pt::where('id', 1)->first();
-
-        // dd($pt);
-
-        // Ambil data SKPI berdasarkan ID
-        $skpi = Skpi::with([
-            'mahasiswa.prodi.jenjangPendidikan',
-            'mahasiswa.kegiatan' => function ($query) {
-                $query->where('status', 'validasi');
-            }
-        ])->find($id);
-
-        if (!$skpi) {
-            return redirect()->back()->with('error', 'SKPI not found');
-        }
-
-        // dd($skpi);
-
-        $mahasiswa = $skpi->mahasiswa;
-        $prodi = $mahasiswa->prodi;
-        $cpl = json_decode($prodi->kualifikasi_cpl, true);
-        $jenjangPendidikan = $prodi->jenjangPendidikan;
-        $kegiatan = $skpi->mahasiswa->kegiatan;
-        $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
-        $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
-        $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
-        $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
-        $logoUniv = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_universitas'));
-
-        // dd($cpl);
-
-        return view('admin.pages.skpi.cetak', compact('skpi', 'mahasiswa', 'prodi', 'jenjangPendidikan', 'kegiatan', 'pt', 'cpl', 'namaUniv', 'namaUnivEn', 'ttd', 'nidn', 'logoUniv'));
-    }
-
-    public function cetakPdf($id)
     {
         $pt = Pt::where('id', 1)->first();
 
@@ -178,7 +142,6 @@ class SkpiController extends Controller
         $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
         $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
 
-        // $logoAplikasiUrl = HelperSkpi::getAssetUrl(HelperSkpi::getSettingByName('logo_aplikasi'));
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
         $imagePath2 = public_path('images/logo unsiq.png');
@@ -200,14 +163,38 @@ class SkpiController extends Controller
             'logoUniv2' => $logoUniv2,
         ];
 
-        $pdf = app('dompdf.wrapper')->loadView('admin.pages.skpi.cetakPdf', $data);
-        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+        $mpdf = new \Mpdf\Mpdf([
+            'setAutoTopMargin' => 'stretch',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+        ]);
 
-        return $pdf->stream();
+        $mpdf->SetHTMLFooter('
+
+            <div style="text-align: left; font-size: 12px; border-top: 2px solid; border-top: 2px solid;  padding-left: 35px;">
+                {PAGENO}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | SURAT KETERANGAN PENDAMPING IJAZAH - <span style = "font-style: italic; color: gray; ">Diploma Suplement</span>
+            </div>
+        ');
+
+        $mpdf->AddPage();
+        $html = view('admin.pages.skpi.cetak1', $data)->render();
+
+        $htmlHeader = view('admin.pages.skpi.header', $data)->render();
+        $mpdf->SetHTMLHeader($htmlHeader);
+
+        // $mpdf->SetMargins(10, 10, 20);
+        $html2 = view('admin.pages.skpi.cetak2', $data)->render();
+        $mpdf->WriteHTML($html);
+        $mpdf->WriteHTML($html2);
+
+        // Output PDF ke browser
+        $mpdf->Output();
     }
 
     public function updateStatus(Request $request, $id)
     {
+
         $request->validate([
             'status' => 'required|in:validasi,tolak',
         ]);
@@ -217,7 +204,7 @@ class SkpiController extends Controller
         $skpi->status = $request->status;
 
         if ($request->status === 'validasi') {
-            $skpi->nomor = $this->generateNomor();
+            $skpi->nomor = $this->generateNomor($skpi);
         }
 
         $skpi->save();
@@ -229,24 +216,20 @@ class SkpiController extends Controller
         }
     }
 
-    private function generateNomor()
+    private function generateNomor($skpi)
     {
-        $lastSkpi = Skpi::orderBy('nomor', 'desc')->first();
+        $year = date('Y');
 
-        if ($lastSkpi) {
-            preg_match('/\d+/', $lastSkpi->nomor, $matches);
-            $nextNomor = isset($matches[0]) ? intval($matches[0]) + 1 : 1;
-        } else {
-            $nextNomor = 1;
-        }
-        $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
+        $sequence = str_pad($skpi->id, 5, '0', STR_PAD_LEFT); // Menghasilkan nomor urut seperti '00001'
 
-        while (Skpi::where('nomor', $formattedNomor)->exists()) {
-            $nextNomor++;
-            $formattedNomor = sprintf('%04d/SKPI', $nextNomor);
-        }
+        $prodi = $skpi->mahasiswa->prodi->singkatan ?? '';
+        $jenjang = $skpi->mahasiswa->prodi->jenjangPendidikan->singkatan ?? '';  // Misalnya 'S1.TI'
+        $nim = $skpi->mahasiswa->nim ?? ''; // Misalnya '55201'
 
-        return $formattedNomor;
+        // Gabungkan semua bagian untuk menghasilkan nomor SKPI
+        $nomor = "{$sequence}/SKPI/FASTIKOM/UNSIQ/{$jenjang}.{$prodi}/{$nim}/{$year}";
+
+        return $nomor;
     }
 
     public function destroy($id)
