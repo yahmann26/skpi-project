@@ -237,7 +237,7 @@
                     </td>
                     <td style="width: 2%; text-align: left; vertical-align: top;">
                         <h1
-                            style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            style="font-size: 12px; font-weight: normal; font-style: italic; text-align: left; margin-top: 0; margin-bottom: 0;">
                             {{ $index + 1 }}.
                         </h1>
                     </td>

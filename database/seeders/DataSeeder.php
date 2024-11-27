@@ -21,7 +21,6 @@ class DataSeeder extends Seeder
     public function run(): void
     {
         if (env('APP_ENV') === 'local' || env('APP_ENV') === 'testing') {
-            // truncate table
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             DB::table('users')->truncate();
             DB::table('jenjang_pendidikan')->truncate();
@@ -92,6 +91,7 @@ class DataSeeder extends Seeder
                     'jenjang_lanjutan_en' => 'Doctoral',
                     'program_studi' => [
                         [
+                            'kode_prodi' => ' 12345',
                             'nama' => ' Teknik Informatika',
                             'nama_en' => 'Informatics Engineering',
                             'singkatan' => 'TI',
@@ -106,6 +106,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.Kom',
                         ],
                         [
+                            'kode_prodi' => ' 12346',
                             'nama' => 'Teknik Sipil',
                             'nama_en' => 'Civil Engineering',
                             'singkatan' => 'TS',
@@ -120,6 +121,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.T',
                         ],
                         [
+                            'kode_prodi' => ' 12347',
                             'nama' => 'Teknik Mesin',
                             'nama_en' => 'Mechanical Engineering',
                             'singkatan' => 'TM',
@@ -134,6 +136,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.T',
                         ],
                         [
+                            'kode_prodi' => ' 12348',
                             'nama' => 'Arsitektur',
                             'nama_en' => 'Architecture ',
                             'singkatan' => 'Ars',

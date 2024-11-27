@@ -23,7 +23,7 @@
                                 width="100" height="100">
                         </td>
                         <td style="width:31%; color: #2F9B58; padding: 0; vertical-align: left; padding-top: 2mm;">
-                            <h1 style="font-size: 20px; font-weight: bold;">
+                            <h1 style="font-size: 18px; font-weight: bold;">
                                 UNIVERSITAS <br> SAINS AL-QUR'AN
                             </h1>
                             <h2 style="font-size: 13px; font-weight: bold; margin-top:2mm; ">
@@ -46,11 +46,11 @@
         </div>
 
         <!-- Nomor SKPI -->
-        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top:2mm; ">
+        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top:2mm;">
             <tr>
                 <td style="width: 50%;">
                 </td>
-                <td style="width: 50%; background-color: #D3D3D3; text-align: center;">
+                <td style="width: 50%; background-color: #D3D3D3; text-align: center; padding: 5px; ">
                     <p style="font-size: 12px;">
                         <span>Nomor. {{ $skpi->nomor }}</span>
                     </p>
@@ -567,7 +567,5 @@
         </table>
     </div>
 </body>
-
-
 
 </html>

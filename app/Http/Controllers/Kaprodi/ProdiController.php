@@ -73,6 +73,7 @@ class ProdiController extends Controller
         // validate request
         $request->validate([
             'jenjang_pendidikan_id' => 'required|exists:jenjang_pendidikan,id',
+            'kode_prodi' => 'required|unique:program_studi,kode_prodi,' . $id,
             'nama' => 'required|unique:program_studi,nama,' . $id,
             'nama_en' => 'required|unique:program_studi,nama_en,' . $id,
             'akreditasi' => 'required',
@@ -80,6 +81,7 @@ class ProdiController extends Controller
             'gelar_en' => 'required'
         ], [
             'jenjang_pendidikan_id.required' => 'Jenjang pendidikan harus dipilih',
+            'kode_prodi.required' => 'Kode program studi harus diisi',
             'nama.required' => 'Nama program studi harus diisi',
             'nama.unique' => 'Nama program studi sudah terdaftar',
             'nama_en.required' => 'Nama program studi (English) harus diisi',
@@ -92,6 +94,7 @@ class ProdiController extends Controller
         // update data
         ProgramStudi::where('id', $id)->update([
             'jenjang_pendidikan_id' => $request->jenjang_pendidikan_id,
+            'kode_prodi' => $request->kode_prodi,
             'nama' => $request->nama,
             'nama_en' => $request->nama_en,
             'bhs_pengantar_kuliah' => $request->bhs_pengantar_kuliah,

@@ -237,7 +237,7 @@
                     </td>
                     <td style="width: 2%; text-align: left; vertical-align: top;">
                         <h1
-                            style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            style="font-size: 12px; font-weight: normal; font-style: italic; text-align: left; margin-top: 0; margin-bottom: 0;">
                             {{ $index + 1 }}.
                         </h1>
                     </td>
@@ -510,32 +510,6 @@
 
         </table>
     </div>
-
-    {{-- <script type="text/php">
-        if(isset($pdf)) {
-            $x = 50;
-            $y = 800;
-
-            $text = "{PAGE_NUM} | Surat Keterangan Pendamping Ijazah - Diploma Suplement";
-
-            $fontBold = $fontMetrics->get_font("Times-Roman", "bold");
-            $fontNormal = $fontMetrics->get_font("Times-Roman", "normal");
-            $fontItalic = $fontMetrics->get_font("Times-Roman", "italic");
-            $size = 10;
-            $color = array(.16, .16, .16);
-            $word_space = 0.0;
-            $char_space = 0.0;
-            $angel = 0.0;
-
-            $pdf->page_text($x, $y, "{PAGE_NUM}", $fontBold, $size, $color, $word_space, $char_space, $angel);
-
-            $pdf->page_text($x + 5, $y, " | Surat Keterangan Pendamping Ijazah", $fontNormal, $size, $color, $word_space, $char_space, $angel);
-
-            $pdf->page_text($x + 160, $y, " - Diploma Suplement", $fontItalic, $size, $color, $word_space, $char_space, $angel);
-        }
-    </script> --}}
-
-
 </body>
 
 

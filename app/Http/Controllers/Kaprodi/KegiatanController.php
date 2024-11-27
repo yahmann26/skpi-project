@@ -91,7 +91,7 @@ class KegiatanController extends Controller
         // dd($kegiatan);
 
         return view('kaprodi.pages.kegiatan.show', [
-            'kategoriKegiatan' => $kategori,
+            'kategori' => $kategori,
             'kegiatan' => $kegiatan
         ]);
     }
@@ -174,15 +174,19 @@ class KegiatanController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        // Validasi input jika diperlukan (opsional)
         $request->validate([
             'status' => 'required|in:validasi,tolak',
         ]);
 
-        // Ambil data kegiatan berdasarkan ID
         $kegiatan = Kegiatan::findOrFail($id);
 
-        // Update status kegiatan
+        $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
+        $kegiatan->nama = $request->nama;
+        $kegiatan->nama_en = $request->nama_en;
+        $kegiatan->pencapaian = $request->pencapaian;
+        $kegiatan->tingkat = $request->tingkat;
+        $kegiatan->penyelenggara = $request->penyelenggara;
+        $kegiatan->catatan_status = $request->catatan_status;
         $kegiatan->status = $request->status;
 
         // dd($kegiatan);
@@ -191,7 +195,7 @@ class KegiatanController extends Controller
 
         // Cek status dan redirect sesuai kebutuhan
         if ($request->status === 'validasi') {
-            return redirect()->route('kaprodi.kegiatan.edit', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
+            return redirect()->route('kaprodi.kegiatan.index', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
         } elseif ($request->status === 'tolak') {
             return redirect()->route('kaprodi.kegiatan.index')->with('success', 'Kegiatan telah ditolak.');
         }

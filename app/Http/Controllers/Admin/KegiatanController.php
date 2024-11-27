@@ -63,7 +63,7 @@ class KegiatanController extends Controller
                     <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
                     </form>';
                 })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama']) 
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama'])
                 ->make(true);
         }
 
@@ -128,7 +128,7 @@ class KegiatanController extends Controller
         // dd($kegiatan);
 
         return view('admin.pages.kegiatan.show', [
-            'kategoriKegiatan' => $kategori,
+            'kategori' => $kategori,
             'kegiatan' => $kegiatan
         ]);
     }
@@ -221,10 +221,15 @@ class KegiatanController extends Controller
             'status' => 'required|in:validasi,tolak',
         ]);
 
-        // Ambil data kegiatan berdasarkan ID
         $kegiatan = Kegiatan::findOrFail($id);
 
-        // Update status kegiatan
+        $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
+        $kegiatan->nama = $request->nama;
+        $kegiatan->nama_en = $request->nama_en;
+        $kegiatan->pencapaian = $request->pencapaian;
+        $kegiatan->tingkat = $request->tingkat;
+        $kegiatan->penyelenggara = $request->penyelenggara;
+        $kegiatan->catatan_status = $request->catatan_status;
         $kegiatan->status = $request->status;
 
         // dd($kegiatan);
@@ -233,7 +238,7 @@ class KegiatanController extends Controller
 
         // Cek status dan redirect sesuai kebutuhan
         if ($request->status === 'validasi') {
-            return redirect()->route('admin.kegiatan.edit', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
+            return redirect()->route('admin.kegiatan.index', $kegiatan->id)->with('success', 'Status kegiatan berhasil diperbarui!');
         } elseif ($request->status === 'tolak') {
             return redirect()->route('admin.kegiatan.index')->with('success', 'Kegiatan telah ditolak.');
         }

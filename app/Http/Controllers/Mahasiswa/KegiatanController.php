@@ -45,8 +45,21 @@ class KegiatanController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $editUrl = route('mahasiswa.kegiatan.edit', $row->id);
                     $deleteUrl = route('mahasiswa.kegiatan.destroy', $row->id);
+                    $showUrl = route('mahasiswa.kegiatan.show', $row->id);
+
+                    // Check the validation status
+                    if ($row->status === 'validasi' || $row->status === 'tolak') {
+                        $actionButtons = '
+                            <a href="' . $showUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-search"></i></a>
+                        ';
+                    } else {
+                        $actionButtons = '
+                            <a href="' . $editUrl . '" class="edit btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        ';
+                    }
+
                     return '
-                        <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        ' . $actionButtons . '
                         <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
                             ' . csrf_field() . '
                             ' . method_field("DELETE") . '
@@ -137,6 +150,18 @@ class KegiatanController extends Controller
         $kegiatan->save();
 
         return redirect()->route('mahasiswa.kegiatan.index')->with('success', 'Kegiatan berhasil ditambahkan');
+    }
+
+    public function show($id)
+    {
+        $kategori = KategoriKegiatan::all();
+
+        $kegiatan = Kegiatan::with('kategoriKegiatan')->find($id);
+
+        return  view('mahasiswa.pages.kegiatan.show', [
+            'kategori' => $kategori,
+            'kegiatan' => $kegiatan
+        ]);
     }
 
     public function edit($id)

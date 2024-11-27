@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('program_studi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('jenjang_pendidikan_id')->constrained('jenjang_pendidikan', 'id')->cascadeOnDelete();
+            $table->string('kode_prodi')->nullable();
             $table->string('nama');
             $table->string('nama_en');
             $table->string('singkatan');

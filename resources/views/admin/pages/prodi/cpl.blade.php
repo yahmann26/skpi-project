@@ -1,14 +1,15 @@
 @extends('admin.layout.app')
 
-@section('title', 'Ubah CPL Program Studi - ')
+@section('title', 'Ubah CPL Program Studi')
 
 @section('main')
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item">Prodi</li>
-                <li class="breadcrumb-item active">Capaian Pembelajaran Lulusan</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                </li>
+                <li class="breadcrumb-item">Program Studi</li>
+                <li class="breadcrumb-item active">CPL</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -211,16 +212,6 @@
                                                             </tr>
                                                         </template>
                                                     </template>
-                                                    <tr>
-                                                        <td style="background-color: #fff" colspan="4">
-                                                            <div class="d-flex align-items-center justify-content-center">
-                                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                                    style="font-size: 10px"
-                                                                    @click="addItemSubJudul(index, subIndex)">Tambah
-                                                                    Subjudul</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
                                                 </template>
                                                 <tr>
                                                     <td style="background-color: #fff" colspan="4">
@@ -302,16 +293,6 @@
                         judul: '',
                         judul_en: '',
                         subs: [],
-                        list: [],
-                    });
-                },
-                addItemSubJudul(index, subIndex) {
-                    if (!this.kualifikasiCplData[index].subs[subIndex].subs) {
-                        this.kualifikasiCplData[index].subs[subIndex].subs = [];
-                    }
-                    this.kualifikasiCplData[index].subs[subIndex].subs.push({
-                        judul: 'Subjudul baru',
-                        judul_en: 'New subjudul',
                         list: [],
                     });
                 },

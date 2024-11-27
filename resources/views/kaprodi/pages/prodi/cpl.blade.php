@@ -19,20 +19,6 @@
             <div class="col-md-12">
                 <div class="card overflow-auto" id="app">
                     <div class="card-body">
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
                         <form
                             action="{{ route('kaprodi.prodi.update-cpl', ['id' => $detailData->id, 'from' => request()->query('from')]) }}"
                             method="post">
@@ -107,20 +93,6 @@
 
                                     <table class="table table-bordered" v-else>
                                         <tbody v-for="(item, index) in kualifikasiCplData">
-                                            {{-- <tr>
-                                            <th class="text-center bg-secondary text-white" style="width: 15px">A</th>
-                                            <th class="bg-secondary">
-                                                <input type="text"
-                                                    :name="`pengaturan_hasil_capaian_data[${index}][judul]`"
-                                                    class="form-control" v-model="item.judul">
-                                            </th>
-                                            <th class="bg-secondary">
-                                                <input type="text"
-                                                    :name="`pengaturan_hasil_capaian_data[${index}][judul_en]`"
-                                                    class="form-control" v-model="item.judul_en">
-                                            </th>
-                                            <th style="width: 15px"></th>
-                                        </tr> --}}
                                             <template v-if="item && item.subs">
                                                 <template v-for="(subItem, subIndex) in item.subs">
                                                     <tr>
@@ -240,16 +212,6 @@
                                                             </tr>
                                                         </template>
                                                     </template>
-                                                    <tr>
-                                                        <td style="background-color: #fff" colspan="4">
-                                                            <div class="d-flex align-items-center justify-content-center">
-                                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                                    style="font-size: 10px"
-                                                                    @click="addItemSubJudul(index, subIndex)">Tambah
-                                                                    Subjudul</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
                                                 </template>
                                                 <tr>
                                                     <td style="background-color: #fff" colspan="4">
@@ -331,16 +293,6 @@
                         judul: '',
                         judul_en: '',
                         subs: [],
-                        list: [],
-                    });
-                },
-                addItemSubJudul(index, subIndex) {
-                    if (!this.kualifikasiCplData[index].subs[subIndex].subs) {
-                        this.kualifikasiCplData[index].subs[subIndex].subs = [];
-                    }
-                    this.kualifikasiCplData[index].subs[subIndex].subs.push({
-                        judul: 'Subjudul baru',
-                        judul_en: 'New subjudul',
                         list: [],
                     });
                 },

@@ -171,7 +171,6 @@ class SkpiController extends Controller
         ]);
 
         $mpdf->SetHTMLFooter('
-
             <div style="text-align: left; font-size: 12px; border-top: 2px solid; border-top: 2px solid;  padding-left: 35px;">
                 {PAGENO}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | SURAT KETERANGAN PENDAMPING IJAZAH - <span style = "font-style: italic; color: gray; ">Diploma Suplement</span>
             </div>
@@ -220,13 +219,12 @@ class SkpiController extends Controller
     {
         $year = date('Y');
 
-        $sequence = str_pad($skpi->id, 5, '0', STR_PAD_LEFT); // Menghasilkan nomor urut seperti '00001'
+        $sequence = str_pad($skpi->id, 5, '0', STR_PAD_LEFT);
 
         $prodi = $skpi->mahasiswa->prodi->singkatan ?? '';
-        $jenjang = $skpi->mahasiswa->prodi->jenjangPendidikan->singkatan ?? '';  // Misalnya 'S1.TI'
-        $nim = $skpi->mahasiswa->nim ?? ''; // Misalnya '55201'
+        $jenjang = $skpi->mahasiswa->prodi->jenjangPendidikan->singkatan ?? '';
+        $nim = $skpi->mahasiswa->nim ?? '';
 
-        // Gabungkan semua bagian untuk menghasilkan nomor SKPI
         $nomor = "{$sequence}/SKPI/FASTIKOM/UNSIQ/{$jenjang}.{$prodi}/{$nim}/{$year}";
 
         return $nomor;

@@ -30,7 +30,7 @@
                                 @method('PUT')
 
                                 <div class="mb-3">
-                                    <label for="jenjang_pendidikan_id" class="form-label">Jenjang Pendidikan</label>
+                                    <label for="jenjang_pendidikan_id" class="form-label" style="font-weight: bold;">Jenjang Pendidikan</label>
                                     <select name="jenjang_pendidikan_id" id="jenjang_pendidikan_id"
                                         class="form-select @error('jenjang_pendidikan_id') is-invalid @enderror">
                                         <option value="">-- Pilih Jenjang Pendidikan --</option>
@@ -46,7 +46,18 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama Program Studi <span
+                                    <label for="kode_prodi" class="form-label" style="font-weight: bold;">Kode Program Studi<span
+                                        class="text-danger">*</span></label>
+                                    <input type="text" name="kode_prodi" id="kode_prodi"
+                                        class="form-control @error('kode_prodi') is-invalid @enderror"
+                                        value="{{ $detailData->kode_prodi }}">
+                                    @error('kode_prodi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label" style="font-weight: bold;">Nama Program Studi <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group mb-3 @error('nama') is-invalid @enderror">
                                         <span class="input-group-text">&nbsp;ID</span>
@@ -71,7 +82,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="bhs_pengantar_kuliah" class="form-label">Bahasa Pengantar Kuliah <span
+                                    <label for="bhs_pengantar_kuliah" class="form-label" style="font-weight: bold;">Bahasa Pengantar Kuliah <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group mb-3 @error('bhs_pengantar_kuliah') is-invalid @enderror">
                                         <span class="input-group-text">&nbsp;ID</span>
@@ -98,7 +109,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="akreditasi" class="form-label">Akreditasi</label>
+                                    <label for="akreditasi" class="form-label" style="font-weight: bold;">Akreditasi</label>
                                     <input type="text" name="akreditasi" id="akreditasi"
                                         class="form-control @error('akreditasi') is-invalid @enderror"
                                         value="{{ $detailData->akreditasi }}" placeholder="Misal: A, B, dsb">
@@ -108,7 +119,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="sk_akreditasi" class="form-label">SK Akreditasi</label>
+                                    <label for="sk_akreditasi" class="form-label" style="font-weight: bold;">SK Akreditasi</label>
                                     <input type="text" name="sk_akreditasi" id="sk_akreditasi"
                                         class="form-control @error('sk_akreditasi') is-invalid @enderror"
                                         value="{{ $detailData->sk_akreditasi }}" placeholder="Misal: A, B, dsb">
@@ -118,7 +129,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="sistem_penilaian" class="form-label">Sistem Penilaian <span
+                                    <label for="sistem_penilaian" class="form-label" style="font-weight: bold;">Sistem Penilaian <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group mb-3 @error('sistem_penilaian') is-invalid @enderror">
                                         <span class="input-group-text">&nbsp;ID</span>
@@ -145,7 +156,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="gelar" class="form-label">Gelar <span
+                                    <label for="gelar" class="form-label" style="font-weight: bold;">Gelar <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group mb-3 @error('gelar') is-invalid @enderror">
                                         <span class="input-group-text">&nbsp;ID</span>
