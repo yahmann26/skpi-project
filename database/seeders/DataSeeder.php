@@ -92,7 +92,7 @@ class DataSeeder extends Seeder
                     'program_studi' => [
                         [
                             'kode_prodi' => ' 12345',
-                            'nama' => ' Teknik Informatika',
+                            'nama' => 'Teknik Informatika',
                             'nama_en' => 'Informatics Engineering',
                             'singkatan' => 'TI',
                             'akreditasi' => 'B',

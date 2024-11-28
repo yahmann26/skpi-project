@@ -6,10 +6,10 @@
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
     <style>
         thead input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
     </style>
 @endpush
 
@@ -25,28 +25,29 @@
         </nav>
     </div>
 
-
     <section class="section dashboard">
         <div class="row">
             <div class="col-12">
                 <div class="card overflow-auto">
-
                     <div class="card-body">
-
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data Mahasiswa</div>
-                            <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a>
+                            <div class="d-flex">
+                                <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-sm btn-primary me-2"><i
+                                        class="bi bi-plus"></i> Tambah</a>
+                                <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#importModal"><i class="bi bi-upload"></i> Import</button>
+                            </div>
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th width = "3%">No</th>
-                                    <th width = "20%">NIM</th>
-                                    <th width = "20%">Nama Mahasiswa</th>
-                                    <th width = "20%">Program Studi</th>
-                                    <th width = "10%">Aksi</th>
+                                    <th width="3%">No</th>
+                                    <th width="20%">NIM</th>
+                                    <th width="20%">Nama Mahasiswa</th>
+                                    <th width="20%">Program Studi</th>
+                                    <th width="10%">Aksi</th>
                                 </tr>
                                 <tr>
                                     <th></th>
@@ -57,18 +58,41 @@
                                 </tr>
                             </thead>
                         </table>
-
                     </div>
-
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Modal untuk Import File -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Import Data Mahasiswa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form untuk Import -->
+                    <form action="{{ route('admin.mahasiswa.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Pilih File</label>
+                            <input type="file" name="file" class="form-control" accept=".xlsx,.csv" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Import</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('script')
-
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
@@ -94,7 +118,6 @@
         }
 
         $(function() {
-
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -130,7 +153,7 @@
                             var column = this;
                             var title = column.header().textContent;
 
-                            // Create input element and add event listener
+                            // Membuat elemen input dan menambahkan event listener
                             $('<input type="text" placeholder="Search ' + title + '" />')
                                 .appendTo($(column.header()).empty())
                                 .on('keyup change clear', function() {
@@ -141,13 +164,6 @@
                         });
                 },
             });
-
-            // Event delegation for dynamically added delete buttons
-            $('#datatable').on('click', '.btn-delete', function() {
-                var id = $(this).data('id');
-                deleteData(id);
-            });
-
         });
     </script>
 @endpush

@@ -6,10 +6,13 @@ use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use App\Imports\MahasiswaImport;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
@@ -106,8 +109,6 @@ class MahasiswaController extends Controller
                 'tgl_lulus' => $request->tgl_lulus,
                 'user_id' => $user->id,
             ]);
-
-
         });
 
         return redirect()->route('admin.mahasiswa.index')->with('success', 'Data Mahasiswa berhasil ditambahkan!');
@@ -165,15 +166,15 @@ class MahasiswaController extends Controller
         $mahasiswa->update([
             'nim' => $request->nim,
             'nama' => $request->nama,
-            'tempat_lahir' =>$request->tempat_lahir,
-            'tgl_lahir' =>$request->tgl_lahir,
-            'no_ijazah' =>$request->no_ijazah,
-            'tgl_masuk' =>$request->tgl_masuk,
-            'tgl_lulus' =>$request->tgl_lulus,
-            'jenis_kelamin' =>$request->jenis_kelamin,
-            'jenis_pendaftaran' =>$request->jenis_pendaftaran,
-            'jenis_pendaftaran_en' =>$request->jenis_pendaftaran_en,
-            'program_studi_id' =>$request->program_studi_id,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tgl_lahir' => $request->tgl_lahir,
+            'no_ijazah' => $request->no_ijazah,
+            'tgl_masuk' => $request->tgl_masuk,
+            'tgl_lulus' => $request->tgl_lulus,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'jenis_pendaftaran' => $request->jenis_pendaftaran,
+            'jenis_pendaftaran_en' => $request->jenis_pendaftaran_en,
+            'program_studi_id' => $request->program_studi_id,
         ]);
 
         // dd($mahasiswa);
@@ -214,5 +215,17 @@ class MahasiswaController extends Controller
         $user->delete();
 
         return redirect()->back()->with('success', 'Data Mahasiswa berhasil dihapus!');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        // Import data dari file Excel
+        Excel::import(new MahasiswaImport, $request->file('file'));
+
+        return back()->with('success', 'Data mahasiswa berhasil diimpor!');
     }
 }

@@ -89,6 +89,7 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('mahasiswa/{id}/ubah', [AdminMahasiswaController::class, 'edit'])->name('admin.mahasiswa.edit');
     Route::put('mahasiswa/{id}', [AdminMahasiswaController::class, 'update'])->name('admin.mahasiswa.update');
     Route::delete('mahasiswa/{id}', [AdminMahasiswaController::class, 'destroy'])->name('admin.mahasiswa.destroy');
+    Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('admin.mahasiswa.import');
 
     // Kaprodi
     Route::get('kaprodi', [AdminKaprodiController::class, 'index'])->name('admin.kaprodi.index');
