@@ -23,7 +23,7 @@
                                 width="100" height="100">
                         </td>
                         <td style="width:31%; color: #2F9B58; padding: 0; vertical-align: left; padding-top: 2mm;">
-                            <h1 style="font-size: 20px; font-weight: bold;">
+                            <h1 style="font-size: 18px; font-weight: bold;">
                                 UNIVERSITAS <br> SAINS AL-QUR'AN
                             </h1>
                             <h2 style="font-size: 13px; font-weight: bold; margin-top:2mm; ">
@@ -46,13 +46,13 @@
         </div>
 
         <!-- Nomor SKPI -->
-        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top:2mm; ">
+        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top:2mm;">
             <tr>
                 <td style="width: 50%;">
                 </td>
-                <td style="width: 50%; background-color: #D3D3D3; text-align: center;">
+                <td style="width: 50%; background-color: #D3D3D3; text-align: center; padding: 5px; ">
                     <p style="font-size: 12px;">
-                        <span>Nomor. {{ $skpi->nomor }}</span>
+                        <span>Nomor. {{ $skpi->nomor }}/SKPI/FASTIKOM/{{ $namaSingkat }}/{{ $jenjangPendidikan->singkatan }}.{{ $prodi->singkatan }}/{{ $prodi->kode_prodi }}/{{ \Carbon\Carbon::parse($mahasiswa->tgl_lulus)->format('Y') }}</span>
                     </p>
                 </td>
             </tr>
@@ -496,7 +496,7 @@
                 <td style="width: 2%; background-color: #D3D3D3;">
                 </td>
 
-                <td style="width: 15%; padding: 0; vertical-align: left; background-color: #D3D3D3; ">
+                <td style="width: 15%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
                     <p style="font-size: 12px; margin-top: 2px; margin-bottom: 0;">
                         <span>{{ $prodi->sk_akreditasi }}</span>
                     </p>
@@ -507,7 +507,7 @@
                 </td>
                 <td style="width: 58%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
                     <p style="font-size: 12px;  margin-top: 2px; margin-bottom: 0;">
-                        <span>{{ $prodi->sistem_penilaian }}</span><br>
+                        <span style=" padding: 2px">{{ $prodi->sistem_penilaian }}</span><br>
                         <span style="font-style:italic; color: gray;">{{ $prodi->sistem_penilaian }}</span>
 
                     </p>
@@ -566,34 +566,6 @@
             </tr>
         </table>
     </div>
-
-    {{-- <script type="text/php">
-        if(isset($pdf)) {
-            $x = 50;
-            $y = 800;
-
-            $text = "{PAGE_NUM} | Surat Keterangan Pendamping Ijazah - Diploma Suplement";
-
-            $fontBold = $fontMetrics->get_font("Times-Roman", "bold");
-            $fontNormal = $fontMetrics->get_font("Times-Roman", "normal");
-            $fontItalic = $fontMetrics->get_font("Times-Roman", "italic");
-            $size = 10;
-            $color = array(.16, .16, .16);
-            $word_space = 0.0;
-            $char_space = 0.0;
-            $angel = 0.0;
-
-            $pdf->page_text($x, $y, "{PAGE_NUM}", $fontBold, $size, $color, $word_space, $char_space, $angel);
-
-            $pdf->page_text($x + 5, $y, " | Surat Keterangan Pendamping Ijazah", $fontNormal, $size, $color, $word_space, $char_space, $angel);
-
-            $pdf->page_text($x + 160, $y, " - Diploma Suplement", $fontItalic, $size, $color, $word_space, $char_space, $angel);
-        }
-    </script> --}}
-
-
 </body>
-
-
 
 </html>

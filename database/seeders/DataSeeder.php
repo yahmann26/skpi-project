@@ -91,7 +91,7 @@ class DataSeeder extends Seeder
                     'jenjang_lanjutan_en' => 'Doctoral',
                     'program_studi' => [
                         [
-                            'kode_prodi' => ' 12345',
+                            'kode_prodi' => '12345',
                             'nama' => 'Teknik Informatika',
                             'nama_en' => 'Informatics Engineering',
                             'singkatan' => 'TI',
@@ -106,7 +106,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.Kom',
                         ],
                         [
-                            'kode_prodi' => ' 12346',
+                            'kode_prodi' => '12346',
                             'nama' => 'Teknik Sipil',
                             'nama_en' => 'Civil Engineering',
                             'singkatan' => 'TS',
@@ -121,7 +121,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.T',
                         ],
                         [
-                            'kode_prodi' => ' 12347',
+                            'kode_prodi' => '12347',
                             'nama' => 'Teknik Mesin',
                             'nama_en' => 'Mechanical Engineering',
                             'singkatan' => 'TM',
@@ -136,7 +136,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.T',
                         ],
                         [
-                            'kode_prodi' => ' 12348',
+                            'kode_prodi' => '12348',
                             'nama' => 'Arsitektur',
                             'nama_en' => 'Architecture ',
                             'singkatan' => 'Ars',

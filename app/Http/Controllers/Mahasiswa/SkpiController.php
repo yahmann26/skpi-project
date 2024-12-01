@@ -18,26 +18,8 @@ class SkpiController extends Controller
 {
     public function index(Request $request)
     {
-        if (!function_exists('getStatusColor')) {
-            function getStatusColor($status)
-            {
-                $status = strtolower($status);
-                switch ($status) {
-                    case 'pengajuan':
-                        return '<span class="badge bg-warning">Pengajuan</span>';
-                    case 'tolak':
-                        return '<span class="badge bg-danger">Ditolak</span>';
-                    case 'validasi':
-                        return '<span class="badge bg-success">Validasi</span>';
-                    default:
-                        return '<span class="badge bg-secondary">Tidak diketahui</span>';
-                }
-            }
-        }
 
         $skpi = Skpi::where('mahasiswa_id', Auth::user()->mahasiswa->id)->first();
-
-        $ajukanSkpi = $skpi ? true : false;
 
         if ($request->ajax()) {
             $skpi = Skpi::where('mahasiswa_id', Auth::user()->mahasiswa->id)
@@ -48,32 +30,16 @@ class SkpiController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $cetakSkpi = route('mahasiswa.skpi.cetak', $row->id);
-
-                    if ($row->status === 'validasi') {
-                        return '
-                            <a href="' . $cetakSkpi . '" class="edit btn btn-light btn-sm"><i class="bi bi-printer"></i></a>
-                        ';
-                    }
-
-                    return '';
+                    return '<a href="' .
+                        $cetakSkpi .
+                        '" class="show btn btn-success btn-sm"><i class="bi bi-printer"></i></a>';
                 })
-
-                ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('mhs', fn($row) => $row->mahasiswa->nama)
-                ->rawColumns(['action', 'status'])
+                ->rawColumns(['action', 'mhs'])
                 ->make(true);
         }
 
-        return view('mahasiswa.pages.skpi.index', compact('ajukanSkpi'));
-    }
-
-    public function store(Request $request)
-    {
-        $skpi = new Skpi();
-        $skpi->mahasiswa_id = Auth::user()->mahasiswa->id;
-
-        $skpi->save();
-        return response()->json(['success' => true, 'message' => 'SKPI berhasil diajukan.']);
+        return view('mahasiswa.pages.skpi.index');
     }
 
     public function cetak()
@@ -99,6 +65,7 @@ class SkpiController extends Controller
         $kegiatan = $mahasiswa->kegiatan;
         $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
         $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
+        $namaSingkat = HelperSkpi::getSettingByName('nama_universitas_singkat');
         $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
         $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
 
@@ -117,6 +84,7 @@ class SkpiController extends Controller
             'kegiatan' => $kegiatan,
             'namaUniv' => $namaUniv,
             'namaUnivEn' => $namaUnivEn,
+            'namaSingkat' => $namaSingkat,
             'ttd' => $ttd,
             'nidn' => $nidn,
             'logoUniv' => $logoUniv,

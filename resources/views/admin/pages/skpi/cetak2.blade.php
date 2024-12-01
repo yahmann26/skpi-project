@@ -14,7 +14,6 @@
 <body>
 
     <div>
-
         {{-- Kualifikasi dan hasil yang dicapai --}}
         <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; ">
             <tr>
@@ -433,7 +432,7 @@
                 </td>
                 <td style="width: 45%; font-weight: bold; text-align: left; vertical-align: top;">
                     <h1 style="font-size: 12px; font-weight: bold; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, 29 Maret 2021
+                        Wonosobo, {{ \App\Helper\Skpi::dateIndo($mahasiswa->tgl_lulus) }}
                     </h1>
                 </td>
             </tr>
@@ -447,7 +446,7 @@
                 <td style="width: 45%; vertical-align: top;">
                     <span
                         style="font-size: 12px; font-style: italic; color: gray; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, 29 Maret 2021
+                        Wonosobo, {{ \App\Helper\Skpi::dateEN($mahasiswa->tgl_lulus) }}
                     </span>
                 </td>
             </tr>

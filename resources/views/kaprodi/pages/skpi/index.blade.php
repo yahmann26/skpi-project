@@ -4,6 +4,13 @@
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
+    <style>
+        thead input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
 @endpush
 
 @section('main')
@@ -25,22 +32,15 @@
                 <div class="card overflow-auto">
 
                     <div class="card-body">
-
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data SKPI</div>
-                            {{-- <a href="{{ route('kaprodi.skpi.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a> --}}
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "10%">NIM</th>
-                                    <th width = "20%">Nama Mahasiswa</th>
-                                    <th width = "20%">No Ijazah</th>
-                                    <th width = "20%">Nomor SKPI</th>
-                                    <th width = "10%">Status</th>
+                                    <th width = "50%">Nama</th>
                                     <th width = "15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -56,33 +56,13 @@
 @endsection
 
 @push('script')
-
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
-        function deleteskpi(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                $.ajax({
-                    url: 'kaprodi/skpi/' + id,
-                    type: 'DELETE',
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(result) {
-                        alert('Data berhasil dihapus');
-                        $('#datatable').DataTable().ajax.reload(); // Reload tabel untuk memperbarui data
-                    },
-                    error: function(xhr) {
-                        alert('Terjadi kesalahan saat menghapus data.');
-                    }
-                });
-            }
-        }
 
         $(function() {
-
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -92,24 +72,8 @@
                         name: 'DT_RowIndex',
                     },
                     {
-                        data: 'nim',
-                        name: 'nim'
-                    },
-                    {
                         data: 'nama',
                         name: 'nama'
-                    },
-                    {
-                        data: 'no_ijazah',
-                        name: 'no_ijazah'
-                    },
-                    {
-                        data: 'nomor',
-                        name: 'nomor'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
                     },
                     {
                         data: 'action',
@@ -117,15 +81,8 @@
                         orderable: false,
                         searchable: false
                     },
-                ]
+                ],
             });
-
-            
-            $('#datatable').on('click', '.btn-delete', function() {
-                var id = $(this).data('id');
-                deleteData(id);
-            });
-
         });
     </script>
 @endpush

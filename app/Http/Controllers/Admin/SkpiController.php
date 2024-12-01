@@ -37,12 +37,8 @@ class SkpiController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.skpi.edit', $row->id);
                     $deleteUrl = route('admin.skpi.destroy', $row->id);
-                    $cetakSkpi = route('admin.skpi.cetak', $row->id);
                     $showSkpi = route('admin.skpi.show', $row->id);
                     return '
-                        <a href="' .
-                        $editUrl .
-                        '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                         <a href="' .
                         $showSkpi .
                         '" class="show btn btn-light btn-sm"><i class="bi bi-search"></i></a>
@@ -95,65 +91,44 @@ class SkpiController extends Controller
         if ($request->ajax()) {
             return DataTables::of($periode->skpi)
                 ->addIndexColumn()
+                ->addColumn('nim', function ($data) {
+                    return $data->mahasiswa ? $data->mahasiswa->nim : '-';
+                })
                 ->addColumn('nama', function ($data) {
                     return $data->mahasiswa ? $data->mahasiswa->nama : '-';
                 })
                 ->addColumn('prodi', function ($data) {
                     return $data->mahasiswa && $data->mahasiswa->prodi ? $data->mahasiswa->prodi->nama : '-';
                 })
-                ->rawColumns(['nama', 'prodi'])
+                ->rawColumns(['nim', 'nama', 'prodi'])
                 ->make(true);
         }
 
         return view('admin.pages.skpi.show', compact('periode'));
     }
 
-    public function cetak($id)
+    public function cetak($ids)
     {
+        // Mengambil PT pertama
         $pt = Pt::where('id', 1)->first();
 
-        $skpi = Skpi::with([
+        // Mengubah string ID menjadi array
+        $idsArray = explode(',', $ids);
+
+        // Mengambil SKPI berdasarkan array ID
+        $skpis = Skpi::with([
             'mahasiswa.prodi.jenjangPendidikan',
             'mahasiswa.kegiatan' => function ($query) {
                 $query->where('status', 'validasi');
             },
-        ])->find($id);
+        ])->whereIn('id', $idsArray)->get();
 
-        if (!$skpi) {
-            return redirect()->back()->with('error', 'SKPI not found');
+        // Jika tidak ada SKPI yang ditemukan
+        if ($skpis->isEmpty()) {
+            return redirect()->back()->with('error', 'SKPI tidak ditemukan');
         }
 
-        $mahasiswa = $skpi->mahasiswa;
-        $prodi = $mahasiswa->prodi;
-        $cpl = json_decode($prodi->kualifikasi_cpl, true);
-        $jenjangPendidikan = $prodi->jenjangPendidikan;
-        $kegiatan = $mahasiswa->kegiatan;
-        $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
-        $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
-        $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
-        $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
-
-        $imagePath = public_path('images/unsiq.png');
-        $logoUniv = base64_encode(file_get_contents($imagePath));
-        $imagePath2 = public_path('images/logo unsiq.png');
-        $logoUniv2 = base64_encode(file_get_contents($imagePath2));
-
-        $data = [
-            'pt' => $pt,
-            'skpi' => $skpi,
-            'mahasiswa' => $mahasiswa,
-            'prodi' => $prodi,
-            'cpl' => $cpl,
-            'jenjangPendidikan' => $jenjangPendidikan,
-            'kegiatan' => $kegiatan,
-            'namaUniv' => $namaUniv,
-            'namaUnivEn' => $namaUnivEn,
-            'ttd' => $ttd,
-            'nidn' => $nidn,
-            'logoUniv' => $logoUniv,
-            'logoUniv2' => $logoUniv2,
-        ];
-
+        // Menginisialisasi MPDF
         $mpdf = new \Mpdf\Mpdf([
             'setAutoTopMargin' => 'stretch',
             'mode' => 'utf-8',
@@ -162,42 +137,70 @@ class SkpiController extends Controller
         ]);
 
         $mpdf->SetHTMLFooter('
-            <div style="text-align: left; font-size: 12px; border-top: 2px solid; border-top: 2px solid;  padding-left: 35px;">
-                {PAGENO}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | SURAT KETERANGAN PENDAMPING IJAZAH - <span style = "font-style: italic; color: gray; ">Diploma Suplement</span>
-            </div>
-        ');
+        <div style="text-align: left; font-size: 12px; border-top: 2px solid; padding-left: 35px;">
+        {PAGENO}      | SURAT KETERANGAN PENDAMPING IJAZAH - <span style="font-style: italic; color: gray;">Diploma Supplement</span>
+        </div>
+    ');
 
-        $mpdf->AddPage();
-        $html = view('admin.pages.skpi.cetak1', $data)->render();
+        // Path logo universitas
+        $imagePath = public_path('images/unsiq.png');
+        $logoUniv = base64_encode(file_get_contents($imagePath));
+        $imagePath2 = public_path('images/logo unsiq.png');
+        $logoUniv2 = base64_encode(file_get_contents($imagePath2));
 
-        $htmlHeader = view('admin.pages.skpi.header', $data)->render();
-        $mpdf->SetHTMLHeader($htmlHeader);
+        foreach ($skpis as $skpi) {
+            $mahasiswa = $skpi->mahasiswa;
+            $prodi = $mahasiswa->prodi;
+            $cpl = json_decode($prodi->kualifikasi_cpl, true);
+            $jenjangPendidikan = $prodi->jenjangPendidikan;
+            $kegiatan = $mahasiswa->kegiatan;
+            $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
+            $namaSingkat = HelperSkpi::getSettingByName('nama_universitas_singkat');
+            $namaUnivEn = HelperSkpi::getSettingByName('nama_universitas_en');
+            $ttd = HelperSkpi::getSettingByName('nama_penandatangan');
+            $nidn = HelperSkpi::getSettingByName('nip_penandatangan');
 
-        $html2 = view('admin.pages.skpi.cetak2', $data)->render();
-        $mpdf->WriteHTML($html);
-        $mpdf->WriteHTML($html2);
+            // Data untuk dikirim ke view
+            $data = [
+                'pt' => $pt,
+                'skpi' => $skpi,
+                'mahasiswa' => $mahasiswa,
+                'prodi' => $prodi,
+                'cpl' => $cpl,
+                'jenjangPendidikan' => $jenjangPendidikan,
+                'kegiatan' => $kegiatan,
+                'namaUniv' => $namaUniv,
+                'namaSingkat' => $namaSingkat,
+                'namaUnivEn' => $namaUnivEn,
+                'ttd' => $ttd,
+                'nidn' => $nidn,
+                'logoUniv' => $logoUniv,
+                'logoUniv2' => $logoUniv2,
+            ];
 
-        $mpdf->Output();
+            // Render header dan halaman PDF
+            $header1 = view('admin.pages.skpi.header1', $data)->render();
+            $mpdf->SetHTMLHeader($header1, 'O');
+
+            $mpdf->AddPage('P', '', 1);
+
+            $html = view('admin.pages.skpi.cetak1', $data)->render();
+            $mpdf->WriteHTML($html);
+
+            $header = view('admin.pages.skpi.header', $data)->render();
+            $mpdf->SetHTMLHeader($header);
+
+            $html2 = view('admin.pages.skpi.cetak2', $data)->render();
+            $mpdf->WriteHTML($html2);
+        }
+
+        return $mpdf->Output('skpi.pdf', 'I');
     }
 
-    private function generateNomor($skpi)
-    {
-        $year = date('Y');
-
-        $sequence = str_pad($skpi->id, 5, '0', STR_PAD_LEFT);
-
-        $prodi = $skpi->mahasiswa->prodi->singkatan ?? '';
-        $jenjang = $skpi->mahasiswa->prodi->jenjangPendidikan->singkatan ?? '';
-        $kode = $skpi->mahasiswa->prodi->kode_prodi ?? '';
-
-        $nomor = "{$sequence}/SKPI/FASTIKOM/UNSIQ/{$jenjang}.{$prodi}/{$kode}/{$year}";
-
-        return $nomor;
-    }
 
     public function destroy($id)
     {
-        Skpi::where('id', $id)->delete();
+        Periode::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Berhasil menghapus data');
     }
 

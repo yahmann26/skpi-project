@@ -14,7 +14,6 @@
 <body>
 
     <div>
-
         {{-- Kualifikasi dan hasil yang dicapai --}}
         <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; ">
             <tr>
@@ -433,7 +432,7 @@
                 </td>
                 <td style="width: 45%; font-weight: bold; text-align: left; vertical-align: top;">
                     <h1 style="font-size: 12px; font-weight: bold; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, 29 Maret 2021
+                        Wonosobo, {{ \App\Helper\Skpi::dateIndo($mahasiswa->tgl_lulus) }}
                     </h1>
                 </td>
             </tr>
@@ -447,7 +446,7 @@
                 <td style="width: 45%; vertical-align: top;">
                     <span
                         style="font-size: 12px; font-style: italic; color: gray; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, 29 Maret 2021
+                        Wonosobo, {{ \App\Helper\Skpi::dateEN($mahasiswa->tgl_lulus) }}
                     </span>
                 </td>
             </tr>
@@ -510,32 +509,6 @@
 
         </table>
     </div>
-
-    {{-- <script type="text/php">
-        if(isset($pdf)) {
-            $x = 50;
-            $y = 800;
-
-            $text = "{PAGE_NUM} | Surat Keterangan Pendamping Ijazah - Diploma Suplement";
-
-            $fontBold = $fontMetrics->get_font("Times-Roman", "bold");
-            $fontNormal = $fontMetrics->get_font("Times-Roman", "normal");
-            $fontItalic = $fontMetrics->get_font("Times-Roman", "italic");
-            $size = 10;
-            $color = array(.16, .16, .16);
-            $word_space = 0.0;
-            $char_space = 0.0;
-            $angel = 0.0;
-
-            $pdf->page_text($x, $y, "{PAGE_NUM}", $fontBold, $size, $color, $word_space, $char_space, $angel);
-
-            $pdf->page_text($x + 5, $y, " | Surat Keterangan Pendamping Ijazah", $fontNormal, $size, $color, $word_space, $char_space, $angel);
-
-            $pdf->page_text($x + 160, $y, " - Diploma Suplement", $fontItalic, $size, $color, $word_space, $char_space, $angel);
-        }
-    </script> --}}
-
-
 </body>
 
 

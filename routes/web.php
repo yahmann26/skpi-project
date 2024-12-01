@@ -24,6 +24,7 @@ use App\Http\Controllers\Kaprodi\KegiatanController as KaprodiKegiatanController
 use App\Http\Controllers\Kaprodi\SkpiController as KaprodiSkpiController;
 
 use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome', ['title' => 'SKPI FASTIKOM UNSIQ']);
 })->name('welcome');
@@ -110,16 +111,13 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
 
     // skpi
     Route::get('skpi', [AdminSkpiController::class, 'index'])->name('admin.skpi.index');
-    // Route::get('skpi/tambah', [AdminSkpiController::class, 'create'])->name('admin.skpi.tambah');
     Route::post('skpi/tambah/periode', [AdminSkpiController::class, 'store'])->name('admin.periode.store');
     Route::get('skpi/{id}/lihat', [AdminSkpiController::class, 'show'])->name('admin.skpi.show');
     Route::get('skpi/download', [AdminSkpiController::class, 'download'])->name('admin.skpi.download');
     Route::post('skpi/import{periodeId}', [AdminSkpiController::class, 'import'])->name('admin.skpi.import');
     Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
-    Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
-
-    Route::put('skpi/{id}/status', [AdminSkpiController::class, 'updateStatus'])->name('admin.skpi.update-status');
+    Route::get('skpi/cetak/{ids}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
 });
 
 /* MAHASISWA */
@@ -145,8 +143,6 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
     // SKPI
     Route::get('skpi', [MahasiswaSkpiController::class, 'index'])->name('mahasiswa.skpi.index');
     Route::get('skpi/cetak', [MahasiswaSkpiController::class, 'cetak'])->name('mahasiswa.skpi.cetak');
-    Route::get('skpi/lihat', [MahasiswaSkpiController::class, 'show'])->name('mahasiswa.skpi.show');
-    Route::post('skpi', [MahasiswaSkpiController::class, 'store'])->name('mahasiswa.skpi.store');
 });
 
 
@@ -184,10 +180,7 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     // SKPI
     Route::get('skpi', [KaprodiSkpiController::class, 'index'])->name('kaprodi.skpi.index');
     Route::get('skpi/{id}/lihat', [KaprodiSkpiController::class, 'show'])->name('kaprodi.skpi.show');
-    Route::post('skpi', [KaprodiSkpiController::class, 'store'])->name('kaprodi.skpi.store');
-    Route::get('skpi/cetak/{id}', [KaprodiSkpiController::class, 'cetak'])->name('kaprodi.skpi.cetak');
-    Route::put('skpi/{id}/status', [KaprodiSkpiController::class, 'updateStatus'])->name('kaprodi.skpi.update-status');
-    Route::delete('skpi/{id}', [KaprodiSkpiController::class, 'destroy'])->name('kaprodi.skpi.destroy');
+    Route::get('skpi/cetak/{ids}', [KaprodiSkpiController::class, 'cetak'])->name('kaprodi.skpi.cetak');
 });
 
 require __DIR__ . '/auth.php';

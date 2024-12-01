@@ -30,17 +30,24 @@
         <div class="row">
             <div class="col-12">
                 <div class="card overflow-auto">
-
                     <div class="card-body">
-
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title">Data SKPI</div>
+                            <div class="card-title"><a href="{{ route('admin.skpi.index') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-left"></i> Kembali</a></div>
+                            <div class="card-title">Data SKPI {{ $periode->nama }} </div>
                             <div class="d-flex">
+
+                                {{-- cetak --}}
+                                <a id="printButton" href="#" class="btn btn-sm btn-success me-2 d-none">
+                                    <i class="bi bi-printer"></i> Cetak
+                                </a>
+
                                 <a href="{{ route('admin.skpi.download') }}" class="btn btn-sm btn-info me-2">
                                     <i class="bi bi-download"></i> Download Template
                                 </a>
                                 <button class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal"
-                                    data-bs-target="#importModal"><i class="bi bi-upload"></i> Import</button>
+                                    data-bs-target="#importModal">
+                                    <i class="bi bi-upload"></i> Import
+                                </button>
                             </div>
                         </div>
 
@@ -48,8 +55,10 @@
                             <thead>
                                 <tr>
                                     <th width = "5%"><input type="checkbox" id="selectAll"></th>
-                                    <th width = "40%">Nama</th>
-                                    <th width = "45%">Prodi</th>
+                                    <th width = "20%">NIM</th>
+                                    <th width = "30%">Nama</th>
+                                    <th width = "15%">Nomor</th>
+                                    <th width = "35%">Prodi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -104,12 +113,20 @@
                         searchable: false,
                         orderable: false,
                         render: function(data, type, row) {
-                            return `<input type="checkbox" class="selectRow" value="${row.id}">`; // Row checkbox
+                            return `<input type="checkbox" class="selectRow" value="${row.id}">`;
                         },
+                    },
+                    {
+                        data: 'nim',
+                        name: 'nim'
                     },
                     {
                         data: 'nama',
                         name: 'nama'
+                    },
+                    {
+                        data: 'nomor',
+                        name: 'nomor'
                     },
                     {
                         data: 'prodi',
@@ -118,31 +135,46 @@
                 ],
             });
 
-            // Select/Deselect all checkboxes when the header checkbox is clicked
+            // Event untuk Select All Checkbox
             $('#selectAll').on('click', function() {
                 var isChecked = $(this).prop('checked');
                 $('.selectRow').prop('checked', isChecked);
+                togglePrintButton();
             });
 
-            // If all checkboxes are selected, mark the "select all" checkbox as checked
+            // Event untuk Checkbox per Row
             $('#datatable').on('change', '.selectRow', function() {
                 var totalCheckboxes = $('.selectRow').length;
                 var checkedCheckboxes = $('.selectRow:checked').length;
 
                 $('#selectAll').prop('checked', totalCheckboxes === checkedCheckboxes);
+                togglePrintButton();
             });
 
-            $("#importForm").submit(function(e) {
-                var fileInput = $('#file')[0];
-                var filePath = fileInput.value;
-                var allowedExtensions = /(\.xls|\.xlsx)$/i;
+            // Fungsi untuk toggle tombol Cetak
+            function togglePrintButton() {
+                var selectedIds = getSelectedIds();
 
-                if (!allowedExtensions.exec(filePath)) {
-                    alert('Mohon pilih file Excel (xls, xlsx)');
-                    fileInput.value = '';
-                    e.preventDefault();
+                if (selectedIds.length > 0) {
+                    $('#printButton').removeClass('d-none'); // Tampilkan tombol
+                    var printUrl = "{{ route('admin.skpi.cetak', ':ids') }}";
+                    printUrl = printUrl.replace(':ids', selectedIds.join(',')); // Ganti placeholder dengan ID
+                    $('#printButton').attr('href', printUrl);
+                } else {
+                    $('#printButton').addClass('d-none'); // Sembunyikan tombol
                 }
-            });
+            }
+
+            // Fungsi untuk mendapatkan ID yang dicentang
+            function getSelectedIds() {
+                var selectedIds = [];
+                $('.selectRow:checked').each(function() {
+                    selectedIds.push($(this).val());
+                });
+                return selectedIds;
+            }
+
         });
     </script>
+
 @endpush

@@ -52,7 +52,7 @@
                 </td>
                 <td style="width: 50%; background-color: #D3D3D3; text-align: center; padding: 5px; ">
                     <p style="font-size: 12px;">
-                        <span>Nomor. {{ $skpi->nomor }}</span>
+                        <span>Nomor. {{ $skpi->nomor }}/SKPI/FASTIKOM/{{ $namaSingkat }}/{{ $jenjangPendidikan->singkatan }}.{{ $prodi->singkatan }}/{{ $prodi->kode_prodi }}/{{ \Carbon\Carbon::parse($mahasiswa->tgl_lulus)->format('Y') }}</span>
                     </p>
                 </td>
             </tr>

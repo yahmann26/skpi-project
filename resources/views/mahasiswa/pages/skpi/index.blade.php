@@ -27,12 +27,6 @@
                     <div class="card-body" style="min-height: 300px">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data SKPI</div>
-                            @if (!$ajukanSkpi)
-                                <a href="#" class="btn btn-sm btn-primary" id="btnAjukan"><i class="bi bi-plus"></i>
-                                    Ajukan</a>
-                            @else
-                                <span class="badge bg-success"></span>
-                            @endif
                         </div>
                         <table class="table table-bordered table-striped datatable">
                             <thead>
@@ -40,7 +34,6 @@
                                     <th width = "5%">No</th>
                                     <th width = "20%">Nama</th>
                                     <th width = "40%">Nomor</th>
-                                    <th width = "20%">Status</th>
                                     <th width = "15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -83,10 +76,6 @@
                         name: 'nomor'
                     },
                     {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
@@ -97,51 +86,6 @@
                     targets: '_all',
                     className: 'align-middle'
                 }],
-            });
-        });
-
-        $('#btnAjukan').on('click', function(e) {
-            e.preventDefault();
-
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: "Apakah Anda yakin ingin mengajukan SKPI?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, ajukan!',
-                cancelButtonText: 'Tidak'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "{{ route('mahasiswa.skpi.store') }}",
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(response) {
-                            $('.datatable').DataTable().ajax.reload();
-
-                            Swal.fire(
-                                'Sukses!',
-                                'Data berhasil diajukan!',
-                                'success'
-                            );
-                        },
-                        error: function(xhr) {
-                            Swal.fire(
-                                'Error!',
-                                'Terjadi kesalahan: ' + xhr.responseText,
-                                'error'
-                            );
-                        }
-                    });
-                } else {
-                    Swal.fire(
-                        'Dibatalkan',
-                        'Pengajuan dibatalkan.',
-                        'info'
-                    );
-                }
             });
         });
     </script>

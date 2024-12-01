@@ -25,7 +25,6 @@ class SkpiImport implements ToModel, WithHeadingRow
         if ($rowNumber <= 3) {
             return null;
         }
-        
         if (!empty($row[1]) || !empty($row[2])) {
             //cek nim
             $mahasiswa = Mahasiswa::where('nim', $row[1])->first();
