@@ -89,6 +89,7 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('mahasiswa/{id}/ubah', [AdminMahasiswaController::class, 'edit'])->name('admin.mahasiswa.edit');
     Route::put('mahasiswa/{id}', [AdminMahasiswaController::class, 'update'])->name('admin.mahasiswa.update');
     Route::delete('mahasiswa/{id}', [AdminMahasiswaController::class, 'destroy'])->name('admin.mahasiswa.destroy');
+    Route::get('mahasiswa/download', [AdminMahasiswaController::class, 'download'])->name('admin.mahasiswa.download');
     Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('admin.mahasiswa.import');
 
     // Kaprodi
@@ -100,7 +101,6 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::delete('kaprodi/{id}', [AdminKaprodiController::class, 'destroy'])->name('admin.kaprodi.destroy');
 
     // pt
-
     Route::get('pt', [PtController::class, 'index'])->name('admin.pt.index');
     Route::get('pt/tambah', [PtController::class, 'create'])->name('admin.pt.create');
     Route::post('pt', [PtController::class, 'store'])->name('admin.pt.store');
@@ -110,11 +110,13 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
 
     // skpi
     Route::get('skpi', [AdminSkpiController::class, 'index'])->name('admin.skpi.index');
+    // Route::get('skpi/tambah', [AdminSkpiController::class, 'create'])->name('admin.skpi.tambah');
+    Route::post('skpi/tambah/periode', [AdminSkpiController::class, 'store'])->name('admin.periode.store');
     Route::get('skpi/{id}/lihat', [AdminSkpiController::class, 'show'])->name('admin.skpi.show');
-    Route::post('skpi', [AdminSkpiController::class, 'store'])->name('admin.skpi.store');
+    Route::get('skpi/download', [AdminSkpiController::class, 'download'])->name('admin.skpi.download');
+    Route::post('skpi/import{periodeId}', [AdminSkpiController::class, 'import'])->name('admin.skpi.import');
     Route::get('skpi/{id}/ubah', [AdminSkpiController::class, 'edit'])->name('admin.skpi.edit');
     Route::delete('skpi/{id}', [AdminSkpiController::class, 'destroy'])->name('admin.skpi.destroy');
-    // Route::get('skpi/cetakPdf/{id}', [AdminSkpiController::class, 'cetakPdf'])->name('admin.skpi.cetakPdf');
     Route::get('skpi/cetak/{id}', [AdminSkpiController::class, 'cetak'])->name('admin.skpi.cetak');
 
     Route::put('skpi/{id}/status', [AdminSkpiController::class, 'updateStatus'])->name('admin.skpi.update-status');

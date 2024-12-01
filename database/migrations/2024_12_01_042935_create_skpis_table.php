@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('skpi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mahasiswa_id')->constrained('mahasiswa', 'id')->cascadeOnDelete();
-            $table->string('nomor')->nullable();
-            $table->date('tanggal')->nullable();
-            $table->string('status')->default('pengajuan');
+            $table->foreignId('periode_id')->constrained('periode', 'id')->cascadeOnDelete();
+            $table->integer('nomor');
             $table->timestamps();
         });
     }

@@ -496,7 +496,7 @@
                 <td style="width: 2%; background-color: #D3D3D3;">
                 </td>
 
-                <td style="width: 15%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
+                <td style="width: 15%; padding: 0; vertical-align: left; background-color: #D3D3D3; ">
                     <p style="font-size: 12px; margin-top: 2px; margin-bottom: 0;">
                         <span>{{ $prodi->sk_akreditasi }}</span>
                     </p>
@@ -507,7 +507,7 @@
                 </td>
                 <td style="width: 58%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
                     <p style="font-size: 12px;  margin-top: 2px; margin-bottom: 0;">
-                        <span style=" padding: 2px">{{ $prodi->sistem_penilaian }}</span><br>
+                        <span>{{ $prodi->sistem_penilaian }}</span><br>
                         <span style="font-style:italic; color: gray;">{{ $prodi->sistem_penilaian }}</span>
 
                     </p>

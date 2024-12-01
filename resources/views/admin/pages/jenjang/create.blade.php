@@ -28,7 +28,7 @@
                         @csrf
 
                         <div class="mb-3 row">
-                            <label for="nama" class="form-label col-md-2" >Nama Jenjang <span class="text-danger">*</span></label>
+                            <label for="nama" class="form-label col-md-2" style="font-weight: bold;">Nama Jenjang <span class="text-danger">*</span></label>
                             <div class="col-md-5">
                                 <div class="input-group mb-3 @error('nama') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="singkatan" class="form-label col-md-2">Singkatan</label>
+                            <label for="singkatan" class="form-label col-md-2" style="font-weight: bold;">Singkatan</label>
                             <div class="col-md-5">
                                 <input type="text" name="singkatan" id="singkatan"
                                     class="form-control @error('singkatan') is-invalid @enderror"
@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="jenis_pendidikan" class="form-label col-md-2">Jenis Pendidikan <span class="text-danger">*</span></label>
+                            <label for="jenis_pendidikan" class="form-label col-md-2" style="font-weight: bold;">Jenis Pendidikan <span class="text-danger">*</span></label>
                             <div class="col-md-5">
                                 <div class="input-group mb-3 @error('jenis_pendidikan') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="kualifikasi_kkni" class="form-label col-md-2">Kualifikasi Sesuai KKNI</label>
+                            <label for="kualifikasi_kkni" class="form-label col-md-2" style="font-weight: bold;">Kualifikasi Sesuai KKNI</label>
                             <div class="col-md-5">
                                 <input type="text" name="kualifikasi_kkni" id="kualifikasi_kkni"
                                     class="form-control @error('kualifikasi_kkni') is-invalid @enderror"
@@ -100,7 +100,7 @@
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="lama_studi_reguler" class="form-label col-md-2">Lama Studi Reguler</label>
+                            <label for="lama_studi_reguler" class="form-label col-md-2" style="font-weight: bold;">Lama Studi Reguler</label>
                             <div class="col-md-5">
                                 <input type="text" name="lama_studi_reguler" id="lama_studi_reguler"
                                     class="form-control @error('lama_studi_reguler') is-invalid @enderror"
@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="jenis_lanjutan" class="form-label col-md-2">Jenis Lanjutan</label>
+                            <label for="jenis_lanjutan" class="form-label col-md-2" style="font-weight: bold;">Jenis Lanjutan</label>
                             <div class="col-md-5">
                                 <div class="input-group mb-3 @error('jenis_lanjutan') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
@@ -136,7 +136,7 @@
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="jenjang_lanjutan" class="form-label col-md-2">Jenjang Lanjutan</label>
+                            <label for="jenjang_lanjutan" class="form-label col-md-2" style="font-weight: bold;">Jenjang Lanjutan</label>
                             <div class="col-md-5">
                                 <div class="input-group mb-3 @error('jenjang_lanjutan') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>

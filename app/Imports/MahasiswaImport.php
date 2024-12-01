@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 
-class MahasiswaImport implements ToModel, WithHeadingRow
+class MahasiswaImport implements ToModel
 {
     /**
      * @param array $row
@@ -21,56 +21,79 @@ class MahasiswaImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        // dd($row);
+        // Skip baris pertama (header)
+        static $rowNumber = 1;
+        $rowNumber++;
 
-        //cek mahasiswa atau user sudah ada by nim dan uid
-        $existingMahasiswa = Mahasiswa::where('nim', $row['nim'])->first();
-        $existingUser = User::where('uid', $row['uid'])->first();
-
-        if ($existingMahasiswa || $existingUser) {
-            Log::info("Data sudah ada, skip import: ", $row);
-            return null;
+        if ($rowNumber <= 4) {
+            return null; // Jangan proses header
         }
 
-        // Cari program studi berdasarkan nama
-        $prodi = ProgramStudi::where('nama', $row['prodi'])->first();
-        if (!$prodi) {
-            Log::error('Prodi tidak ditemukan: ', $row);
-            return null;
+        // dd($row[6]);
+        if (
+            !empty($row[1])
+            or !empty($row[2])
+            or !empty($row[3])
+            or !empty($row[4])
+            or !empty($row[5])
+            or !empty($row[6])
+            or !empty($row[7])
+            or !empty($row[8])
+            or !empty($row[9])
+            or !empty($row[10])
+            or !empty($row[11])
+
+        ) {
+            //cek mahasiswa atau user sudah ada by nim dan uid
+            $existingMahasiswa = Mahasiswa::where('nim', $row[1])->first();
+            $existingUser = User::where('uid', $row[1])->first();
+
+            if ($existingMahasiswa || $existingUser) {
+                Log::info("Data sudah ada, skip import: ", $row);
+                return null;
+            }
+
+            // Cari program studi berdasarkan nama
+            $prodi = ProgramStudi::where('nama', $row[7])->first();
+            if (!$prodi) {
+                Log::error('Prodi tidak ditemukan: ', $row);
+                return null;
+            }
+            // dd($prodi);
+
+            $password = isset($row[1]) ? $row[1] : 'default_password';
+
+            // tambah user baru
+            $user = User::create([
+                'uid' => $row[1],
+                'email' => $row[2],
+                'password' => Hash::make($password),
+                'role' => 'mahasiswa',
+            ]);
+
+            // Konversi tanggal
+            $tglLahir = $this->convertToDateFormat($row[5]);
+            $tglMasuk = isset($row[8]) ? $this->convertToDateFormat($row[8]) : null;
+            $tglLulus = isset($row[9]) ? $this->convertToDateFormat($row[9]) : null;
+
+            // tambah data ke tabel mahasiswa
+            Mahasiswa::create([
+                'user_id' => $user->id,
+                'nim' => $row[1],
+                'nama' => $row[3],
+                'tempat_lahir' => $row[4],
+                'tgl_lahir' => $tglLahir,
+                'jenis_kelamin' => $row[6],
+                'program_studi_id' => $prodi->id,
+                'tgl_masuk' => $tglMasuk,
+                'tgl_lulus' => $tglLulus,
+                // 'no_ijazah' => $row[] ?? null,
+                'jenis_pendaftaran' => $row[10] ?? null,
+                'jenis_pendaftaran_en' => $row[11] ?? null,
+            ]);
+
+            return $user;
         }
-
-        $password = isset($row['password']) ? $row['password'] : 'default_password';
-
-        // tambah user baru
-        $user = User::create([
-            'uid' => $row['uid'],
-            'email' => $row['email'],
-            'password' => Hash::make($password),
-            'role' => $row['role'],
-        ]);
-
-        // Konversi tanggal
-        $tglLahir = $this->convertToDateFormat($row['tgl_lahir']);
-        $tglMasuk = isset($row['tgl_masuk']) ? $this->convertToDateFormat($row['tgl_masuk']) : null;
-        $tglLulus = isset($row['tgl_lulus']) ? $this->convertToDateFormat($row['tgl_lulus']) : null;
-
-        // tambah data ke tabel mahasiswa
-        Mahasiswa::create([
-            'user_id' => $user->id,
-            'nim' => $row['nim'],
-            'nama' => $row['nama'],
-            'tempat_lahir' => $row['tempat_lahir'],
-            'tgl_lahir' => $tglLahir,
-            'jenis_kelamin' => $row['jenis_kelamin'],
-            'program_studi_id' => $prodi->id,
-            'tgl_masuk' => $tglMasuk,
-            'tgl_lulus' => $tglLulus,
-            'no_ijazah' => $row['no_ijazah'] ?? null,
-            'jenis_pendaftaran' => $row['jenis_pendaftaran'] ?? null,
-            'jenis_pendaftaran_en' => $row['jenis_pendaftaran_en'],
-        ]);
-
-        return $user;
     }
 
     private function convertToDateFormat($date)

@@ -31,7 +31,7 @@
 
                             {{-- Kategori Kegiatan --}}
                             <div class="mb-3">
-                                <label class="form-label">Kategori Kegiatan</label>
+                                <label class="form-label" style="font-weight: bold;">Kategori Kegiatan</label>
                                 <select class="form-select" name="kategori_kegiatan_id" id="kategori_kegiatan_id">
                                     @foreach ($kategori as $kategori)
                                         <option value="{{ $kategori->id }}"
@@ -44,7 +44,7 @@
 
                             {{-- Nama Kegiatan --}}
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Kegiatan <span
+                                <label for="nama" class="form-label" style="font-weight: bold;">Nama Kegiatan <span
                                         class="text-danger">*</span></label>
                                 <div class="input-group mb-3 @error('nama') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
@@ -69,7 +69,7 @@
 
                             {{-- pencapaian --}}
                             <div class="mb-3">
-                                <label for="pencapaian" class="form-label">Pencapaian <span
+                                <label for="pencapaian" class="form-label" style="font-weight: bold;">Pencapaian <span
                                         class="text-danger">*</span></label>
                                 <input type="text" name="pencapaian" id="pencapaian"
                                     class="form-control @error('pencapaian') is-invalid @enderror"
@@ -80,7 +80,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="tingkat" class="form-label">Tingkat kegiatan <span
+                                <label for="tingkat" class="form-label" style="font-weight: bold;">Tingkat kegiatan <span
                                         class="text-danger">*</span></label>
                                 <input type="text" name="tingkat" id="tingkat"
                                     class="form-control @error('tingkat') is-invalid @enderror"
@@ -92,7 +92,7 @@
 
 
                             <div class="mb-3">
-                                <label for="penyelenggara" class="form-label">Penyelenggara Kegiatan <span
+                                <label for="penyelenggara" class="form-label" style="font-weight: bold;">Penyelenggara Kegiatan <span
                                         class="text-danger">*</span></label>
                                 <input type="text" name="penyelenggara" id="penyelenggara"
                                     class="form-control @error('penyelenggara') is-invalid @enderror"
@@ -104,7 +104,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="deskripsi" class="form-label">Deskripsi<span
+                                <label for="deskripsi" class="form-label" style="font-weight: bold;">Deskripsi<span
                                         class="text-danger">*</span></label>
                                 <textarea name="deskripsi" id="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi', $kegiatan->deskripsi) }}</textarea>
                                 @error('deskripsi')
@@ -113,7 +113,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="file_sertifikat" class="col-sm-2 col-form-label">Bukti Sertifikat</label>
+                                <label for="file_sertifikat" class="col-sm-4 col-form-label" style="font-weight: bold;">Bukti Sertifikat</label>
                                 <div class="col-sm-12">
                                     <input class="form-control" type="file" id="file_sertifikat" name="file_sertifikat" >
                                     @if ($kegiatan->file_sertifikat)
@@ -126,7 +126,7 @@
 
 
                             <div class="col-md-6">
-                                <label for="tgl_mulai" class="form-label">Tanggal Mulai<span
+                                <label for="tgl_mulai" class="form-label" style="font-weight: bold;">Tanggal Mulai<span
                                         class="text-danger">*</span></label>
                                 <input type="date" name="tgl_mulai" id="tgl_mulai"
                                     class="form-control @error('tgl_mulai') is-invalid @enderror"
@@ -137,7 +137,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tgl_selesai" class="form-label">Tanggal Selesai<span
+                                <label for="tgl_selesai" class="form-label" style="font-weight: bold;">Tanggal Selesai<span
                                         class="text-danger">*</span></label>
                                 <input type="date" name="tgl_selesai" id="tgl_selesai"
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"

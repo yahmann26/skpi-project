@@ -35,28 +35,18 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data SKPI</div>
-
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addPeriodeModal">
+                                Tambah Periode
+                            </button>
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "10%">NIM</th>
-                                    <th width = "20%">Nama Mahasiswa</th>
-                                    <th width = "20%">Program Studi</th>
-                                    <th width = "20%">Nomor SKPI</th>
-                                    <th width = "10%">Status</th>
+                                    <th width = "50%">Nama</th>
                                     <th width = "15%">Aksi</th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <td><input></td>
-                                    <td><input></td>
-                                    <td><input></td>
-                                    <td><input></td>
-                                    <td><input></td>
-                                    <td><input></td>
                                 </tr>
                             </thead>
                         </table>
@@ -67,6 +57,31 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Tambah Periode -->
+    <div class="modal fade" id="addPeriodeModal" tabindex="-1" aria-labelledby="addPeriodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPeriodeModalLabel">Tambah Periode</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addPeriodeForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama Periode</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -86,7 +101,7 @@
                     },
                     success: function(result) {
                         alert('Data berhasil dihapus');
-                        $('#datatable').DataTable().ajax.reload(); // Reload tabel untuk memperbarui data
+                        $('#datatable').DataTable().ajax.reload();
                     },
                     error: function(xhr) {
                         alert('Terjadi kesalahan saat menghapus data.');
@@ -95,8 +110,12 @@
             }
         }
 
-        $(function() {
+        $('#datatable').on('click', '.btn-delete', function() {
+            var id = $(this).data('id');
+            deleteData(id);
+        });
 
+        $(function() {
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -106,24 +125,8 @@
                         name: 'DT_RowIndex',
                     },
                     {
-                        data: 'nim',
-                        name: 'nim'
-                    },
-                    {
                         data: 'nama',
                         name: 'nama'
-                    },
-                    {
-                        data: 'prodi',
-                        name: 'prodi'
-                    },
-                    {
-                        data: 'nomor',
-                        name: 'nomor'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
                     },
                     {
                         data: 'action',
@@ -132,32 +135,38 @@
                         searchable: false
                     },
                 ],
+            });
 
-                initComplete: function() {
-                    this.api()
-                        .columns()
-                        .every(function() {
-                            var column = this;
-                            var title = column.header().textContent;
-
-                            // Create input element and add event listener
-                            $('<input type="text" placeholder="Search ' + title + '" />')
-                                .appendTo($(column.header()).empty())
-                                .on('keyup change clear', function() {
-                                    if (column.search() !== this.value) {
-                                        column.search(this.value).draw();
-                                    }
-                                });
+            // Handle form submission
+            $('#addPeriodeForm').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "{{ route('admin.periode.store') }}",
+                    type: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#addPeriodeModal').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Periode berhasil ditambahkan',
+                            showConfirmButton: false,
+                            timer: 1500
                         });
-                },
+                        $('#addPeriodeForm')[0].reset();
+                        table.ajax.reload();
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Terjadi kesalahan saat menambahkan periode.'
+                        });
+                    }
+                });
             });
-
-            // Event delegation for dynamically added delete buttons
-            $('#datatable').on('click', '.btn-delete', function() {
-                var id = $(this).data('id');
-                deleteData(id);
-            });
-
         });
     </script>
 @endpush

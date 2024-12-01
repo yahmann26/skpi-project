@@ -3,12 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Pt;
+use Carbon\Carbon;
 use App\Models\Skpi;
+use App\Models\Periode;
 use App\Models\Mahasiswa;
+use App\Imports\SkpiImport;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use  App\Helper\Skpi as HelperSkpi;
+use App\Helper\Skpi as HelperSkpi;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border as StyleBorder;
+use PhpOffice\PhpSpreadsheet\Style\Alignment as StyleAlignment;
 
 class SkpiController extends Controller
 {
@@ -17,104 +26,86 @@ class SkpiController extends Controller
      */
     public function index(Request $request)
     {
-        // Fungsi untuk mendapatkan warna status
-        if (!function_exists('getStatusColor')) {
-            function getStatusColor($status)
-            {
-                $status = strtolower($status);
-                switch ($status) {
-                    case 'pengajuan':
-                        return '<span class="badge bg-warning">Pengajuan</span>';
-                    case 'tolak':
-                        return '<span class="badge bg-danger">Ditolak</span>';
-                    case 'validasi':
-                        return '<span class="badge bg-success">Validasi</span>';
-                    default:
-                        return '<span class="badge bg-secondary">Tidak diketahui</span>';
-                }
-            }
-        }
-
         if ($request->ajax()) {
-            // Mengambil data mahasiswa dengan relasi ke skpi, program studi, dan jenjang pendidikan
-            $skpi = skpi::with(['mahasiswa.kegiatan', 'mahasiswa.prodi.jenjangPendidikan'])->latest()->get();
+            $skpi = Periode::query()->latest()->get();
 
             return DataTables::of($skpi)
                 ->addIndexColumn()
                 ->addColumn('DT_RowIndex', function ($row) {
                     return '';
                 })
-                ->addColumn('nim', function (Skpi $skpi) {
-                    return $skpi->mahasiswa->nim ?? 'Tidak ada';
-                })
-                ->addColumn('nama', function (Skpi $skpi) {
-                    return $skpi->mahasiswa->nama ?? 'Tidak ada';
-                })
-                ->addColumn('prodi', function (Skpi $skpi) {
-                    return $skpi->mahasiswa->prodi->nama;
-                })
-                ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.skpi.edit', $row->id);
                     $deleteUrl = route('admin.skpi.destroy', $row->id);
                     $cetakSkpi = route('admin.skpi.cetak', $row->id);
                     $showSkpi = route('admin.skpi.show', $row->id);
-
-                    // Check the validation status
-                    if ($row->status === 'validasi') {
-                        $actionButtons = '
-                            <a href="' . $cetakSkpi . '" class="edit btn btn-light btn-sm"><i class="bi bi-printer"></i></a>
-                        ';
-                    } else {
-                        $actionButtons = '
-                            <a href="' . $showSkpi . '" class="edit btn btn-light btn-sm"><i class="bi bi-search"></i></a>
-                        ';
-                    }
-
                     return '
-                        ' . $actionButtons . '
-                        <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                        <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                            ' . csrf_field() . '
-                            ' . method_field("DELETE") . '
-                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
+                        <a href="' .
+                        $editUrl .
+                        '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        <a href="' .
+                        $showSkpi .
+                        '" class="show btn btn-light btn-sm"><i class="bi bi-search"></i></a>
+                        <form id="deleteForm-' .
+                        $row->id .
+                        '" action="' .
+                        $deleteUrl .
+                        '" method="POST" style="display:inline-block;">
+                            ' .
+                        csrf_field() .
+                        '
+                            ' .
+                        method_field('DELETE') .
+                        '
+                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' .
+                        $row->id .
+                        ')"><i class="bi bi-trash"></i></button>
                         </form>';
                 })
 
-
-                ->rawColumns(['action', 'prodi', 'nama', 'nim', 'status'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
         return view('admin.pages.skpi.index');
     }
 
+    public function store(Request $request)
+    {
+        $request->validate(
+            [
+                'nama' => 'required',
+            ],
+            [
+                'nama.required' => 'Nama harus diisi',
+            ],
+        );
+
+        Periode::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('admin.skpi.index')->with('success', 'Periode berhasil ditambahkan');
+    }
+
     public function show(Request $request, string $id)
     {
-        $mahasiswa = Mahasiswa::all();
-        $skpi = Skpi::with('mahasiswa.prodi.jenjangPendidikan')->findOrFail($id);
-
-        // dd($skpi);
+        $periode = Periode::with(['skpi.mahasiswa.prodi'])->findOrFail($id);
 
         if ($request->ajax()) {
-            $kegiatan = $skpi->mahasiswa->kegiatan()->with('kategoriKegiatan')
-                ->where('status', 'validasi')
-                ->get();
-
-            return DataTables::of($kegiatan)
+            return DataTables::of($periode->skpi)
                 ->addIndexColumn()
-                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama ?? 'N/A')
-                ->addColumn('nama', function ($row) {
-                    return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
+                ->addColumn('nama', function ($data) {
+                    return $data->mahasiswa ? $data->mahasiswa->nama : '-';
                 })
-                ->addColumn('pencapaian', function ($row) {
-                    return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
+                ->addColumn('prodi', function ($data) {
+                    return $data->mahasiswa && $data->mahasiswa->prodi ? $data->mahasiswa->prodi->nama : '-';
                 })
-                ->rawColumns(['kategori', 'nama', 'pencapaian'])
+                ->rawColumns(['nama', 'prodi'])
                 ->make(true);
         }
 
-        return view('admin.pages.skpi.show', compact('mahasiswa', 'skpi'));
+        return view('admin.pages.skpi.show', compact('periode'));
     }
 
     public function cetak($id)
@@ -125,7 +116,7 @@ class SkpiController extends Controller
             'mahasiswa.prodi.jenjangPendidikan',
             'mahasiswa.kegiatan' => function ($query) {
                 $query->where('status', 'validasi');
-            }
+            },
         ])->find($id);
 
         if (!$skpi) {
@@ -182,37 +173,11 @@ class SkpiController extends Controller
         $htmlHeader = view('admin.pages.skpi.header', $data)->render();
         $mpdf->SetHTMLHeader($htmlHeader);
 
-        // $mpdf->SetMargins(10, 10, 20);
         $html2 = view('admin.pages.skpi.cetak2', $data)->render();
         $mpdf->WriteHTML($html);
         $mpdf->WriteHTML($html2);
 
-        // Output PDF ke browser
         $mpdf->Output();
-    }
-
-    public function updateStatus(Request $request, $id)
-    {
-
-        $request->validate([
-            'status' => 'required|in:validasi,tolak',
-        ]);
-
-        $skpi = Skpi::findOrFail($id);
-
-        $skpi->status = $request->status;
-
-        if ($request->status === 'validasi') {
-            $skpi->nomor = $this->generateNomor($skpi);
-        }
-
-        $skpi->save();
-
-        if ($request->status === 'validasi') {
-            return redirect()->route('admin.skpi.index', $skpi->id)->with('success', 'Status SKPI berhasil diperbarui!!! Nomor: ' . $skpi->nomor);
-        } elseif ($request->status === 'tolak') {
-            return redirect()->route('admin.skpi.index')->with('success', 'SKPI ditolak !!!');
-        }
     }
 
     private function generateNomor($skpi)
@@ -223,9 +188,9 @@ class SkpiController extends Controller
 
         $prodi = $skpi->mahasiswa->prodi->singkatan ?? '';
         $jenjang = $skpi->mahasiswa->prodi->jenjangPendidikan->singkatan ?? '';
-        $nim = $skpi->mahasiswa->nim ?? '';
+        $kode = $skpi->mahasiswa->prodi->kode_prodi ?? '';
 
-        $nomor = "{$sequence}/SKPI/FASTIKOM/UNSIQ/{$jenjang}.{$prodi}/{$nim}/{$year}";
+        $nomor = "{$sequence}/SKPI/FASTIKOM/UNSIQ/{$jenjang}.{$prodi}/{$kode}/{$year}";
 
         return $nomor;
     }
@@ -234,5 +199,72 @@ class SkpiController extends Controller
     {
         Skpi::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Berhasil menghapus data');
+    }
+
+    public function download()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $downloadTime = Carbon::now()->format('d-m-Y H:i:s');
+        $sheet->setCellValue('A1', 'Template Import SKPI');
+        $sheet->setCellValue('A2', "Waktu Download: $downloadTime");
+
+        $sheet->mergeCells('A1:C1');
+        $sheet->mergeCells('A2:C2');
+
+        $sheet->getStyle('A1:A2')->getFont()->setBold(true)->setSize(14);
+        $sheet
+            ->getStyle('A1:A2')
+            ->getAlignment()
+            ->setHorizontal(StyleAlignment::HORIZONTAL_LEFT);
+
+        $header = ['NO', 'NIM', 'NOMOR SKPI'];
+        $sheet->fromArray($header, null, 'A3');
+
+        $sheet->getStyle('A3:C3')->getFont()->setBold(true);
+
+        $sheet
+            ->getStyle('A3:C3')
+            ->getBorders()
+            ->getAllBorders()
+            ->setBorderStyle(StyleBorder::BORDER_THIN);
+
+        $sheet
+            ->getStyle('A3:C500')
+            ->getBorders()
+            ->getAllBorders()
+            ->setBorderStyle(StyleBorder::BORDER_THIN);
+
+        foreach (range('A', 'C') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        $fileName = 'tempalte SKPI.xlsx';
+        $filePath = Storage::path($fileName);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function import(Request $request, $periodeId)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls|max:2048',
+        ]);
+
+        $periode = Periode::findOrFail($periodeId);
+
+        try {
+            $file = $request->file('file');
+
+            Excel::import(new SkpiImport($periodeId), $file);
+
+            return redirect()->route('admin.periode.show', $periodeId)->with('success', 'Data SKPI berhasil diimpor');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengimpor file: ' . $e->getMessage());
+        }
     }
 }

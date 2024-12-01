@@ -33,10 +33,13 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data Mahasiswa</div>
                             <div class="d-flex">
-                                <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-sm btn-primary me-2"><i
+                                <a href="{{ route('admin.mahasiswa.download') }}" class="btn btn-sm btn-info me-2">
+                                    <i class="bi bi-download"></i> Download Template
+                                </a>
+                                <button class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal"
+                                data-bs-target="#importModal"><i class="bi bi-upload"></i> Import</button>
+                                <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-sm btn-primary "><i
                                         class="bi bi-plus"></i> Tambah</a>
-                                <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
-                                    data-bs-target="#importModal"><i class="bi bi-upload"></i> Import</button>
                             </div>
                         </div>
 
@@ -45,8 +48,8 @@
                                 <tr>
                                     <th width="3%">No</th>
                                     <th width="20%">NIM</th>
-                                    <th width="20%">Nama Mahasiswa</th>
-                                    <th width="20%">Program Studi</th>
+                                    <th width="30%">Nama Mahasiswa</th>
+                                    <th width="30%">Program Studi</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
                                 <tr>

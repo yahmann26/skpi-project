@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\ProgramStudi;
@@ -13,6 +14,12 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border as StyleBorder;
+use PhpOffice\PhpSpreadsheet\Style\Alignment as StyleAlignment;
 
 class MahasiswaController extends Controller
 {
@@ -182,11 +189,6 @@ class MahasiswaController extends Controller
         //update data user
         $user = User::findOrFail($mahasiswa->user_id);
 
-        // update password jika diisi
-        // if($request->filled('password')) {
-        //     $user->password = Hash::make($request->password);
-        // }
-
         $user->update([
             'uid' => $request->nim,
             'email' => $request->email,
@@ -197,21 +199,13 @@ class MahasiswaController extends Controller
         return redirect()->route('admin.mahasiswa.index')->with('success', 'Data Mahasiswa berhasil diupdate!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         // Cari data mahasiswa berdasarkan ID
         $mahasiswa = Mahasiswa::findOrFail($id);
-
-        // Cari data user terkait berdasarkan user_id di tabel mahasiswa
         $user = User::findOrFail($mahasiswa->user_id);
-
-        // Hapus data mahasiswa
         $mahasiswa->delete();
 
-        // Hapus data user terkait
         $user->delete();
 
         return redirect()->back()->with('success', 'Data Mahasiswa berhasil dihapus!');
@@ -227,5 +221,120 @@ class MahasiswaController extends Controller
         Excel::import(new MahasiswaImport, $request->file('file'));
 
         return back()->with('success', 'Data mahasiswa berhasil diimpor!');
+    }
+
+    public function download()
+    {
+        // Ambil data dari database untuk kolom PRODI
+        $prodiList = ProgramStudi::pluck('nama')->toArray();
+        $jenisKelamin = ['L', 'P']; // Data dropdown untuk JENIS KELAMIN
+
+        // Buat Spreadsheet baru
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Tambahkan judul di atas header
+        $downloadTime = Carbon::now()->format('d-m-Y H:i:s');
+        $sheet->setCellValue('A1', 'Template Import Mahasiswa');
+        $sheet->setCellValue('A2', "Waktu Download: $downloadTime");
+
+        // Gabungkan sel untuk judul
+        $sheet->mergeCells('A1:L1');
+        $sheet->mergeCells('A2:L2');
+
+        // Atur gaya untuk judul
+        $sheet->getStyle('A1:A2')->getFont()->setBold(true)->setSize(14);
+        $sheet->getStyle('A1:A2')->getAlignment()->setHorizontal(StyleAlignment::HORIZONTAL_LEFT);
+
+        // Tambahkan header
+        $header = ['NO','NIM', 'EMAIL', 'NAMA', 'TEMPAT LAHIR', 'TGL LAHIR', 'JENIS KELAMIN', 'PRODI', 'TGL MASUK', 'TGL LULUS', 'JENIS PENDAFTARAN', 'JENIS PENDAFTARAN (EN)'];
+        $sheet->fromArray($header, null, 'A3');
+
+        // Header bold
+        $sheet->getStyle('A3:L3')->getFont()->setBold(true);
+
+        // Tambahkan border ke header
+        $sheet->getStyle('A3:L3')->getBorders()->getAllBorders()->setBorderStyle(StyleBorder::BORDER_THIN);
+
+        // Tambahkan dropdown untuk "JENIS KELAMIN"
+        $jenisKelaminValidation = new DataValidation();
+        $jenisKelaminValidation->setType(DataValidation::TYPE_LIST);
+        $jenisKelaminValidation->setErrorStyle(DataValidation::STYLE_INFORMATION);
+        $jenisKelaminValidation->setAllowBlank(true);
+        $jenisKelaminValidation->setShowDropDown(true);
+        $jenisKelaminValidation->setFormula1('"' . implode(',', $jenisKelamin) . '"');
+
+        foreach (range(4, 500) as $row) {
+            $sheet->getCell("G$row")->setDataValidation(clone $jenisKelaminValidation);
+        }
+
+        // Tambahkan dropdown untuk "PRODI"
+        $prodiValidation = new DataValidation();
+        $prodiValidation->setType(DataValidation::TYPE_LIST);
+        $prodiValidation->setErrorStyle(DataValidation::STYLE_INFORMATION);
+        $prodiValidation->setAllowBlank(true);
+        $prodiValidation->setShowDropDown(true);
+        $prodiValidation->setFormula1('"' . implode(',', $prodiList) . '"');
+
+        foreach (range(4, 500) as $row) {
+            $sheet->getCell("H$row")->setDataValidation(clone $prodiValidation);
+        }
+
+        // Validasi Email untuk kolom EMAIL (kolom C)
+        $emailValidation = new DataValidation();
+        $emailValidation->setType(DataValidation::TYPE_CUSTOM);
+        $emailValidation->setErrorStyle(DataValidation::STYLE_STOP);
+        $emailValidation->setAllowBlank(true);
+        $emailValidation->setShowInputMessage(true);
+        $emailValidation->setShowErrorMessage(true);
+        $emailValidation->setErrorTitle('Input Error');
+        $emailValidation->setError('Please enter a valid email address.');
+        $emailValidation->setPromptTitle('Allowed Input');
+        $emailValidation->setPrompt('Email address should contain @ symbol');
+        $emailValidation->setFormula1('=ISNUMBER(FIND("@",C4))');
+
+        foreach (range(4, 500) as $row) {
+            $sheet->getCell("C$row")->setDataValidation(clone $emailValidation);
+        }
+
+        // Tambahkan Date Picker untuk kolom TGL LAHIR, TGL MASUK, TGL LULUS (kolom F, I, J)
+        $dateValidation = new DataValidation();
+        $dateValidation->setType(DataValidation::TYPE_DATE);
+        $dateValidation->setErrorStyle(DataValidation::STYLE_STOP);
+        $dateValidation->setAllowBlank(true);
+        $dateValidation->setShowDropDown(true);
+        $dateValidation->setShowInputMessage(true);
+        $dateValidation->setShowErrorMessage(true);
+        $dateValidation->setErrorTitle('Input Error');
+        $dateValidation->setError('Please enter a valid date.');
+        $dateValidation->setPromptTitle('Allowed Input');
+        $dateValidation->setPrompt('Date should be in format DD/MM/YYYY');
+
+        foreach (range(4, 500) as $row) {
+            // Validasi untuk TGL LAHIR (kolom F)
+            $sheet->getCell("F$row")->setDataValidation(clone $dateValidation);
+            // Validasi untuk TGL MASUK (kolom I)
+            $sheet->getCell("I$row")->setDataValidation(clone $dateValidation);
+            // Validasi untuk TGL LULUS (kolom J)
+            $sheet->getCell("J$row")->setDataValidation(clone $dateValidation);
+        }
+
+        // Tambahkan border ke semua sel yang relevan (header + data)
+        $sheet->getStyle('A3:L500')->getBorders()->getAllBorders()->setBorderStyle(StyleBorder::BORDER_THIN);
+
+        // Atur lebar kolom agar sesuai konten
+        foreach (range('A', 'L') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        // Simpan file sementara di storage Laravel
+        $fileName = 'Template Import Mahasiswa.xlsx';
+        $filePath = Storage::path($fileName);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($filePath);
+
+        // Kirim file ke browser untuk diunduh
+        return response()->download($filePath)->deleteFileAfterSend(true);
     }
 }
