@@ -14,14 +14,14 @@ class Kegiatan extends Model
     protected $guarded = [];
 
     public function kategoriKegiatan() {
-        return $this->belongsTo(KategoriKegiatan::class, 'kategori_kegiatan_id');
+        return $this->belongsTo(KategoriKegiatan::class);
     }
 
     public function mahasiswa() {
-        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
+        return $this->belongsTo(Mahasiswa::class);
     }
 
     public function tahunAkademik() {
-        return $this->belongsTo(TahunAkademik::class, 'tahun_akademik_id');
+        return $this->belongsTo(TahunAkademik::class);
     }
 }

@@ -36,6 +36,11 @@
                                     <tbody>
 
                                         <tr>
+                                            <th>Tahun Akademik </th>
+                                            <td>:</td>
+                                            <td>{{ $kegiatan->tahunAkademik->nama }} / {{ $kegiatan->tahunAkademik->semester->nama }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>Kategori </th>
                                             <td>:</td>
                                             <td>{{ $kegiatan->kategoriKegiatan->nama }}</td>

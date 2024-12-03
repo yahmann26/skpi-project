@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('tahun_akademik', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('semester_id');
             $table->string('nama');
-            $table->foreignId('semester_id')->constrained('semester', 'id')->cascadeOnDelete();
             $table->timestamps();
+
+            $table->foreign('semester_id')->references('id')->on('semester')->onDelete('cascade');
         });
     }
 

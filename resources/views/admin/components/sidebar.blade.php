@@ -72,11 +72,11 @@
         <!-- End User Nav -->
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.kegiatan.index', 'admin.kategoriKegiatan.index']) ? '' : 'collapsed' }}"
+            <a class="nav-link {{ isRouteName(['admin.kegiatan.index', 'admin.kategoriKegiatan.index', 'admin.kegiatan.cetak']) ? '' : 'collapsed' }}"
                 data-bs-target="#kegiatan-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-calendar"></i><span>Kegiatan</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="kegiatan-nav" class="nav-content collapse {{ isRouteName(['admin.kategoriKegiatan.index', 'admin.kategoriKegiatan.create', 'admin.kategoriKegiatan.edit', 'admin.kegiatan.index', 'admin.kegiatan.create', 'admin.kegiatan.edit', 'admin.kegiatan.show']) ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="kegiatan-nav" class="nav-content collapse {{ isRouteName(['admin.kategoriKegiatan.index', 'admin.kategoriKegiatan.create', 'admin.kategoriKegiatan.edit', 'admin.kegiatan.index', 'admin.kegiatan.create', 'admin.kegiatan.edit', 'admin.kegiatan.show', 'admin.kegiatan.cetak']) ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.kategoriKegiatan.index') }}"
                         class="{{ isRouteName('admin.kategoriKegiatan.index') ? 'active' : '' }}">
@@ -87,6 +87,12 @@
                     <a href="{{ route('admin.kegiatan.index') }}"
                         class="{{ isRouteName('admin.kegiatan.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Kegiatan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.kegiatan.cetak') }}"
+                        class="{{ isRouteName('admin.kegiatan.cetak') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Cetak Kegiatan</span>
                     </a>
                 </li>
             </ul>

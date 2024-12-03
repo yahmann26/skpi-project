@@ -90,6 +90,10 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::put('kegiatan/{id}/status', [AdminKegiatanController::class, 'updateStatus'])->name('admin.kegiatan.update-status');
     Route::put('kegiatan/{id}', [AdminKegiatanController::class, 'update'])->name('admin.kegiatan.update');
     Route::delete('kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
+    Route::get('kegiatan/cetak', [AdminKegiatanController::class, 'cetak'])->name('admin.kegiatan.cetak');
+    Route::get('tahun-akademik/{semester_id}', [AdminKegiatanController::class, 'getTahunAkademikBySemester']);
+
+
 
     // jenis pendaftaran
     Route::get('jenisPendaftaran', [AdminJenisPendaftaranController::class, 'index'])->name('admin.jenisPendaftaran.index');
@@ -149,11 +153,15 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
     // mahasiswa kegiatan
     Route::get('kegiatan', [MahasiswaKegiatanController::class, 'index'])->name('mahasiswa.kegiatan.index');
     Route::get('kegiatan/tambah', [MahasiswaKegiatanController::class, 'create'])->name('mahasiswa.kegiatan.create');
+    Route::get('tahun-akademik/{semester_id}', [MahasiswaKegiatanController::class, 'getTahunAkademikBySemester']);
     Route::post('kegiatan', [MahasiswaKegiatanController::class, 'store'])->name('mahasiswa.kegiatan.store');
     Route::get('kegiatan/{id}/lihat', [MahasiswaKegiatanController::class, 'show'])->name('mahasiswa.kegiatan.show');
     Route::get('kegiatan/{id}/ubah', [MahasiswaKegiatanController::class, 'edit'])->name('mahasiswa.kegiatan.edit');
     Route::put('kegiatan/{id}', [MahasiswaKegiatanController::class, 'update'])->name('mahasiswa.kegiatan.update');
     Route::delete('kegiatan/{id}', [MahasiswaKegiatanController::class, 'destroy'])->name('mahasiswa.kegiatan.destroy');
+    Route::get('kegiatan/cetak', [MahasiswaKegiatanController::class, 'cetak'])->name('mahasiswa.kegiatan.cetak');
+    Route::post('kegiatan/cetakSemester', [MahasiswaKegiatanController::class, 'cetakSemester'])->name('mahasiswa.kegiatan.cetakSemester');
+
 
 
     // SKPI
@@ -182,6 +190,7 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::put('kegiatan/{id}/status', [KaprodiKegiatanController::class, 'updateStatus'])->name('kaprodi.kegiatan.update-status');
     Route::put('kegiatan/{id}', [KaprodiKegiatanController::class, 'update'])->name('kaprodi.kegiatan.update');
     Route::delete('kegiatan/{id}', [KaprodiKegiatanController::class, 'destroy'])->name('kaprodi.kegiatan.destroy');
+    Route::get('tahun-akademik/{semester_id}', [KaprodiKegiatanController::class, 'getTahunAkademikBySemester']);
 
     // prodi
 

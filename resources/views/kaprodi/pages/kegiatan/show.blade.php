@@ -37,6 +37,24 @@
                                     <h5>Data Kegiatan</h5>
                                     <table class="table">
                                         <tbody>
+                                            <tr>
+                                                <th>Tahun Akademik</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <select name="tahun_akademik_id"
+                                                        class="form-control @error('tahun_akademik_id') is-invalid @enderror">
+                                                        @foreach ($tahunAkademik as $tahun)
+                                                            <option value="{{ $tahun->id }}"
+                                                                {{ $kegiatan->tahunAkademik->id == $tahun->id ? 'selected' : '' }}>
+                                                                {{ $tahun->nama }} / {{ $tahun->semester->nama }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('tahun_akademik_id')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </td>
+                                            </tr>
                                             <th>Kategori</th>
                                             <td>:</td>
                                             <td>

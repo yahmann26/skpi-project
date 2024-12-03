@@ -70,7 +70,7 @@
             $('.datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('mahasiswa.kegiatan.index') }}", 
+                ajax: "{{ route('mahasiswa.kegiatan.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',

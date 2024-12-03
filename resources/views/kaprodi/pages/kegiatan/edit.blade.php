@@ -26,9 +26,35 @@
                             <span class="text-danger small">Bertanda *) wajib diisi</span>
                         </div>
 
-                        <form class="row g-1" action="{{ route('kaprodi.kegiatan.update',['id' => $kegiatan->id]) }}" method="post" enctype="multipart/form-data">
+                        <form class="row g-1" action="{{ route('kaprodi.kegiatan.update', ['id' => $kegiatan->id]) }}"
+                            method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
+
+                            <div class="mb-3">
+                                <label for="semester" class="form-label" style="font-weight: bold;">Semester<span
+                                        class="text-danger">*</span></label>
+                                <select id="semester" class="form-select">
+                                    <option value="">Pilih Semester</option>
+                                    @foreach ($semester as $s)
+                                        <option value="{{ $s->id }}"
+                                            {{ $kegiatan->tahunAkademik->semester->id == $s->id ? 'selected' : '' }}>
+                                            {{ $s->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Pilih Tahun Akademik -->
+                            <div class="mb-3" id="tahunAkademikWrapper" style="display: none;">
+                                <label for="tahun_akademik" class="form-label" style="font-weight: bold;">Tahun
+                                    Akademik<span class="text-danger">*</span></label>
+                                <select name="tahun_akademik_id" id="tahun_akademik" class="form-select">
+                                    <option value="{{ $kegiatan->tahunAkademik->id }}" selected>
+                                        {{ $kegiatan->tahunAkademik->nama }}</option>
+                                </select>
+                            </div>
+
 
                             <div class="mb-3">
                                 <label for="kategori_kegiatan_id" class="form-label">Kategori Kegiatan</label>
@@ -116,7 +142,8 @@
                             <div class="mb-3">
                                 <label for="file_sertifikat" class="col-sm-2 col-form-label">Bukti Sertifikat</label>
                                 <div class="col-sm-12">
-                                    <input class="form-control" type="file" id="file_sertifikat" name="file_sertifikat" >
+                                    <input class="form-control" type="file" id="file_sertifikat"
+                                        name="file_sertifikat">
                                     @if ($kegiatan->file_sertifikat)
                                         <small class="form-text text-muted">
                                             File Saat Ini: {{ basename($kegiatan->file_sertifikat) }}
@@ -151,7 +178,8 @@
 
                             <div class="mb-3">
                                 <label for="catatan_status" class="form-label">Catatan</label>
-                                <textarea name="catatan_status" id="catatan_status" class="form-control @error('catatan_status') is-invalid @enderror">{{ old('catatan_status', $kegiatan->catatan_status) }}</textarea>
+                                <textarea name="catatan_status" id="catatan_status"
+                                    class="form-control @error('catatan_status') is-invalid @enderror">{{ old('catatan_status', $kegiatan->catatan_status) }}</textarea>
                                 @error('catatan_status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -171,3 +199,57 @@
     </section>
 
 @endsection
+
+@push('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const semesterSelect = $('#semester');
+            const tahunAkademikWrapper = $('#tahunAkademikWrapper');
+            const tahunAkademikSelect = $('#tahun_akademik');
+
+            // Menampilkan Tahun Akademik saat halaman dimuat jika Semester sudah terisi
+            if (semesterSelect.val()) {
+                loadTahunAkademik(semesterSelect.val(), {{ $kegiatan->tahun_akademik_id ?? 'null' }});
+            }
+
+            // Event ketika Semester diubah
+            semesterSelect.change(function() {
+                const semesterId = $(this).val();
+                if (semesterId) {
+                    loadTahunAkademik(semesterId, null);
+                } else {
+                    tahunAkademikWrapper.hide();
+                    tahunAkademikSelect.html('<option value="">Pilih Tahun Akademik</option>');
+                }
+            });
+
+            // Fungsi untuk memuat Tahun Akademik berdasarkan Semester
+            function loadTahunAkademik(semesterId, selectedTahunAkademik = null) {
+                tahunAkademikWrapper.show();
+                $.ajax({
+                    url: '/kaprodi/tahun-akademik/' + semesterId,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function() {
+                        tahunAkademikSelect.html('<option value="">Memuat...</option>');
+                    },
+                    success: function(data) {
+                        console.log("Data Tahun Akademik diterima:", data);
+                        tahunAkademikSelect.html('<option value="">Pilih Tahun Akademik</option>');
+                        $.each(data, function(index, item) {
+                            tahunAkademikSelect.append('<option value="' + item.id + '"' +
+                                (item.id == selectedTahunAkademik ? ' selected' : '') +
+                                '>' + item.nama + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Kesalahan AJAX:", xhr.responseText);
+                        tahunAkademikSelect.html(
+                            '<option value="">Gagal memuat Tahun Akademik</option>');
+                    }
+                });
+            }
+        });
+    </script>
+@endpush

@@ -20,4 +20,9 @@ class ProgramStudi extends Model
     {
         return $this->belongsTo(JenjangPendidikan::class, 'jenjang_pendidikan_id');
     }
+
+    public function kaprodi()
+    {
+        return $this->hasOne(Kaprodi::class, 'program_studi_id');
+    }
 }

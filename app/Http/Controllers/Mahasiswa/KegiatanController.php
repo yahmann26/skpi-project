@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\KategoriKegiatan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\Semester;
+use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Helper\Skpi as  HelperSkpi;
 
 class KegiatanController extends Controller
 {
@@ -88,15 +91,31 @@ class KegiatanController extends Controller
     public function create()
     {
         $kategori = KategoriKegiatan::all();
+        $semester = Semester::all();
+
+        // dd($kategori);
 
         return view('mahasiswa.pages.kegiatan.create', [
-            'kategori' => $kategori
+            'kategori' => $kategori,
+            'semester' => $semester,
         ]);
+    }
+
+    public function getTahunAkademikBySemester($semester_id)
+    {
+        $tahunAkademik = TahunAkademik::where('semester_id', $semester_id)->get();
+
+        if ($tahunAkademik->isEmpty()) {
+            return response()->json(['message' => 'Tidak ada Tahun Akademik untuk semester ini'], 404);
+        }
+
+        return response()->json($tahunAkademik);
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
             'kategori_kegiatan_id' => 'required|exists:kategori_kegiatan,id',
             'nama' => 'required',
             'nama_en' => 'required',
@@ -125,6 +144,7 @@ class KegiatanController extends Controller
 
         $kegiatan = new kegiatan();
         $kegiatan->mahasiswa_id = Auth::user()->mahasiswa->id;
+        $kegiatan->tahun_akademik_id = $request->tahun_akademik_id;
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;
@@ -168,12 +188,14 @@ class KegiatanController extends Controller
     {
         // get kategori
         $kategori = KategoriKegiatan::all();
+        $semester = Semester::all();
 
-        $kegiatan = Kegiatan::with('kategoriKegiatan')->find($id);
+        $kegiatan = Kegiatan::with('tahunAkademik.semester', 'kategoriKegiatan')->find($id);
 
         return  view('mahasiswa.pages.kegiatan.edit', [
             'kategori' => $kategori,
-            'kegiatan' => $kegiatan
+            'kegiatan' => $kegiatan,
+            'semester' => $semester
         ]);
     }
 
@@ -182,6 +204,7 @@ class KegiatanController extends Controller
         $kegiatan = Kegiatan::findOrFail($id);
 
         $request->validate([
+            'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
             'kategori_kegiatan_id' => 'required|exists:kategori_kegiatan,id',
             'nama' => 'required',
             'nama_en' => 'required',
@@ -208,6 +231,7 @@ class KegiatanController extends Controller
             'file_sertifikat.max' => 'File sertifikat kegiatan maksimal 1 MB (1024 KB)',
         ]);
 
+        $kegiatan->tahun_akademik_id = $request->tahun_akademik_id;
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;
@@ -239,10 +263,8 @@ class KegiatanController extends Controller
 
     public function destroy($id)
     {
-        // find kegiatan
         $kegiatan = Kegiatan::findOrFail($id);
 
-        // menghapus file
         $file = $kegiatan->file_sertifikat;
 
         if ($file && $file != '') {
@@ -251,9 +273,93 @@ class KegiatanController extends Controller
             }
         }
 
-        // menghapus kegiatan
         $kegiatan->delete();
 
         return redirect()->route('mahasiswa.kegiatan.index')->with('success', 'Kegiatan berhasil dihapus');
+    }
+
+    public function cetak()
+    {
+        // $kegiatan = Kegiatan::where('mahasiswa_id', Auth::user()->mahasiswa_id);
+        $semester = Semester::all();
+
+        return view('mahasiswa.pages.kegiatan.cetak', compact('semester'));
+    }
+
+    public function cetakSemester(Request $request)
+    {
+        $validated = $request->validate([
+            'tahun_akademik' => 'required|string',
+            'semester_id' => 'required|exists:semester,id',
+        ]);
+
+        // dd($validated);
+
+        $mahasiswa = Auth::user()->mahasiswa;
+        
+        if (!$mahasiswa) {
+            return redirect()->back()->withErrors(['mahasiswa' => 'Mahasiswa tidak ditemukan untuk user ini!']);
+        }
+
+        // dd($mahasiswa);
+
+        $tahunAkademikNama = $validated['tahun_akademik'];
+        $semester = Semester::findOrFail($validated['semester_id']);
+
+        $tahunAkademik = TahunAkademik::where('nama', $tahunAkademikNama)
+            ->where('semester_id', $semester->id)
+            ->first();
+
+        // dd($tahunAkademik);
+
+        if (!$tahunAkademik) {
+            return redirect()->back()->withErrors(['tahun_akademik' => 'Tahun Akademik tidak ditemukan!']);
+        }
+
+        $kegiatans = Kegiatan::where('tahun_akademik_id', $tahunAkademik->id)
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->where('status', 'validasi')
+            ->get();
+
+
+        // dd($kegiatans);
+
+        $prodi = $mahasiswa->prodi;
+        $kaprodi = $prodi ? $prodi->kaprodi : null;
+        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama');
+        $imagePath = public_path('images/unsiq.png');
+        $logoUniv = base64_encode(file_get_contents($imagePath));
+
+        $alamat = HelperSkpi::getSettingByName('alamat_universitas');
+        $telp = HelperSkpi::getSettingByName('telepon_universitas');
+        $email = HelperSkpi::getSettingByName('email_universitas');
+
+        $data = [
+            'mahasiswa' => $mahasiswa,
+            'logoUniv' => $logoUniv,
+            'alamat' => $alamat,
+            'telp' => $telp,
+            'email' => $email,
+            'kegiatan' => $kegiatans,
+            'kategori' => $kategori,
+            'tahunAkademik' => $tahunAkademik,
+            'prodi' => $prodi,
+            'kaprodi' => $kaprodi,
+        ];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'setAutoTopMargin' => 'stretch',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+        ]);
+
+        $mpdf->AddPage();
+        $html = view('mahasiswa.pages.kegiatan.cetakSemester', $data)->render();
+        $mpdf->WriteHTML($html);
+
+        $mpdf->Output();
+
+
     }
 }

@@ -1,5 +1,5 @@
 @extends('mahasiswa.layout.app')
-@section('title', 'Edit Kegiatan - ')
+@section('title', 'Tambah Kegiatan - ')
 
 @section('main')
     <div class="pagetitle">
@@ -29,7 +29,29 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label for="kategori_kegiatan_id" class="form-label" style="font-weight: bold;">Kategori Kegiatan</label>
+                                <label for="semester" class="form-label" style="font-weight: bold;">Semester<span
+                                        class="text-danger">*</span></label>
+                                <select id="semester" class="form-select">
+                                    <option value="">Pilih Semester</option>
+                                    @foreach ($semester as $s)
+                                        <option value="{{ $s->id }}">{{ $s->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Pilih Tahun Akademik -->
+                            <div class="mb-3" id="tahunAkademikWrapper" style="display: none;">
+                                <label for="tahun_akademik" class="form-label" style="font-weight: bold;">Tahun Akademik<span
+                                        class="text-danger">*</span></label>
+                                <select name="tahun_akademik_id" id="tahun_akademik" class="form-select">
+                                    <option value="">Pilih Tahun Akademik</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="kategori_kegiatan_id" class="form-label" style="font-weight: bold;">Kategori
+                                    Kegiatan<span
+                                        class="text-danger">*</span></label>
                                 <select name="kategori_kegiatan_id" id="kategori_kegiatan_id"
                                     class="form-select @error('kategori_kegiatan_id') is-invalid @enderror">
                                     <option value="">-- Pilih Kategori Kegiatan --</option>
@@ -90,8 +112,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="penyelenggara" class="form-label" style="font-weight: bold;">Penyelenggara Kegiatan <span
-                                        class="text-danger">*</span></label>
+                                <label for="penyelenggara" class="form-label" style="font-weight: bold;">Penyelenggara
+                                    Kegiatan <span class="text-danger">*</span></label>
                                 <input type="text" name="penyelenggara" id="penyelenggara"
                                     class="form-control @error('penyelenggara') is-invalid @enderror"
                                     value="{{ old('penyelenggara') }}"
@@ -111,11 +133,12 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="file_sertifikat" class="col-sm-4 col-form-label" style="font-weight: bold;">Bukti Sertifikat</label>
+                                <label for="file_sertifikat" class="col-sm-4 col-form-label"
+                                    style="font-weight: bold;">Bukti Sertifikat</label>
                                 <div class="col-sm-12">
                                     <input class="form-control" type="file" id="file_sertifikat"
                                         name="file_sertifikat">
-                                        <small class="text-danger">Maksimal ukuran file: 3 MB</small>
+                                    <small class="text-danger">Maksimal ukuran file: 3 MB</small>
                                 </div>
                             </div>
 
@@ -131,8 +154,8 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tgl_selesai" class="form-label" style="font-weight: bold;">Tanggal Selesai<span
-                                        class="text-danger">*</span></label>
+                                <label for="tgl_selesai" class="form-label" style="font-weight: bold;">Tanggal
+                                    Selesai<span class="text-danger">*</span></label>
                                 <input type="date" name="tgl_selesai" id="tgl_selesai"
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"
                                     value="{{ old('tgl_selesai') }}">
@@ -159,7 +182,10 @@
                         <hr class="my-3">
                         <div class="alert alert-info">
                             <strong>Info!</strong>
-                            <br>Pilih Kategori Kegiatan<br> Sesuaikan Nama Kegiatan Dengan Kategori Kegiatan !!<br><br>
+                            <br>1. Pilih Semester
+                            <br>2. Pilih Tahun Akademiknya
+                            <br>3. Pilih Kategori Kegiatan<br>
+                            <br>Sesuaikan Nama Kegiatan Dengan Kategori Kegiatan !!<br><br>
                             <b>Hanya Kegiatan yang Lolos Validasi yang akan ditampilkan di SKPI</b>
                         </div>
                     </div>
@@ -171,10 +197,44 @@
 @endsection
 
 @push('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(function() {
-            $(document).ready(function() {
-                // Any additional scripts for this page can go here
+        $(document).ready(function() {
+            $('#semester').change(function() {
+                let semesterId = $(this).val();
+                let tahunAkademikWrapper = $('#tahunAkademikWrapper');
+                let tahunAkademikSelect = $('#tahun_akademik');
+
+                console.log("Semester dipilih:", semesterId);
+
+                if (semesterId) {
+                    tahunAkademikWrapper.show();
+                    $.ajax({
+                        url: '/mahasiswa/tahun-akademik/' + semesterId, // Prefix ditambahkan
+                        type: 'GET',
+                        dataType: 'json',
+                        beforeSend: function() {
+                            tahunAkademikSelect.html('<option value="">Memuat...</option>');
+                        },
+                        success: function(data) {
+                            console.log("Data Tahun Akademik diterima:", data);
+                            tahunAkademikSelect.html(
+                                '<option value="">Pilih Tahun Akademik</option>');
+                            $.each(data, function(index, item) {
+                                tahunAkademikSelect.append('<option value="' + item.id +
+                                    '">' + item.nama + '</option>');
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Kesalahan AJAX:", xhr.responseText);
+                            tahunAkademikSelect.html(
+                                '<option value="">Gagal memuat Tahun Akademik</option>');
+                        }
+                    });
+                } else {
+                    tahunAkademikWrapper.hide();
+                    tahunAkademikSelect.html('<option value="">Pilih Tahun Akademik</option>');
+                }
             });
         });
     </script>

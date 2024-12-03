@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Models\Kegiatan;
+use App\Models\Semester;
 use Illuminate\Http\Request;
+use App\Models\TahunAkademik;
 use App\Models\KategoriKegiatan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
@@ -82,9 +84,16 @@ class KegiatanController extends Controller
         return view('kaprodi.pages.kegiatan.index');
     }
 
+    public function getTahunAkademikBySemester($semesterId)
+    {
+        $tahunAkademik = TahunAkademik::where('semester_id', $semesterId)->get(['id', 'nama']);
+        return response()->json($tahunAkademik);
+    }
+
     public function show(string $id)
     {
         $kategori = KategoriKegiatan::all();
+        $tahunAkademik = TahunAkademik::all();
 
         $kegiatan = Kegiatan::with('kategoriKegiatan')->findOrFail($id);
 
@@ -92,7 +101,8 @@ class KegiatanController extends Controller
 
         return view('kaprodi.pages.kegiatan.show', [
             'kategori' => $kategori,
-            'kegiatan' => $kegiatan
+            'kegiatan' => $kegiatan,
+            'tahunAkademik' => $tahunAkademik,
         ]);
     }
 
@@ -101,14 +111,15 @@ class KegiatanController extends Controller
      */
     public function edit(string $id)
     {
-        // get kategori Kegiatan
         $kategori = KategoriKegiatan::all();
+        $semester = Semester::all();
 
-        $kegiatan = Kegiatan::with('kategoriKegiatan')->find($id);
+        $kegiatan = Kegiatan::with('tahunAkademik.semester', 'kategoriKegiatan')->find($id);
 
         return  view('kaprodi.pages.kegiatan.edit', [
             'kategori' => $kategori,
-            'kegiatan' => $kegiatan
+            'kegiatan' => $kegiatan,
+            'semester' => $semester,
         ]);
     }
 
@@ -118,6 +129,7 @@ class KegiatanController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
+            'tahun_akademik_id' => 'required',
             'kategori_kegiatan_id' => 'required',
             'nama' => 'required',
             'nama_en' => 'required',
@@ -134,6 +146,7 @@ class KegiatanController extends Controller
             return redirect()->route('kaprodi.kegiatan.index')->with('error', 'Kegiatan tidak ditemukan');
         }
 
+        $kegiatan->tahun_akademik_id = $request->tahun_akademik_id;
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;
@@ -180,6 +193,7 @@ class KegiatanController extends Controller
 
         $kegiatan = Kegiatan::findOrFail($id);
 
+        $kegiatan->tahun_akademik_id = $request->tahun_akademik_id;
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Kegiatan;
+use App\Models\Semester;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TahunAkademik extends Model
 {
@@ -11,17 +13,15 @@ class TahunAkademik extends Model
 
     protected $table = 'tahun_akademik';
 
-    protected $guarded = [];
+    protected $fillable = ['semester_id', 'nama'];
 
-     /* RELATIONS */
-
-     public function semester()
-     {
+    public function semester()
+    {
         return $this->belongsTo(Semester::class);
-     }
+    }
 
-     public function Kegiatan()
-     {
-         return $this->hasMany(Kegiatan::class);
-     }
+    public function Kegiatan()
+    {
+        return $this->hasMany(Kegiatan::class);
+    }
 }

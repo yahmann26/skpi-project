@@ -3,16 +3,12 @@
 namespace App\Http\Controllers\Mahasiswa;
 
 use App\Models\Pt;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use App\Models\Skpi;
-use Elibyy\TCPDF\TCPDF;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Helper\Skpi as  HelperSkpi;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 
 class SkpiController extends Controller
 {
