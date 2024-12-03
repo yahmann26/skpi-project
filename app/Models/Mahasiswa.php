@@ -28,6 +28,11 @@ class Mahasiswa extends Model
         return $this->belongsTo(ProgramStudi::class, 'program_studi_id');
     }
 
+    public function jenisPendaftaran()
+    {
+        return $this->belongsTo(JenisPendaftaran::class, 'jenis_pendaftaran_id');
+    }
+
     public function kegiatan () {
         return $this->hasMany(Kegiatan::class);
     }

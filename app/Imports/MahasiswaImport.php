@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\JenisPendaftaran;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Mahasiswa;
@@ -40,8 +41,6 @@ class MahasiswaImport implements ToModel
             or !empty($row[7])
             or !empty($row[8])
             or !empty($row[9])
-            or !empty($row[10])
-            or !empty($row[11])
 
         ) {
             //cek mahasiswa atau user sudah ada by nim dan uid
@@ -59,6 +58,12 @@ class MahasiswaImport implements ToModel
                 Log::error('Prodi tidak ditemukan: ', $row);
                 return null;
             }
+
+            $jenisPendaftaran = JenisPendaftaran::where('nama', $row[9])->first();
+            if (!$jenisPendaftaran) {
+                Log::error('Jenis Pendaftaran tidak ditemukan: ', $row);
+                return null;
+            }
             // dd($prodi);
 
             $password = isset($row[1]) ? $row[1] : 'default_password';
@@ -74,7 +79,6 @@ class MahasiswaImport implements ToModel
             // Konversi tanggal
             $tglLahir = $this->convertToDateFormat($row[5]);
             $tglMasuk = isset($row[8]) ? $this->convertToDateFormat($row[8]) : null;
-            $tglLulus = isset($row[9]) ? $this->convertToDateFormat($row[9]) : null;
 
             // tambah data ke tabel mahasiswa
             Mahasiswa::create([
@@ -86,10 +90,7 @@ class MahasiswaImport implements ToModel
                 'jenis_kelamin' => $row[6],
                 'program_studi_id' => $prodi->id,
                 'tgl_masuk' => $tglMasuk,
-                'tgl_lulus' => $tglLulus,
-                // 'no_ijazah' => $row[] ?? null,
-                'jenis_pendaftaran' => $row[10] ?? null,
-                'jenis_pendaftaran_en' => $row[11] ?? null,
+                'jenis_pendaftaran_id' => $jenisPendaftaran->id,
             ]);
 
             return $user;

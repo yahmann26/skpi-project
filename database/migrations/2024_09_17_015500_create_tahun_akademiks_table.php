@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('skpi', function (Blueprint $table) {
+        Schema::create('tahun_akademik', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mahasiswa_id')->constrained('mahasiswa', 'id')->cascadeOnDelete();
-            $table->foreignId('periode_id')->constrained('periode', 'id')->cascadeOnDelete();
-            $table->integer('nomor');
-            $table->string('no_ijazah')->nullable();
-            $table->date('tgl_lulus');
+            $table->string('nama');
+            $table->foreignId('semester_id')->constrained('semester', 'id')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('skpi');
+        Schema::dropIfExists('tahun_akademik');
     }
 };

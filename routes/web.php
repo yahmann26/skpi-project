@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\KaprodiController as AdminKaprodiController;
 use App\Http\Controllers\Admin\PtController;
 use App\Http\Controllers\Admin\SkpiController as AdminSkpiController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\JenisPendaftaranController as AdminJenisPendaftaranController;
+use App\Http\Controllers\Admin\TahunAkademikController as AdminTahunAkademikController;
 
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Mahasiswa\KegiatanController as MahasiswaKegiatanController;
@@ -72,6 +74,13 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::put('kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'update'])->name('admin.kategoriKegiatan.update');
     Route::delete('/kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'destroy'])->name('admin.kategoriKegiatan.destroy');
 
+    // Tahun Ajaran
+    Route::get('thnAkademik', [AdminTahunAkademikController::class, 'index'])->name('admin.thnAkademik.index');
+    Route::post('thnAkademik', [AdminTahunAkademikController::class, 'store'])->name('admin.thnAkademik.store');
+    Route::get('thnAkademik/{id}/ubah', [AdminTahunAkademikController::class, 'edit'])->name('admin.thnAkademik.edit');
+    Route::put('thnAkademik/{id}', [AdminTahunAkademikController::class, 'update'])->name('admin.thnAkademik.update');
+    Route::delete('/thnAkademik/{id}', [AdminTahunAkademikController::class, 'destroy'])->name('admin.thnAkademik.destroy');
+
 
     // kegiatan
     Route::get('kegiatan', [AdminKegiatanController::class, 'index'])->name('admin.kegiatan.index');
@@ -81,6 +90,13 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::put('kegiatan/{id}/status', [AdminKegiatanController::class, 'updateStatus'])->name('admin.kegiatan.update-status');
     Route::put('kegiatan/{id}', [AdminKegiatanController::class, 'update'])->name('admin.kegiatan.update');
     Route::delete('kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
+
+    // jenis pendaftaran
+    Route::get('jenisPendaftaran', [AdminJenisPendaftaranController::class, 'index'])->name('admin.jenisPendaftaran.index');
+    Route::post('jenisPendaftaran', [AdminJenisPendaftaranController::class, 'store'])->name('admin.jenisPendaftaran.store');
+    Route::get('jenisPendaftaran/{id}/ubah', [AdminJenisPendaftaranController::class, 'edit'])->name('admin.jenisPendaftaran.edit');
+    Route::put('jenisPendaftaran/{id}', [AdminJenisPendaftaranController::class, 'update'])->name('admin.jenisPendaftaran.update');
+    Route::delete('/jenisPendaftaran/{id}', [AdminJenisPendaftaranController::class, 'destroy'])->name('admin.jenisPendaftaran.destroy');
 
 
     // Mahasiswa
@@ -181,6 +197,9 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::get('skpi', [KaprodiSkpiController::class, 'index'])->name('kaprodi.skpi.index');
     Route::get('skpi/{id}/lihat', [KaprodiSkpiController::class, 'show'])->name('kaprodi.skpi.show');
     Route::get('skpi/cetak/{ids}', [KaprodiSkpiController::class, 'cetak'])->name('kaprodi.skpi.cetak');
+    Route::post('skpi/tambah/periode', [KaprodiSkpiController::class, 'store'])->name('kaprodi.periode.store');
+    Route::get('skpi/download', [KaprodiSkpiController::class, 'download'])->name('kaprodi.skpi.download');
+    Route::post('skpi/import{periodeId}', [KaprodiSkpiController::class, 'import'])->name('kaprodi.skpi.import');
 });
 
 require __DIR__ . '/auth.php';

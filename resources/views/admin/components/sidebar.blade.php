@@ -14,11 +14,11 @@
         <li class="nav-heading">Menu</li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index', 'admin.pt.index']) ? '' : 'collapsed' }}"
+            <a class="nav-link {{ isRouteName(['admin.jenjang.index', 'admin.prodi.index', 'admin.pt.index', 'admin.jenisPendaftaran.index', 'admin.thnAkademik.index']) ? '' : 'collapsed' }}"
                 data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="master-nav" class="nav-content collapse {{ isRouteName(['admin.jenjang.index', 'admin.jenjang.create', 'admin.jenjang.edit', 'admin.prodi.index', 'admin.prodi.create', 'admin.prodi.edit', 'admin.prodi.edit-cpl', 'admin.pt.index', 'admin.pt.create', 'admin.pt.edit', ]) ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="master-nav" class="nav-content collapse {{ isRouteName(['admin.jenjang.index', 'admin.jenjang.create', 'admin.jenjang.edit', 'admin.prodi.index', 'admin.prodi.create', 'admin.prodi.edit', 'admin.prodi.edit-cpl', 'admin.pt.index', 'admin.pt.create', 'admin.pt.edit','admin.jenisPendaftaran.index', 'admin.jenisPendaftaran.edit', 'admin.thnAkademik.index', 'admin.thnAkademik.edit' ]) ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.jenjang.index') }}"
                         class="{{ isRouteName('admin.jenjang.index') ? 'active' : '' }}">
@@ -34,6 +34,16 @@
                 <li>
                     <a href="{{ route('admin.pt.index') }}" class="{{ isRouteName('admin.pt.index') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Pendidikan Tinggi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.jenisPendaftaran.index') }}" class="{{ isRouteName('admin.jenisPendaftaran.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Jenis Pendaftaran</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.thnAkademik.index') }}" class="{{ isRouteName('admin.thnAkademik.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Tahun Akademik</span>
                     </a>
                 </li>
             </ul>

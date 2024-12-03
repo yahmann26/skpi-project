@@ -17,7 +17,8 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                </li>
                 <li class="breadcrumb-item ">User</li>
                 <li class="breadcrumb-item ">Skpi</li>
                 <li class="breadcrumb-item active">List</li>
@@ -32,7 +33,9 @@
                 <div class="card overflow-auto">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title"><a href="{{ route('kaprodi.skpi.index') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-left"></i> Kembali</a></div>
+                            <div class="card-title"><a href="{{ route('kaprodi.skpi.index') }}"
+                                    class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-left"></i> Kembali</a>
+                            </div>
                             <div class="card-title">Data SKPI {{ $periode->nama }} </div>
                             <div class="d-flex">
 
@@ -40,6 +43,14 @@
                                 <a id="printButton" href="#" class="btn btn-sm btn-success me-2 d-none">
                                     <i class="bi bi-printer"></i> Cetak
                                 </a>
+
+                                <a href="{{ route('kaprodi.skpi.download') }}" class="btn btn-sm btn-info me-2">
+                                    <i class="bi bi-download"></i> Download Template
+                                </a>
+                                <button class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal"
+                                    data-bs-target="#importModal">
+                                    <i class="bi bi-upload"></i> Import
+                                </button>
                             </div>
                         </div>
 
@@ -60,6 +71,29 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Import -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Import Data SKPI</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="importForm" action="{{ route('kaprodi.skpi.import', $periode->id) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Pilih File Excel</label>
+                            <input type="file" class="form-control" id="file" name="file" accept=".xlsx, .xls">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 @endsection
@@ -140,5 +174,4 @@
 
         });
     </script>
-
 @endpush

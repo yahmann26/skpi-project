@@ -35,7 +35,6 @@ class SkpiController extends Controller
                     return '';
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('admin.skpi.edit', $row->id);
                     $deleteUrl = route('admin.skpi.destroy', $row->id);
                     $showSkpi = route('admin.skpi.show', $row->id);
                     return '
@@ -213,8 +212,8 @@ class SkpiController extends Controller
         $sheet->setCellValue('A1', 'Template Import SKPI');
         $sheet->setCellValue('A2', "Waktu Download: $downloadTime");
 
-        $sheet->mergeCells('A1:C1');
-        $sheet->mergeCells('A2:C2');
+        $sheet->mergeCells('A1:E1');
+        $sheet->mergeCells('A2:E2');
 
         $sheet->getStyle('A1:A2')->getFont()->setBold(true)->setSize(14);
         $sheet
@@ -222,24 +221,24 @@ class SkpiController extends Controller
             ->getAlignment()
             ->setHorizontal(StyleAlignment::HORIZONTAL_LEFT);
 
-        $header = ['NO', 'NIM', 'NOMOR SKPI'];
+        $header = ['NO', 'NIM', 'NOMOR SKPI', 'NO IJAZAH', 'TANGGAL LULUS'];
         $sheet->fromArray($header, null, 'A3');
 
-        $sheet->getStyle('A3:C3')->getFont()->setBold(true);
+        $sheet->getStyle('A3:E3')->getFont()->setBold(true);
 
         $sheet
-            ->getStyle('A3:C3')
+            ->getStyle('A3:E3')
             ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(StyleBorder::BORDER_THIN);
 
         $sheet
-            ->getStyle('A3:C500')
+            ->getStyle('A3:E500')
             ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(StyleBorder::BORDER_THIN);
 
-        foreach (range('A', 'C') as $columnID) {
+        foreach (range('A', 'E') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 

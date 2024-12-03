@@ -20,4 +20,8 @@ class Kegiatan extends Model
     public function mahasiswa() {
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
+
+    public function tahunAkademik() {
+        return $this->belongsTo(TahunAkademik::class, 'tahun_akademik_id');
+    }
 }

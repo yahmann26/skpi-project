@@ -1,26 +1,17 @@
-@extends('kaprodi.layout.app')
+@extends('admin.layout.app')
 
-@section('title', 'SKPI')
+@section('title', 'Jenis Pendaftaran')
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
-    <style>
-        thead input {
-            width: 100%;
-            padding: 3px;
-            box-sizing: border-box;
-        }
-    </style>
 @endpush
 
 @section('main')
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
-                </li>
-                <li class="breadcrumb-item ">User</li>
-                <li class="breadcrumb-item ">Skpi</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item ">Kategori Kegiatan</li>
                 <li class="breadcrumb-item active">List</li>
             </ol>
         </nav>
@@ -33,11 +24,12 @@
                 <div class="card overflow-auto">
 
                     <div class="card-body">
+
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title">Data SKPI</div>
+                            <div class="card-title">Data Jenis Pendaftaran</div>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#addPeriodeModal">
-                                Tambah Periode
+                                data-bs-target="#addJenisPendaftaranModal">
+                                Tambah
                             </button>
                         </div>
 
@@ -45,8 +37,9 @@
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "50%">Nama</th>
-                                    <th width = "15%">Aksi</th>
+                                    <th width = "35%">Nama</th>
+                                    <th width = "30%">Nama English</th>
+                                    <th width = "20%">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -58,20 +51,22 @@
         </div>
     </section>
 
-    <!-- Modal Tambah Periode -->
-    <div class="modal fade" id="addPeriodeModal" tabindex="-1" aria-labelledby="addPeriodeModalLabel" aria-hidden="true">
+    <!-- Modal Tambah JenisPendaftaran -->
+    <div class="modal fade" id="addJenisPendaftaranModal" tabindex="-1" aria-labelledby="addJenisPendaftaranModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addPeriodeModalLabel">Tambah Periode</h5>
+                    <h5 class="modal-title" id="addJenisPendaftaranModalLabel">Tambah Jenis Pendaftaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="addPeriodeForm">
+                <form id="addJenisPendaftaranForm">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="nama" class="form-label">Nama Periode</label>
+                            <label for="nama" class="form-label">Nama </label>
                             <input type="text" class="form-control" id="nama" name="nama" required>
+                            <label for="nama_en" class="form-label">Nama English</label>
+                            <input type="text" class="form-control" id="nama_en" name="nama_en" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -86,22 +81,23 @@
 @endsection
 
 @push('script')
+
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
-        function deleteskpi(id) {
+        function deletejenisPendaftaran(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 $.ajax({
-                    url: 'kaprodi/skpi/' + id,
+                    url: 'admin/jenisPendaftaran/' + id,
                     type: 'DELETE',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(result) {
                         alert('Data berhasil dihapus');
-                        $('#datatable').DataTable().ajax.reload();
+                        $('#datatable').DataTable().ajax.reload(); // Reload tabel untuk memperbarui data
                     },
                     error: function(xhr) {
                         alert('Terjadi kesalahan saat menghapus data.');
@@ -110,16 +106,12 @@
             }
         }
 
-        $('#datatable').on('click', '.btn-delete', function() {
-            var id = $(this).data('id');
-            deleteData(id);
-        });
-
         $(function() {
+
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('kaprodi.skpi.index') }}",
+                ajax: "{{ route('admin.jenisPendaftaran.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -129,44 +121,55 @@
                         name: 'nama'
                     },
                     {
+                        data: 'nama_en',
+                        name: 'nama_en'
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
                     },
-                ],
+                ]
+            });
+
+            // Event delegation for dynamically added delete buttons
+            $('#datatable').on('click', '.btn-delete', function() {
+                var id = $(this).data('id');
+                deleteData(id);
             });
 
             // Handle form submission
-            $('#addPeriodeForm').on('submit', function(e) {
+            $('#addJenisPendaftaranForm').on('submit', function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "{{ route('kaprodi.periode.store') }}",
+                    url: "{{ route('admin.jenisPendaftaran.store') }}",
                     type: 'POST',
                     data: new FormData(this),
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        $('#addPeriodeModal').modal('hide');
+                        $('#addJenisPendaftaranModal').modal('hide');
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil!',
-                            text: 'Periode berhasil ditambahkan',
+                            text: 'Jenis Pendaftaran berhasil ditambahkan',
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        $('#addPeriodeForm')[0].reset();
+                        $('#addJenisPendaftaranForm')[0].reset();
                         table.ajax.reload();
                     },
                     error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Terjadi kesalahan saat menambahkan periode.'
+                            text: 'Terjadi kesalahan saat menambahkan Jenis Pendaftaran.'
                         });
                     }
                 });
             });
+
         });
     </script>
 @endpush

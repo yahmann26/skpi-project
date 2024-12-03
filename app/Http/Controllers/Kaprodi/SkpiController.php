@@ -3,14 +3,23 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Models\Pt;
+use Carbon\Carbon;
 use App\Models\Skpi;
 use App\Models\Periode;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Imports\SkpiImportKaprodi;
 use  App\Helper\Skpi as HelperSkpi;
 use App\Http\Controllers\Controller;
+use App\Imports\SkpiImport;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border as StyleBorder;
+use PhpOffice\PhpSpreadsheet\Style\Alignment as StyleAlignment;
 
 class SkpiController extends Controller
 {
@@ -37,6 +46,24 @@ class SkpiController extends Controller
         }
 
         return view('kaprodi.pages.skpi.index');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate(
+            [
+                'nama' => 'required',
+            ],
+            [
+                'nama.required' => 'Nama harus diisi',
+            ],
+        );
+
+        Periode::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('kaprodi.skpi.index')->with('success', 'Periode berhasil ditambahkan');
     }
 
     public function show(Request $request, string $id)
@@ -73,53 +100,12 @@ class SkpiController extends Controller
     }
 
 
-    public function updateStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:validasi,tolak',
-        ]);
-
-        $skpi = Skpi::findOrFail($id);
-
-        $skpi->status = $request->status;
-
-        if ($request->status === 'validasi') {
-            $skpi->nomor = $this->generateNomor($skpi);
-        }
-
-        $skpi->save();
-
-        if ($request->status === 'validasi') {
-            return redirect()->route('kaprodi.skpi.index', $skpi->id)->with('success', 'Status SKPI berhasil diperbarui!!! Nomor: ' . $skpi->nomor);
-        } elseif ($request->status === 'tolak') {
-            return redirect()->route('kaprodi.skpi.index')->with('success', 'SKPI ditolak !!!');
-        }
-    }
-
-    private function generateNomor($skpi)
-    {
-        $year = date('Y');
-
-        $sequence = str_pad($skpi->id, 5, '0', STR_PAD_LEFT); // Menghasilkan nomor urut seperti '00001'
-
-        $prodi = $skpi->mahasiswa->prodi->singkatan ?? '';
-        $jenjang = $skpi->mahasiswa->prodi->jenjangPendidikan->singkatan ?? '';  // Misalnya 'S1.TI'
-        $nim = $skpi->mahasiswa->nim ?? ''; // Misalnya '55201'
-
-        // Gabungkan semua bagian untuk menghasilkan nomor SKPI
-        $nomor = "{$sequence}/SKPI/FASTIKOM/UNSIQ/{$jenjang}.{$prodi}/{$nim}/{$year}";
-
-        return $nomor;
-    }
-
     public function cetak($ids)
     {
         $pt = Pt::where('id', 1)->first();
 
-        // Mengubah string ID menjadi array
         $idsArray = explode(',', $ids);
 
-        // Mengambil SKPI berdasarkan array ID
         $skpis = Skpi::with([
             'mahasiswa.prodi.jenjangPendidikan',
             'mahasiswa.kegiatan' => function ($query) {
@@ -199,5 +185,83 @@ class SkpiController extends Controller
         }
 
         return $mpdf->Output('skpi.pdf', 'I');
+    }
+
+    public function download()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $downloadTime = Carbon::now()->format('d-m-Y H:i:s');
+        $sheet->setCellValue('A1', 'Template Import SKPI');
+        $sheet->setCellValue('A2', "Waktu Download: $downloadTime");
+
+        $sheet->mergeCells('A1:E1');
+        $sheet->mergeCells('A2:E2');
+
+        $sheet->getStyle('A1:A2')->getFont()->setBold(true)->setSize(14);
+        $sheet
+            ->getStyle('A1:A2')
+            ->getAlignment()
+            ->setHorizontal(StyleAlignment::HORIZONTAL_LEFT);
+
+        $header = ['NO', 'NIM', 'NOMOR SKPI', 'NO IJAZAH', 'TANGGAL LULUS'];
+        $sheet->fromArray($header, null, 'A3');
+
+        $sheet->getStyle('A3:E3')->getFont()->setBold(true);
+
+        $sheet
+            ->getStyle('A3:E3')
+            ->getBorders()
+            ->getAllBorders()
+            ->setBorderStyle(StyleBorder::BORDER_THIN);
+
+        $sheet
+            ->getStyle('A3:E500')
+            ->getBorders()
+            ->getAllBorders()
+            ->setBorderStyle(StyleBorder::BORDER_THIN);
+
+        foreach (range('A', 'E') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        $fileName = 'tempalte SKPI.xlsx';
+        $filePath = Storage::path($fileName);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function import(Request $request, $periodeId)
+    {
+        // Validasi file yang diunggah
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls|max:2048', // Pastikan file valid
+        ]);
+
+        // Pastikan periode dengan ID yang dimaksud ada
+        $periode = Periode::findOrFail($periodeId);
+
+        try {
+            // Ambil file dari request
+            $file = $request->file('file');
+
+            $prodiId = Auth::user()->kaprodi->program_studi_id;;
+
+            Excel::import(new SkpiImport($periodeId, $prodiId), $file);
+
+            return redirect()->route('kaprodi.periode.show', $periodeId)
+                ->with('success', 'Data SKPI berhasil diimpor');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            // Tangkap kesalahan validasi dari Excel
+            $failures = $e->failures();
+            return back()->with('error', 'Kesalahan validasi data pada file yang diunggah. Silakan periksa dan coba lagi.');
+        } catch (\Exception $e) {
+            // Tangkap kesalahan lainnya
+            return back()->with('error', 'Terjadi kesalahan saat mengimpor file: ' . $e->getMessage());
+        }
     }
 }

@@ -3,13 +3,17 @@
 <head>
     <title>SKPI</title>
     </link>
+    <style>
+        body {
+            font-family:'Times New Roman', Times, serif ;
+        }
+    </style>
 
 </head>
 
 <body>
 
     <div>
-
         {{-- Kualifikasi dan hasil yang dicapai --}}
         <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; ">
             <tr>
@@ -230,15 +234,15 @@
                     </td>
                     <td style="width: 5%; text-align: center; padding: 0;">
                     </td>
-                    <td style="width: 2%; text-align: left; font-style: italic; vertical-align: top;">
+                    <td style="width: 2%; text-align: left; vertical-align: top;">
                         <h1
-                            style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            style="font-size: 12px; font-weight: normal; font-style: italic; text-align: left; margin-top: 0; margin-bottom: 0;">
                             {{ $index + 1 }}.
                         </h1>
                     </td>
-                    <td style="width: 43%; text-align: left; font-style: italic; vertical-align: top;">
+                    <td style="width: 43%; text-align: left; vertical-align: top;">
                         <h1
-                            style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            style="font-size: 12px; font-weight: normal; font-style: italic; text-align: left; margin-top: 0; margin-bottom: 0;">
                             {{ $k->nama_en }}
                         </h1>
                     </td>
@@ -427,8 +431,8 @@
                 <td style="width: 5%;">
                 </td>
                 <td style="width: 45%; font-weight: bold; text-align: left; vertical-align: top;">
-                    <h1 style="font-size: 12px; font-weight: no; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, 29 Maret 2021
+                    <h1 style="font-size: 12px; font-weight: bold; text-align: left; margin-top: 0; margin-bottom: 0;">
+                        Wonosobo, {{ \App\Helper\Skpi::dateIndo($skpi->tgl_lulus) }}
                     </h1>
                 </td>
             </tr>
@@ -439,11 +443,11 @@
                 </td>
                 <td style="width: 5%;">
                 </td>
-                <td style="width: 45%; font-weight: bold; text-align: left; vertical-align: top;">
-                    <h1
+                <td style="width: 45%; vertical-align: top;">
+                    <span
                         style="font-size: 12px; font-style: italic; color: gray; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, 29 Maret 2021
-                    </h1>
+                        Wonosobo, {{ \App\Helper\Skpi::dateEN($skpi->tgl_lulus) }}
+                    </span>
                 </td>
             </tr>
             <tr>
@@ -466,13 +470,14 @@
                 </td>
                 <td style="width: 5%;">
                 </td>
-                <td style="width: 45%; font-weight: bold; text-align: left; vertical-align: top;">
-                    <h1
-                        style="font-size: 12px; font-style: italic; color: gray; text-align: left; margin-top: 0; margin-bottom: 0;">
+                <td style="width: 45%; text-align: left; vertical-align: top;">
+                    <span
+                        style="font-size: 12px; font-style: italic; color: gray; ">
                         Dean of Engineering and Computer Science Faculty
-                    </h1>
+                    </span>
                 </td>
             </tr>
+            <br>
             <br>
             <br>
             <br>

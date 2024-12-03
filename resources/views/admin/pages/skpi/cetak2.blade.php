@@ -432,7 +432,7 @@
                 </td>
                 <td style="width: 45%; font-weight: bold; text-align: left; vertical-align: top;">
                     <h1 style="font-size: 12px; font-weight: bold; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, {{ \App\Helper\Skpi::dateIndo($mahasiswa->tgl_lulus) }}
+                        Wonosobo, {{ \App\Helper\Skpi::dateIndo($skpi->tgl_lulus) }}
                     </h1>
                 </td>
             </tr>
@@ -446,7 +446,7 @@
                 <td style="width: 45%; vertical-align: top;">
                     <span
                         style="font-size: 12px; font-style: italic; color: gray; text-align: left; margin-top: 0; margin-bottom: 0;">
-                        Wonosobo, {{ \App\Helper\Skpi::dateEN($mahasiswa->tgl_lulus) }}
+                        Wonosobo, {{ \App\Helper\Skpi::dateEN($skpi->tgl_lulus) }}
                     </span>
                 </td>
             </tr>

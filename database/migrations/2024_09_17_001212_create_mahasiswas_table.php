@@ -20,11 +20,8 @@ return new class extends Migration
             $table->date('tgl_lahir');
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->foreignId('program_studi_id')->constrained('program_studi', 'id')->cascadeOnDelete();
+            $table->foreignId('jenis_pendaftaran_id')->constrained('jenis_pendaftaran', 'id')->cascadeOnDelete();
             $table->date('tgl_masuk')->nullable();
-            $table->date('tgl_lulus')->nullable();
-            $table->string('no_ijazah')->nullable();
-            $table->string('jenis_pendaftaran')->nullable();
-            $table->string('jenis_pendaftaran_en')->nullable();
             $table->timestamps();
         });
     }

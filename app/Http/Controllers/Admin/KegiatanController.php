@@ -75,11 +75,6 @@ class KegiatanController extends Controller
      */
     public function create()
     {
-        // $kategori = KategoriKegiatan::all();
-
-        // return view('admin.pages.kegiatan.create', [
-        //     'kategori' => $kategori
-        // ]);
     }
 
     /**
@@ -87,33 +82,7 @@ class KegiatanController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'kategori_kegiatan_id' => 'required',
-        //     'nama' => 'required',
-        //     'tingkat' => 'required',
-        //     'pencapaian' => 'required',
-        //     'bobot' => 'required',
-        // ], [
-        //     'kategori_kegiatan_id.required' => 'Kategori Wajib Dipilih',
-        //     'nama.required' => 'Nama kegiatan wajib diisi',
-        //     'tingkat.required' => 'Tingkat kegiatan wajib diisi',
-        //     'pencapaian.required' => 'pencapaian wajib diisi',
-        //     'bobot.required' => 'Bobot wajib diisi',
 
-        // ]);
-
-        // $kegiatan = [
-        //     'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
-        //     'nama' => $request->nama,
-        //     'tingkat' => $request->tingkat,
-        //     'pencapaian' => $request->pencapaian,
-        //     'bobot' => $request->bobot,
-
-        // ];
-
-        // Kegiatan::create($kegiatan);
-
-        // return redirect()->route('admin.kegiatan.index')->with('success', 'Berhasil Menambahkan Data');
     }
 
     /**

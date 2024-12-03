@@ -2,12 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\JenisPendaftaran;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\ProgramStudi;
 use Illuminate\Database\Seeder;
 use App\Models\JenjangPendidikan;
 use App\Models\KategoriKegiatan;
+use App\Models\Semester;
+use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -73,6 +76,77 @@ class DataSeeder extends Seeder
                 KategoriKegiatan::firstOrCreate([
                     'nama' => $kk['nama'],
                 ], $kk);
+            }
+            // data tahun akademik
+            $semester = [
+                [
+                    'nama' => 'Gasal',
+                    'tahun_akademik' => [
+                        ['nama' => '2020'],
+                        ['nama' => '2021'],
+                        ['nama' => '2022'],
+                        ['nama' => '2023'],
+                        ['nama' => '2024'],
+                        ['nama' => '2025'],
+                    ]
+                ],
+                [
+                    'nama' => 'Genap',
+                    'tahun_akademik' => [
+                        ['nama' => '2020'],
+                        ['nama' => '2021'],
+                        ['nama' => '2022'],
+                        ['nama' => '2023'],
+                        ['nama' => '2024'],
+                        ['nama' => '2025'],
+                    ]
+                ],
+            ];
+
+            foreach ($semester as $s) {
+                $insertSemester = $s;
+                unset($insertSemester['tahun_akademik']);
+
+                // Insert or get semester
+                $dataSemester = Semester::firstOrCreate([
+                    'nama' => $s['nama'],
+                ], $insertSemester);
+
+                if (isset($s['tahun_akademik'])) {
+                    foreach ($s['tahun_akademik'] as $thnAkademik) {
+                        // Add semester_id to tahun akademik
+                        $thnAkademik['semester_id'] = $dataSemester->id;
+
+                        // Insert or get tahun akademik
+                        TahunAkademik::firstOrCreate(
+                            [
+                                'nama' => $thnAkademik['nama'],
+                                'semester_id' => $dataSemester->id,
+                            ],
+                            $thnAkademik
+                        );
+                    }
+                }
+            }
+
+            // data Jenis Pendaftaran
+            $jenisPendaftaran = [
+                [
+                    'nama' => 'Peserta Didik baru',
+                    'nama_en' => 'New Student',
+                ],
+                [
+                    'nama' => 'Peserta Didik Transfer',
+                    'nama_en' => 'Tranfer Student',
+                ],
+
+            ];
+
+            foreach ($jenisPendaftaran as $jp) {
+                JenisPendaftaran::firstOrCreate([
+                    'nama' => $jp['nama'],
+                    'nama_en' => $jp['nama_en'],
+                ], $jp);
             }
 
             // data jenjang pendidikan

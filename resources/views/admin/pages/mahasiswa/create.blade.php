@@ -28,7 +28,7 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label for="program_studi_id" class="form-label">Program Studi</label>
+                                <label for="program_studi_id" class="form-label" style="font-weight: bold">Program Studi<span class="text-danger small"> *</span></label>
                                 <select name="program_studi_id" id="program_studi_id"
                                     class="form-select @error('program_studi_id') is-invalid @enderror">
                                     <option value="">-- Pilih Program Studi --</option>
@@ -43,8 +43,8 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="nim" class="form-label">NIM Mahasiswa</label>
+                            <div class="col-md-6 mb-3">
+                                <label for="nim" class="form-label" style="font-weight: bold">NIM Mahasiswa<span class="text-danger small"> *</span></label>
                                 <input type="number" name="nim" id="nim"
                                     class="form-control @error('nim') is-invalid @enderror" value="{{ old('nim') }}">
                                 @error('nim')
@@ -52,17 +52,8 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Mahasiswa</label>
-                                <input type="text" name="nama" id="nama"
-                                    class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}">
-                                @error('nama')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
                             <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label" style="font-weight: bold">Email<span class="text-danger small"> *</span></label>
                                 <input type="email" name="email" id="email"
                                     class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
                                 @error('email')
@@ -70,17 +61,19 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="no_ijazah" class="form-label">No Ijazah</label>
-                                <input type="text" name="no_ijazah" id="no_ijazah"
-                                    class="form-control @error('no_ijazah') is-invalid @enderror" value="{{ old('no_ijazah') }}">
-                                @error('no_ijazah')
+                            <div class="mb-3">
+                                <label for="nama" class="form-label" style="font-weight: bold">Nama Mahasiswa<span class="text-danger small"> *</span></label>
+                                <input type="text" name="nama" id="nama"
+                                    class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}">
+                                @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+
+
                             <div class="col-md-6 mb-3">
-                                <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                                <label for="tempat_lahir" class="form-label" style="font-weight: bold">Tempat Lahir<span class="text-danger small"> *</span></label>
                                 <input type="text" name="tempat_lahir" id="tempat_lahir"
                                     class="form-control @error('tempat_lahir') is-invalid @enderror"
                                     value="{{ old('tempat_lahir') }}">
@@ -90,7 +83,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
+                                <label for="tgl_lahir" class="form-label" style="font-weight: bold">Tanggal Lahir<span class="text-danger small"> *</span></label>
                                 <input type="date" name="tgl_lahir" id="tgl_lahir"
                                     class="form-control @error('tgl_lahir') is-invalid @enderror"
                                     value="{{ old('tgl_lahir') }}">
@@ -99,8 +92,8 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                            <div class="col-md-6 mb-3">
+                                <label for="jenis_kelamin" class="form-label" style="font-weight: bold">Jenis Kelamin<span class="text-danger small"> *</span></label>
                                 <select name="jenis_kelamin" id="jenis_kelamin"
                                     class="form-select @error('jenis_kelamin') is-invalid @enderror">
                                     <option value="">-- Pilih Jenis Kelamin --</option>
@@ -112,32 +105,8 @@
                                 @enderror
                             </div>
 
-                            <div class="md-3">
-                                <label for="jenis_pendaftaran" class="form-label">Jenis Pendaftaran</label>
-                                <div class="input-group md-3 @error('jenis_pendaftaran') is-invalid @enderror">
-                                    <span class="input-group-text">&nbsp;ID</span>
-                                    <input type="text" name="jenis_pendaftaran" class="form-control" aria-describedby="jenis_pendaftaran-addon"
-                                        class="form-control" value="{{ old('jenis_pendaftaran') }}" autofocus
-                                        placeholder="Jenis Pendaftaran">
-                                </div>
-                                @error('jenis_pendaftaran')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group md-3 @error('jenis_pendaftaran_en') is-invalid @enderror">
-                                    <span class="input-group-text">EN</span>
-                                    <input type="text" name="jenis_pendaftaran_en" class="form-control"
-                                        aria-describedby="jenis_pendaftaran_en-addon" class="form-control" value="{{ old('jenis_pendaftaran_en') }}"
-                                        autofocus placeholder="Jenis Pendaftaran (english)">
-                                </div>
-                                @error('jenis_pendaftaran_en')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
                             <div class="col-md-6">
-                                <label for="tgl_masuk" class="form-label">Tanggal Masuk</label>
+                                <label for="tgl_masuk" class="form-label" style="font-weight: bold">Tanggal Masuk</label>
                                 <input type="date" name="tgl_masuk" id="tgl_masuk"
                                     class="form-control @error('tgl_masuk') is-invalid @enderror"
                                     value="{{ old('tgl_masuk') }}">
@@ -146,12 +115,18 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="tgl_lulus" class="form-label">Tanggal Lulus</label>
-                                <input type="date" name="tgl_lulus" id="tgl_lulus"
-                                    class="form-control @error('tgl_lulus') is-invalid @enderror"
-                                    value="{{ old('tgl_lulus') }}">
-                                @error('tgl_lulus')
+                            <div class="mb-3">
+                                <label for="jenis_pendaftaran_id" class="form-label" style="font-weight: bold">Jenis Pendaftaran<span class="text-danger small"> *</span></label>
+                                <select name="jenis_pendaftaran_id" id="jenis_pendaftaran_id"
+                                    class="form-select @error('jenis_pendaftaran_id') is-invalid @enderror">
+                                    <option value="">-- Pilih Jenis Pendaftaran --</option>
+                                    @foreach ($jenisPendaftaran as $jp)
+                                        <option value="{{ $jp->id }}"
+                                            {{ old('jenis_pendaftaran_id') == $jp->id ? 'selected' : '' }}>
+                                            {{ $jp->nama }}</option>
+                                    @endforeach
+                                </select>
+                                @error('jenis_pendaftaran_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

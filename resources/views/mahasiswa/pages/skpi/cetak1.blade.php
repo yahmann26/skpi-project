@@ -52,7 +52,7 @@
                 </td>
                 <td style="width: 50%; background-color: #D3D3D3; text-align: center; padding: 5px; ">
                     <p style="font-size: 12px;">
-                        <span>Nomor. {{ $skpi->nomor }}/SKPI/FASTIKOM/{{ $namaSingkat }}/{{ $jenjangPendidikan->singkatan }}.{{ $prodi->singkatan }}/{{ $prodi->kode_prodi }}/{{ \Carbon\Carbon::parse($mahasiswa->tgl_lulus)->format('Y') }}</span>
+                        <span>Nomor. {{ $skpi->nomor }}/SKPI/FASTIKOM/{{ $namaSingkat }}/{{ $jenjangPendidikan->singkatan }}.{{ $prodi->singkatan }}/{{ $prodi->kode_prodi }}/{{ \Carbon\Carbon::parse($skpi->tgl_lulus)->format('Y') }}</span>
                     </p>
                 </td>
             </tr>
@@ -208,8 +208,8 @@
                 </td>
                 <td style="width: 33%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
                     <p style="font-size: 12px; margin-top: 2px; margin-bottom: 0;">
-                        <span>{{ $mahasiswa->jenis_pendaftaran }}</span> <br>
-                        <span style="font-style:italic; color: gray;">{{ $mahasiswa->jenis_pendaftaran_en }}</span>
+                        <span>{{ $mahasiswa->jenisPendaftaran->nama }}</span> <br>
+                        <span style="font-style:italic; color: gray;">{{ $mahasiswa->jenisPendaftaran->nama_en }}</span>
                     </p>
                 </td>
             </tr>
@@ -262,10 +262,10 @@
                 </td>
                 <td style="width: 20%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
                     <p style="font-size: 12px;  margin-top: 2px; margin-bottom: 0;">
-                        <span style=" padding: 2px">{{ \App\Helper\Skpi::dateIndo($mahasiswa->tgl_lulus) }}</span>
+                        <span style=" padding: 2px">{{ \App\Helper\Skpi::dateIndo($skpi->tgl_lulus) }}</span>
                         <br>
                         <span
-                            style="font-style:italic; color: gray;">{{ \App\Helper\Skpi::dateEN($mahasiswa->tgl_lulus) }}</span>
+                            style="font-style:italic; color: gray;">{{ \App\Helper\Skpi::dateEN($skpi->tgl_lulus) }}</span>
                     </p>
                 </td>
                 <td style="width: 3%; ">
@@ -274,7 +274,7 @@
                 </td>
                 <td style="width: 33%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
                     <p style="font-size: 12px; margin-top: 2px; margin-bottom: 0;">
-                        <span>{{ $mahasiswa->no_ijazah }}</span> <br>
+                        <span>{{ $skpi->no_ijazah }}</span> <br>
                     </p>
                 </td>
             </tr>

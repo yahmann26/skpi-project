@@ -8,6 +8,7 @@ use App\Models\Mahasiswa;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use App\Imports\MahasiswaImport;
+use App\Models\JenisPendaftaran;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,8 +17,8 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 use PhpOffice\PhpSpreadsheet\Style\Border as StyleBorder;
 use PhpOffice\PhpSpreadsheet\Style\Alignment as StyleAlignment;
 
@@ -62,9 +63,11 @@ class MahasiswaController extends Controller
     public function create()
     {
         $prodi = ProgramStudi::all();
+        $jenisPendaftaran = JenisPendaftaran::all();
 
         return view('admin.pages.mahasiswa.create', [
-            'prodi' => $prodi
+            'prodi' => $prodi,
+            'jenisPendaftaran' => $jenisPendaftaran,
         ]);
     }
 
@@ -107,13 +110,10 @@ class MahasiswaController extends Controller
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tgl_lahir' => $request->tgl_lahir,
-                'no_ijazah' => $request->no_ijazah,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'program_studi_id' => $request->program_studi_id,
-                'jenis_pendaftaran' => $request->jenis_pendaftaran,
-                'jenis_pendaftaran_en' => $request->jenis_pendaftaran_en,
+                'jenis_pendaftaran_id' => $request->jenis_pendaftaran_id,
                 'tgl_masuk' => $request->tgl_masuk,
-                'tgl_lulus' => $request->tgl_lulus,
                 'user_id' => $user->id,
             ]);
         });
@@ -136,12 +136,14 @@ class MahasiswaController extends Controller
     {
         // get prodi
         $prodi = ProgramStudi::all();
+        $jenisPendaftaran = JenisPendaftaran::all();
 
-        $mahasiswa = Mahasiswa::with('prodi')->find($id);
+        $mahasiswa = Mahasiswa::with('prodi', 'jenisPendaftaran')->find($id);
 
         return  view('admin.pages.mahasiswa.edit', [
             'mahasiswa' => $mahasiswa,
-            'prodi' => $prodi
+            'prodi' => $prodi,
+            'jenisPendaftaran' => $jenisPendaftaran,
         ]);
     }
 
@@ -175,12 +177,9 @@ class MahasiswaController extends Controller
             'nama' => $request->nama,
             'tempat_lahir' => $request->tempat_lahir,
             'tgl_lahir' => $request->tgl_lahir,
-            'no_ijazah' => $request->no_ijazah,
             'tgl_masuk' => $request->tgl_masuk,
-            'tgl_lulus' => $request->tgl_lulus,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'jenis_pendaftaran' => $request->jenis_pendaftaran,
-            'jenis_pendaftaran_en' => $request->jenis_pendaftaran_en,
+            'jenis_pendaftaran_id' => $request->jenis_pendaftaran_id,
             'program_studi_id' => $request->program_studi_id,
         ]);
 
@@ -227,7 +226,8 @@ class MahasiswaController extends Controller
     {
         // Ambil data dari database untuk kolom PRODI
         $prodiList = ProgramStudi::pluck('nama')->toArray();
-        $jenisKelamin = ['L', 'P']; // Data dropdown untuk JENIS KELAMIN
+        $jenisPendaftaranList = JenisPendaftaran::pluck('nama')->toArray();
+        $jenisKelamin = ['L', 'P'];
 
         // Buat Spreadsheet baru
         $spreadsheet = new Spreadsheet();
@@ -239,22 +239,22 @@ class MahasiswaController extends Controller
         $sheet->setCellValue('A2', "Waktu Download: $downloadTime");
 
         // Gabungkan sel untuk judul
-        $sheet->mergeCells('A1:L1');
-        $sheet->mergeCells('A2:L2');
+        $sheet->mergeCells('A1:J1');
+        $sheet->mergeCells('A2:J2');
 
         // Atur gaya untuk judul
         $sheet->getStyle('A1:A2')->getFont()->setBold(true)->setSize(14);
         $sheet->getStyle('A1:A2')->getAlignment()->setHorizontal(StyleAlignment::HORIZONTAL_LEFT);
 
         // Tambahkan header
-        $header = ['NO','NIM', 'EMAIL', 'NAMA', 'TEMPAT LAHIR', 'TGL LAHIR', 'JENIS KELAMIN', 'PRODI', 'TGL MASUK', 'TGL LULUS', 'JENIS PENDAFTARAN', 'JENIS PENDAFTARAN (EN)'];
+        $header = ['NO','NIM', 'EMAIL', 'NAMA', 'TEMPAT LAHIR', 'TGL LAHIR', 'JENIS KELAMIN', 'PRODI', 'TGL MASUK', 'JENIS PENDAFTARAN'];
         $sheet->fromArray($header, null, 'A3');
 
         // Header bold
-        $sheet->getStyle('A3:L3')->getFont()->setBold(true);
+        $sheet->getStyle('A3:J3')->getFont()->setBold(true);
 
         // Tambahkan border ke header
-        $sheet->getStyle('A3:L3')->getBorders()->getAllBorders()->setBorderStyle(StyleBorder::BORDER_THIN);
+        $sheet->getStyle('A3:J3')->getBorders()->getAllBorders()->setBorderStyle(StyleBorder::BORDER_THIN);
 
         // Tambahkan dropdown untuk "JENIS KELAMIN"
         $jenisKelaminValidation = new DataValidation();
@@ -278,6 +278,17 @@ class MahasiswaController extends Controller
 
         foreach (range(4, 500) as $row) {
             $sheet->getCell("H$row")->setDataValidation(clone $prodiValidation);
+        }
+        // Tambahkan dropdown untuk "Jenis Pendaftaran"
+        $jenisPendaftaranValidation = new DataValidation();
+        $jenisPendaftaranValidation->setType(DataValidation::TYPE_LIST);
+        $jenisPendaftaranValidation->setErrorStyle(DataValidation::STYLE_INFORMATION);
+        $jenisPendaftaranValidation->setAllowBlank(true);
+        $jenisPendaftaranValidation->setShowDropDown(true);
+        $jenisPendaftaranValidation->setFormula1('"' . implode(',', $jenisPendaftaranList) . '"');
+
+        foreach (range(4, 500) as $row) {
+            $sheet->getCell("J$row")->setDataValidation(clone $jenisPendaftaranValidation);
         }
 
         // Validasi Email untuk kolom EMAIL (kolom C)
@@ -315,15 +326,13 @@ class MahasiswaController extends Controller
             $sheet->getCell("F$row")->setDataValidation(clone $dateValidation);
             // Validasi untuk TGL MASUK (kolom I)
             $sheet->getCell("I$row")->setDataValidation(clone $dateValidation);
-            // Validasi untuk TGL LULUS (kolom J)
-            $sheet->getCell("J$row")->setDataValidation(clone $dateValidation);
         }
 
         // Tambahkan border ke semua sel yang relevan (header + data)
-        $sheet->getStyle('A3:L500')->getBorders()->getAllBorders()->setBorderStyle(StyleBorder::BORDER_THIN);
+        $sheet->getStyle('A3:J500')->getBorders()->getAllBorders()->setBorderStyle(StyleBorder::BORDER_THIN);
 
         // Atur lebar kolom agar sesuai konten
-        foreach (range('A', 'L') as $columnID) {
+        foreach (range('A', 'J') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
