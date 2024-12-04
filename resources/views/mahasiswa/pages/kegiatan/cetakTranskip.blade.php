@@ -63,7 +63,7 @@
                     <tr>
                         <td style="width:100%; padding: 0; text-align: center;">
                             <h3 style="font-size: 18px; font-weight: bold;  ">
-                                CETAK KEGIATAN
+                                TRANSKIP KEGIATAN SEMENTARA
                             </h3>
                         </td>
                     </tr>
@@ -73,74 +73,49 @@
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; font-weight: bold;">
                     <tr>
                         <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
-                                <span>NIM</span> <br>
-                            </p>
-                        </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
-                                <span>: {{ $mahasiswa->nim }}</span>
-                            </p>
-                        </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
+                            <p style="font-size: 14px; ">
                                 <span>Nama</span>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
+                        <td style="width: 75%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 14px; ">
                                 <span>: {{ $mahasiswa->nama }}</span>
                             </p>
                         </td>
                     </tr>
-                </table>
-
-                <table border="0"
-                    style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; font-weight: bold;">
                     <tr>
                         <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
-                                <span>Jenjang</span> <br>
+                            <p style="font-size: 14px; ">
+                                <span>NIM</span>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
-                                <span>: {{ $mahasiswa->prodi->jenjangPendidikan->singkatan }}</span>
+                        <td style="width: 75%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 14px; ">
+                                <span>: {{ $mahasiswa->nim }}</span>
                             </p>
                         </td>
+                    </tr>
+                    <tr>
                         <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
+                            <p style="font-size: 14px; ">
                                 <span>Tempat/Tgl Lahir</span>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
+                        <td style="width: 75%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 14px; ">
                                 <span>: {{ $mahasiswa->tempat_lahir }},
                                     {{ \App\Helper\Skpi::dateIndo($mahasiswa->tgl_lahir) }}</span>
                             </p>
                         </td>
                     </tr>
-                </table>
-                <table border="0"
-                    style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; font-weight: bold;">
                     <tr>
                         <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
-                                <span>Tahun Akademik</span> <br>
-                            </p>
-                        </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
-                                <span>: {{ $tahunAkademik->nama }}/{{ $tahunAkademik->semester->nama }}</span>
-                            </p>
-                        </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px; ">
+                            <p style="font-size: 14px; ">
                                 <span>Jenis Kelamin</span>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
-                            <p style="font-size: 12px;">
+                        <td style="width: 75%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 14px;">
                                 <span>:
                                     @if ($mahasiswa->jenis_kelamin == 'L')
                                         Laki-Laki
@@ -153,6 +128,7 @@
                             </p>
                         </td>
                     </tr>
+
                 </table>
 
                 <table border="1"
@@ -163,14 +139,15 @@
                             <th>Nama Kegiatan</th>
                             <th>Pencapaian</th>
                             <th>Tingkat</th>
+                            <th>Tahun</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $alphabet = 'A'; @endphp
                         @foreach ($kategori as $kategoriNama => $kegiatanKategori)
-                            <tr>
+                            <tr class="section-header" >
                                 <td style="text-align: center;">{{ $alphabet }}</td>
-                                <td colspan="3">{{ $kategoriNama }}</td>
+                                <td colspan="4">{{ $kategoriNama }}</td>
                             </tr>
                             @foreach ($kegiatanKategori as $kegiatan)
                                 <tr>
@@ -178,17 +155,18 @@
                                     <td>{{ $loop->iteration }}. {{ $kegiatan->nama }}</td>
                                     <td>{{ $kegiatan->pencapaian }}</td>
                                     <td>{{ $kegiatan->tingkat }}</td>
-                                    </td>
+                                    <td>{{ $kegiatan->tahunAkademik->nama }}/{{ $kegiatan->tahunAkademik->semester->nama }}</td>
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="4">&nbsp;</td>
+                                <td colspan="5">&nbsp;</td>
                             </tr>
 
                             @php $alphabet++; @endphp
                         @endforeach
                     </tbody>
                 </table>
+
 
                 <table border="0"
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px">

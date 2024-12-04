@@ -67,8 +67,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Transkip Kegiatan</h5>
-                        <form>
-
+                        <form action="{{ route('mahasiswa.kegiatan.cetakTranskip') }}" method="post" target="_blank">
+                            @csrf
+                            
                             Cetak Transkip Kegiatan Sementara
 
                             <div class="row mb-3 mt-3">

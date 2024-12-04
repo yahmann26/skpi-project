@@ -92,6 +92,8 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::delete('kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
     Route::get('kegiatan/cetak', [AdminKegiatanController::class, 'cetak'])->name('admin.kegiatan.cetak');
     Route::get('tahun-akademik/{semester_id}', [AdminKegiatanController::class, 'getTahunAkademikBySemester']);
+    Route::post('kegiatan/cetakSemester', [AdminKegiatanController::class, 'cetakSemester'])->name('admin.kegiatan.cetakSemester');
+    Route::post('kegiatan/cetakTranskip', [AdminKegiatanController::class, 'cetakTranskip'])->name('admin.kegiatan.cetakTranskip');
 
 
 
@@ -161,6 +163,7 @@ Route::middleware(['isMahasiswa', 'verified'])->prefix('mahasiswa')->group(funct
     Route::delete('kegiatan/{id}', [MahasiswaKegiatanController::class, 'destroy'])->name('mahasiswa.kegiatan.destroy');
     Route::get('kegiatan/cetak', [MahasiswaKegiatanController::class, 'cetak'])->name('mahasiswa.kegiatan.cetak');
     Route::post('kegiatan/cetakSemester', [MahasiswaKegiatanController::class, 'cetakSemester'])->name('mahasiswa.kegiatan.cetakSemester');
+    Route::post('kegiatan/cetakTranskip', [MahasiswaKegiatanController::class, 'cetakTranskip'])->name('mahasiswa.kegiatan.cetakTranskip');
 
 
 
@@ -191,6 +194,9 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::put('kegiatan/{id}', [KaprodiKegiatanController::class, 'update'])->name('kaprodi.kegiatan.update');
     Route::delete('kegiatan/{id}', [KaprodiKegiatanController::class, 'destroy'])->name('kaprodi.kegiatan.destroy');
     Route::get('tahun-akademik/{semester_id}', [KaprodiKegiatanController::class, 'getTahunAkademikBySemester']);
+    Route::get('kegiatan/cetak', [KaprodiKegiatanController::class, 'cetak'])->name('kaprodi.kegiatan.cetak');
+    Route::post('kegiatan/cetakSemester', [KaprodiKegiatanController::class, 'cetakSemester'])->name('kaprodi.kegiatan.cetakSemester');
+    Route::post('kegiatan/cetakTranskip', [KaprodiKegiatanController::class, 'cetakTranskip'])->name('kaprodi.kegiatan.cetakTranskip');
 
     // prodi
 

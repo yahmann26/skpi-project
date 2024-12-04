@@ -86,7 +86,7 @@
                 <li>
                     <a href="{{ route('admin.kegiatan.index') }}"
                         class="{{ isRouteName('admin.kegiatan.index') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Kegiatan</span>
+                        <i class="bi bi-circle"></i><span>Pengajuan Kegiatan</span>
                     </a>
                 </li>
                 <li>

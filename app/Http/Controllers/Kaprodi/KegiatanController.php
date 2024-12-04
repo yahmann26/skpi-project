@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kaprodi;
 
 use App\Models\Kegiatan;
 use App\Models\Semester;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
 use App\Models\KategoriKegiatan;
@@ -11,6 +12,8 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Helper\Skpi as  HelperSkpi;
+
 
 class KegiatanController extends Controller
 {
@@ -213,5 +216,152 @@ class KegiatanController extends Controller
         } elseif ($request->status === 'tolak') {
             return redirect()->route('kaprodi.kegiatan.index')->with('success', 'Kegiatan telah ditolak.');
         }
+    }
+
+    public function cetak()
+    {
+        $semester = Semester::all();
+        return view('kaprodi.pages.kegiatan.cetak', compact('semester'));
+    }
+
+    public function cetakSemester(Request $request)
+    {
+        $validated = $request->validate([
+            'nim' => 'required|string',
+            'tahun_akademik' => 'required|string',
+            'semester_id' => 'required|exists:semester,id',
+        ]);
+
+        // Cari mahasiswa berdasarkan NIM
+        $mahasiswa = Mahasiswa::where('nim', $validated['nim'])->first();
+        if (!$mahasiswa) {
+            return back()->withErrors(['nim' => 'Mahasiswa tidak ditemukan.']);
+        }
+
+        // Ambil semester berdasarkan ID
+        $semester = Semester::findOrFail($validated['semester_id']);
+
+        // Cari tahun akademik berdasarkan nama dan semester
+        $tahunAkademik = TahunAkademik::where('nama', $validated['tahun_akademik'])
+            ->where('semester_id', $semester->id)
+            ->first();
+
+        if (!$tahunAkademik) {
+            return back()->withErrors(['tahun_akademik' => 'Tahun akademik tidak ditemukan.']);
+        }
+
+        // Ambil kegiatan mahasiswa dengan status validasi
+        $kegiatans = Kegiatan::where('tahun_akademik_id', $tahunAkademik->id)
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->where('status', 'validasi')
+            ->get();
+
+        // Ambil informasi prodi dan kaprodi
+        $prodi = $mahasiswa->prodi;
+        $kaprodi = $prodi ? $prodi->kaprodi : null;
+
+        // Grupkan kegiatan berdasarkan kategori
+        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama');
+
+        // Ambil logo universitas
+        $imagePath = public_path('images/unsiq.png');
+        if (!file_exists($imagePath)) {
+            return back()->withErrors(['logo' => 'Logo universitas tidak ditemukan.']);
+        }
+        $logoUniv = base64_encode(file_get_contents($imagePath));
+
+        // Ambil informasi tambahan dari helper
+        $alamat = HelperSkpi::getSettingByName('alamat_universitas');
+        $telp = HelperSkpi::getSettingByName('telepon_universitas');
+        $email = HelperSkpi::getSettingByName('email_universitas');
+
+        // Data untuk PDF
+        $data = [
+            'mahasiswa' => $mahasiswa,
+            'logoUniv' => $logoUniv,
+            'alamat' => $alamat,
+            'telp' => $telp,
+            'email' => $email,
+            'kegiatan' => $kegiatans,
+            'kategori' => $kategori,
+            'tahunAkademik' => $tahunAkademik,
+            'prodi' => $prodi,
+            'kaprodi' => $kaprodi,
+        ];
+
+        // Buat PDF menggunakan mPDF
+        $mpdf = new \Mpdf\Mpdf([
+            'setAutoTopMargin' => 'stretch',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+        ]);
+
+        $html = view('kaprodi.pages.kegiatan.cetakSemester', $data)->render();
+        $mpdf->WriteHTML($html);
+
+        // Tampilkan PDF
+        $mpdf->Output();
+    }
+
+
+    public function cetakTranskip(Request $request)
+    {
+        $validated = $request->validate([
+            'nim' => 'required|string',
+        ]);
+
+        // Cari mahasiswa berdasarkan NIM
+        $mahasiswa = Mahasiswa::where('nim', $validated['nim'])->first();
+
+        // Ambil data kegiatan mahasiswa yang sudah divalidasi
+        $kegiatans = Kegiatan::where('mahasiswa_id', $mahasiswa->id)
+            ->where('status', 'validasi')
+            ->get();
+
+        $tahunAkademik = $kegiatans->groupBy('tahunAkademik.nama');
+        $semester = $kegiatans->groupBy('tahunAkademik.semester.nama');
+        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama');
+
+        // Ambil data prodi dan kaprodi
+        $prodi = $mahasiswa->prodi;
+        $kaprodi = $prodi ? $prodi->kaprodi : null;
+
+        $imagePath = public_path('images/unsiq.png');
+        if (!file_exists($imagePath)) {
+            return back()->withErrors(['logo' => 'Logo universitas tidak ditemukan.']);
+        }
+        $logoUniv = base64_encode(file_get_contents($imagePath));
+
+        $alamat = HelperSkpi::getSettingByName('alamat_universitas');
+        $telp = HelperSkpi::getSettingByName('telepon_universitas');
+        $email = HelperSkpi::getSettingByName('email_universitas');
+
+        // Siapkan data untuk dikirim ke view
+        $data = [
+            'mahasiswa' => $mahasiswa,
+            'logoUniv' => $logoUniv,
+            'alamat' => $alamat,
+            'telp' => $telp,
+            'email' => $email,
+            'kegiatan' => $kegiatans,
+            'kategori' => $kategori,
+            'tahunAkademik' => $tahunAkademik,
+            'semester' => $semester,
+            'prodi' => $prodi,
+            'kaprodi' => $kaprodi,
+        ];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'setAutoTopMargin' => 'stretch',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+        ]);
+
+        $html = view('kaprodi.pages.kegiatan.cetakTranskip', $data)->render();
+        $mpdf->WriteHTML($html);
+
+        $mpdf->Output();
     }
 }

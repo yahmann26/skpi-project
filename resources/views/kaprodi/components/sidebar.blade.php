@@ -22,11 +22,24 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName('kaprodi.kegiatan.index') ? 'active' : 'collapsed' }}"
-                href="{{ route('kaprodi.kegiatan.index') }}">
-                <i class="bi bi-calendar-event"></i>
-                <span>Kegiatan</span>
+            <a class="nav-link {{ isRouteName(['kaprodi.kegiatan.index', 'kaprodi.kegiatan.cetak']) ? '' : 'collapsed' }}"
+                data-bs-target="#kegiatan-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-calendar"></i><span>Kegiatan</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            <ul id="kegiatan-nav" class="nav-content collapse {{ isRouteName(['kaprodi.kegiatan.index', 'kaprodi.kegiatan.create', 'kaprodi.kegiatan.edit', 'kaprodi.kegiatan.show', 'kaprodi.kegiatan.cetak']) ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('kaprodi.kegiatan.index') }}"
+                        class="{{ isRouteName('kaprodi.kegiatan.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Pengajuan Kegiatan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('kaprodi.kegiatan.cetak') }}"
+                        class="{{ isRouteName('kaprodi.kegiatan.cetak') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Cetak Kegiatan</span>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="nav-item">

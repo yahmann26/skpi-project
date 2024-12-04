@@ -296,7 +296,7 @@ class KegiatanController extends Controller
         // dd($validated);
 
         $mahasiswa = Auth::user()->mahasiswa;
-        
+
         if (!$mahasiswa) {
             return redirect()->back()->withErrors(['mahasiswa' => 'Mahasiswa tidak ditemukan untuk user ini!']);
         }
@@ -359,7 +359,57 @@ class KegiatanController extends Controller
         $mpdf->WriteHTML($html);
 
         $mpdf->Output();
+    }
 
+    public function cetakTranskip(Request $request)
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
 
+        // dd($mahasiswa);
+
+        $kegiatans = Kegiatan::where('mahasiswa_id', $mahasiswa->id)
+            ->where('status', 'validasi')
+            ->get();
+
+        // dd($kegiatans);
+
+        $prodi = $mahasiswa->prodi;
+        $kaprodi = $prodi ? $prodi->kaprodi : null;
+        $tahunAkademik = $kegiatans->groupBy('tahunAkademik');
+        $semester = $tahunAkademik->groupBy('semester');
+        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama');
+        $imagePath = public_path('images/unsiq.png');
+        $logoUniv = base64_encode(file_get_contents($imagePath));
+
+        $alamat = HelperSkpi::getSettingByName('alamat_universitas');
+        $telp = HelperSkpi::getSettingByName('telepon_universitas');
+        $email = HelperSkpi::getSettingByName('email_universitas');
+
+        $data = [
+            'mahasiswa' => $mahasiswa,
+            'logoUniv' => $logoUniv,
+            'alamat' => $alamat,
+            'telp' => $telp,
+            'email' => $email,
+            'kegiatan' => $kegiatans,
+            'kategori' => $kategori,
+            'tahunAkademik' => $tahunAkademik,
+            'semester' => $semester,
+            'prodi' => $prodi,
+            'kaprodi' => $kaprodi,
+        ];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'setAutoTopMargin' => 'stretch',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+        ]);
+
+        $mpdf->AddPage();
+        $html = view('mahasiswa.pages.kegiatan.cetakTranskip', $data)->render();
+        $mpdf->WriteHTML($html);
+
+        $mpdf->Output();
     }
 }

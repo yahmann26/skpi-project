@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('kaprodi.layout.app')
 
 @section('title', 'Cetak Kegiatan')
 
@@ -10,7 +10,7 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
                 <li class="breadcrumb-item ">Kegiatan</li>
                 <li class="breadcrumb-item active">Cetak</li>
             </ol>
@@ -26,7 +26,7 @@
                         <h5 class="card-title">Cetak Kegiatan Semester</h5>
 
                         <!-- General Form Elements -->
-                        <form action="{{ route('admin.kegiatan.cetakSemester') }}" method="post" target="_blank">
+                        <form action="{{ route('kaprodi.kegiatan.cetakSemester') }}" method="post" target="_blank">
                             @csrf
 
                             <div class="row mb-3">
@@ -73,7 +73,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Transkip Kegiatan</h5>
-                        <form action="{{ route('admin.kegiatan.cetakTranskip') }}" method="post" target="_blank">
+                        <form action="{{ route('kaprodi.kegiatan.cetakTranskip') }}" method="post" target="_blank">
                             @csrf
 
                             Cetak Transkip Kegiatan Sementara <br><br>
