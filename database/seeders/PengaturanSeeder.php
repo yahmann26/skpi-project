@@ -278,11 +278,6 @@ class PengaturanSeeder extends Seeder
                         'nilai' => 'Dekan',
                         'tipe' => 'teks',
                     ],
-                    // [
-                    //     'nama' => 'gambar_tandatangan_cap',
-                    //     'nilai' => '',
-                    //     'tipe' => 'image',
-                    // ],
                 ]
             ]
         ];

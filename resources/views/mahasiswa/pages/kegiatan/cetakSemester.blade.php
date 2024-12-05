@@ -70,7 +70,7 @@
                     <tr>
                         <td style="width:100%; padding: 0; text-align: center;">
                             <h3 style="font-size: 18px; font-weight: bold;  ">
-                            KEGIATAN MAHASISWA
+                                KEGIATAN MAHASISWA
                             </h3>
                         </td>
                     </tr>
@@ -167,35 +167,32 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Kegiatan</th>
-                            <th>Pencapaian</th>
-                            <th>Tingkat</th>
+                            <th colspan="2">Nama Kegiatan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $alphabet = 'A'; @endphp
                         @foreach ($kategori as $kategoriNama => $kegiatanKategori)
                             <tr>
-                                <td style="text-align: center;">{{ $alphabet }}</td>
-                                <td colspan="3">{{ $kategoriNama }}</td>
+                                <td style="text-align: center; width: 40px;">{{ $alphabet }}</td>
+                                <td colspan="2">{{ $kategoriNama }}</td>
                             </tr>
                             @foreach ($kegiatanKategori as $kegiatan)
                                 <tr>
                                     <td></td>
-                                    <td>{{ $loop->iteration }}. {{ $kegiatan->nama }}</td>
-                                    <td>{{ $kegiatan->pencapaian }}</td>
-                                    <td>{{ $kegiatan->tingkat }}</td>
-                                    </td>
+                                    <td style="text-align: left; width: 20px;">{{ $loop->iteration }}</td>
+                                    <td>{{ $kegiatan->nama }}</td>
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="4">&nbsp;</td>
+                                <td colspan="3">&nbsp;</td>
                             </tr>
 
                             @php $alphabet++; @endphp
                         @endforeach
                     </tbody>
                 </table>
+
 
                 <table border="0"
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px">

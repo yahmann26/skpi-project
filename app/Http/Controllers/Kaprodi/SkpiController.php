@@ -176,7 +176,7 @@ class SkpiController extends Controller
 
             $header = view('admin.pages.skpi.header', $data)->render();
             $mpdf->SetHTMLHeader($header);
-            
+
             $html = view('admin.pages.skpi.cetak1', $data)->render();
             $mpdf->WriteHTML($html);
 
@@ -250,7 +250,7 @@ class SkpiController extends Controller
             // Ambil file dari request
             $file = $request->file('file');
 
-            $prodiId = Auth::user()->kaprodi->program_studi_id;;
+            $prodiId = Auth::user()->kaprodi->program_studi_id;
 
             Excel::import(new SkpiImport($periodeId, $prodiId), $file);
 

@@ -56,7 +56,8 @@
                     <tr>
                         <td style="width:100%; padding: 0; text-align: center; padding-top: 1mm;">
                             <h3 style="font-size: 13px; font-weight: 700;  ">
-                                Telp : {{ $telp }} FAX. {{ $fax }} website: {{ $website }}, Email: {{ $email }}
+                                Telp : {{ $telp }} FAX. {{ $fax }} website: {{ $website }}, Email:
+                                {{ $email }}
                             </h3>
                         </td>
                     </tr>
@@ -142,30 +143,28 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Kegiatan</th>
-                            <th>Pencapaian</th>
-                            <th>Tingkat</th>
+                            <th colspan="2">Nama Kegiatan</th>
                             <th>Tahun</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $alphabet = 'A'; @endphp
                         @foreach ($kategori as $kategoriNama => $kegiatanKategori)
-                            <tr class="section-header" >
-                                <td style="text-align: center;">{{ $alphabet }}</td>
-                                <td colspan="4">{{ $kategoriNama }}</td>
+                            <tr class="section-header">
+                                <td style="text-align: center; width: 40px;">{{ $alphabet }}</td>
+                                <td colspan="3">{{ $kategoriNama }}</td>
                             </tr>
                             @foreach ($kegiatanKategori as $kegiatan)
                                 <tr>
                                     <td></td>
-                                    <td>{{ $loop->iteration }}. {{ $kegiatan->nama }}</td>
-                                    <td>{{ $kegiatan->pencapaian }}</td>
-                                    <td>{{ $kegiatan->tingkat }}</td>
-                                    <td>{{ $kegiatan->tahunAkademik->nama }}/{{ $kegiatan->tahunAkademik->semester->nama }}</td>
+                                    <td style="text-align: left; width: 20px;">{{ $loop->iteration }}</td>
+                                    <td>{{ $kegiatan->nama }}</td>
+                                    <td>{{ $kegiatan->tahunAkademik->nama }}/{{ $kegiatan->tahunAkademik->semester->nama }}
+                                    </td>
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="5">&nbsp;</td>
+                                <td colspan="4">&nbsp;</td>
                             </tr>
 
                             @php $alphabet++; @endphp

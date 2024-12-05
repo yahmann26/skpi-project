@@ -272,8 +272,8 @@ class KegiatanController extends Controller
     public function cetakSemester(Request $request)
     {
         $validated = $request->validate([
-            'tahun_akademik' => 'required|string',
-            'semester_id' => 'required|exists:semester,id',
+           'semester_id' => 'required|exists:semester,id',
+            'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
         ]);
 
         // dd($validated);
@@ -286,20 +286,11 @@ class KegiatanController extends Controller
 
         // dd($mahasiswa);
 
-        $tahunAkademikNama = $validated['tahun_akademik'];
         $semester = Semester::findOrFail($validated['semester_id']);
+        $tahunAkademik = TahunAkademik::findOrFail($validated['tahun_akademik_id']);
 
-        $tahunAkademik = TahunAkademik::where('nama', $tahunAkademikNama)
-            ->where('semester_id', $semester->id)
-            ->first();
-
-        // dd($tahunAkademik);
-
-        if (!$tahunAkademik) {
-            return redirect()->back()->withErrors(['tahun_akademik' => 'Tahun Akademik tidak ditemukan!']);
-        }
-
-        $kegiatans = Kegiatan::where('tahun_akademik_id', $tahunAkademik->id)
+        $kegiatans = Kegiatan::with('kategoriKegiatan')
+            ->where('tahun_akademik_id', $tahunAkademik->id)
             ->where('mahasiswa_id', $mahasiswa->id)
             ->where('status', 'validasi')
             ->get();

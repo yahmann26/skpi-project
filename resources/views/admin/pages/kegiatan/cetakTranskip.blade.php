@@ -138,40 +138,37 @@
                 </table>
 
                 <table border="1"
-                    style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Kegiatan</th>
-                            <th>Pencapaian</th>
-                            <th>Tingkat</th>
-                            <th>Tahun</th>
+                style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th colspan="2">Nama Kegiatan</th>
+                        <th>Tahun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $alphabet = 'A'; @endphp
+                    @foreach ($kategori as $kategoriNama => $kegiatanKategori)
+                        <tr class="section-header" >
+                            <td style="text-align: center; width: 40px;">{{ $alphabet }}</td>
+                            <td colspan="3">{{ $kategoriNama }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @php $alphabet = 'A'; @endphp
-                        @foreach ($kategori as $kategoriNama => $kegiatanKategori)
-                            <tr class="section-header" >
-                                <td style="text-align: center;">{{ $alphabet }}</td>
-                                <td colspan="4">{{ $kategoriNama }}</td>
-                            </tr>
-                            @foreach ($kegiatanKategori as $kegiatan)
-                                <tr>
-                                    <td></td>
-                                    <td>{{ $loop->iteration }}. {{ $kegiatan->nama }}</td>
-                                    <td>{{ $kegiatan->pencapaian }}</td>
-                                    <td>{{ $kegiatan->tingkat }}</td>
-                                    <td>{{ $kegiatan->tahunAkademik->nama }}/{{ $kegiatan->tahunAkademik->semester->nama }}</td>
-                                </tr>
-                            @endforeach
+                        @foreach ($kegiatanKategori as $kegiatan)
                             <tr>
-                                <td colspan="5">&nbsp;</td>
+                                <td></td>
+                                <td style="text-align: left; width: 20px;">{{ $loop->iteration }}</td>
+                                <td >{{ $kegiatan->nama }}</td>
+                                <td>{{ $kegiatan->tahunAkademik->nama }}/{{ $kegiatan->tahunAkademik->semester->nama }}</td>
                             </tr>
-
-                            @php $alphabet++; @endphp
                         @endforeach
-                    </tbody>
-                </table>
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                        </tr>
+
+                        @php $alphabet++; @endphp
+                    @endforeach
+                </tbody>
+            </table>
 
 
                 <table border="0"
