@@ -50,7 +50,13 @@
                         <td style="width:100%; padding: 0; text-align: center;">
                             <h3 style="font-size: 13px; font-weight: 700;  ">
                                 Alamat Kampus : {{ $alamat }} <br>
-                                Telp : {{ $telp }} Email: {{ $email }}
+                            </h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100%; padding: 0; text-align: center; padding-top: 1mm;">
+                            <h3 style="font-size: 13px; font-weight: 700;  ">
+                                Telp : {{ $telp }} FAX. {{ $fax }} website: {{ $website }}, Email: {{ $email }}
                             </h3>
                         </td>
                     </tr>
@@ -63,7 +69,7 @@
                     <tr>
                         <td style="width:100%; padding: 0; text-align: center;">
                             <h3 style="font-size: 18px; font-weight: bold;  ">
-                                CETAK KEGIATAN
+                                 KEGIATAN MAHASISWA
                             </h3>
                         </td>
                     </tr>
@@ -225,7 +231,7 @@
                         <td style="width: 30%;">
                         </td>
                         <td style="font-size: 12px;  text-align: center; margin-top: 0; margin-bottom: 0;">
-                            {{ $kaprodi->kode_dosen }}
+                            {{ $kaprodi->nip }}
                         </td>
                     </tr>
 

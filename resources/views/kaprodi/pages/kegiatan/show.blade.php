@@ -94,28 +94,17 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th>Pencapaian</th>
-                                                <td>:</td>
-                                                <td><input type="text" name="pencapaian" value="{{ old('pencapaian', $kegiatan->pencapaian) }}"
-                                                    class="form-control @error('pencapaian') is-invalid @enderror">
-                                             @error('pencapaian')
-                                                 <div class="invalid-feedback">{{ $message }}</div>
-                                             @enderror</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Tingkat</th>
-                                                <td>:</td>
-                                                <td><input type="text" name="tingkat" value="{{ old('tingkat', $kegiatan->tingkat) }}"
-                                                    class="form-control @error('tingkat') is-invalid @enderror">
-                                             @error('tingkat')
-                                                 <div class="invalid-feedback">{{ $message }}</div>
-                                             @enderror</td>
-                                            </tr>
-                                            <tr>
                                                 <th>Tanggal</th>
                                                 <td>:</td>
-                                                <td>{{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_mulai) }} s/d
-                                                    {{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_selesai) }}</td>
+                                                <td>
+                                                    <input type="date" name="tgl_mulai" value="{{ old('tgl_mulai',$kegiatan->tgl_mulai) }}" class="form-control @error('tgl_mulai') is-invalid
+
+                                                    @enderror">
+                                                    s/d
+                                                    <input type="date" name="tgl_selesai" value="{{ old('tgl_selesai',$kegiatan->tgl_selesai) }}" class="form-control @error('tgl_selesai') is-invalid
+
+                                                    @enderror">
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Penyelenggara</th>

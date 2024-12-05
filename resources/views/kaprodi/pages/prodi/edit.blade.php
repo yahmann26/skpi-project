@@ -82,6 +82,18 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <div class="input-group mb-3 @error('singkatan') is-invalid @enderror">
+                                        <span class="input-group-text">Singkat</span>
+                                        <input type="text" name="singkatan" class="form-control"
+                                            aria-describedby="singkatan-addon" class="form-control"
+                                            value="{{ $detailData->singkatan }}" autofocus placeholder="Nama program studi">
+                                    </div>
+                                    @error('singkatan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="bhs_pengantar_kuliah" class="form-label" style="font-weight: bold;">Bahasa Pengantar Kuliah <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group mb-3 @error('bhs_pengantar_kuliah') is-invalid @enderror">
@@ -176,6 +188,17 @@
                                             value="{{ $detailData->gelar_en }}" autofocus placeholder="Gelar (english)">
                                     </div>
                                     @error('gelar_en')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group mb-3 @error('gelar_singkat') is-invalid @enderror">
+                                        <span class="input-group-text">Singkat</span>
+                                        <input type="text" name="gelar_singkat" class="form-control"
+                                            aria-describedby="gelar_singkat-addon" class="form-control"
+                                            value="{{ $detailData->gelar_singkat }}" autofocus placeholder="Gelar Singkat">
+                                    </div>
+                                    @error('gelar_singkat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

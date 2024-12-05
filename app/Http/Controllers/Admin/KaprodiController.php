@@ -59,6 +59,7 @@ class KaprodiController extends Controller
             'nama' => 'required',
             'program_studi_id' => 'required',
             'email' => 'required|email',
+            'nip' => 'required',
         ], [
             'kode_dosen.required' => 'Kode Dosen wajib diisi',
             'kode_dosen.numeric' => 'Kode Dosen hanya boleh angka',
@@ -69,25 +70,23 @@ class KaprodiController extends Controller
             'email.email' => 'Format email tidak valid',
         ]);
 
-        // dd($request->all());
+
 
         DB::transaction(function () use ($request) {
             $kode_dosen = $request->kode_dosen;
 
-            // Buat pengguna baru
+
             $user = User::create([
                 'uid' => $kode_dosen,
                 'email' => $request->email,
-                'password' => Hash::make($kode_dosen), // Password sama dengan kode_dosen
-                'role' => 'kaprodi', // Atur role langsung ke 'kaprodi'
+                'password' => Hash::make($kode_dosen),
+                'role' => 'kaprodi',
             ]);
 
-            // dd($user);
-
-            // Buat entri kaprodi baru
             Kaprodi::create([
                 'kode_dosen' => $kode_dosen,
                 'nama' => $request->nama,
+                'nip' => $request->nip,
                 'program_studi_id' => $request->program_studi_id,
                 'user_id' => $user->id,
             ]);
@@ -99,7 +98,7 @@ class KaprodiController extends Controller
 
     public function edit(string $id)
     {
-        // get prodi
+
         $prodi = ProgramStudi::all();
 
         $kaprodi = Kaprodi::with('prodi')->find($id);
@@ -117,30 +116,35 @@ class KaprodiController extends Controller
     {
         $request->validate([
             'nama' => 'required',
+            'kode_dosen' => 'required',
+            'nip' => 'required',
             'program_studi_id' => 'required',
             'email' => 'required|email|max:255',
 
         ], [
             'nama.required' => 'Nama dosen wajib diisi',
+            'kode_dosen.required' => 'Kode Dosen dosen wajib diisi',
+            'nip.required' => 'NIP dosen wajib diisi',
             'program_studi_id.required' => 'Prodi Wajib Dipilih',
             'email.required' => 'email wajib diisi',
         ]);
 
-        // update data Kaprodi
+
         $kaprodi = Kaprodi::findOrFail($id);
         $kaprodi->update([
             'nama' => $request->nama,
+            'kode_dosen' => $request->kode_dosen,
+            'nip' => $request->nip,
             'program_studi_id' => $request->program_studi_id,
         ]);
 
-        //update data di tabel user user
+
         $user = User::findOrFail($kaprodi->user_id);
 
         $user->update([
+            'uid' => $request->kode_dosen,
             'email' => $request->email,
         ]);
-
-        // dd($user);
 
         return redirect()->route('admin.kaprodi.index')->with('success', 'Data berhasil diupdate!');
     }
@@ -150,16 +154,10 @@ class KaprodiController extends Controller
      */
     public function destroy($id)
     {
-        // Cari data kaprodi berdasarkan ID
+
         $kaprodi = Kaprodi::findOrFail($id);
-
-        // Cari data user terkait berdasarkan user_id di tabel kaprodi
         $user = User::findOrFail($kaprodi->user_id);
-
-        // Hapus data Kaprodi
         $kaprodi->delete();
-
-        // Hapus data user terkait
         $user->delete();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus!');

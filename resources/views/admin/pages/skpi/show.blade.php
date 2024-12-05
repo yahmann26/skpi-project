@@ -37,7 +37,7 @@
                             <div class="d-flex">
 
                                 {{-- cetak --}}
-                                <a id="printButton" href="#" class="btn btn-sm btn-success me-2 d-none">
+                                <a id="printButton" href="#" class="btn btn-sm btn-success me-2 d-none" target="_blank">
                                     <i class="bi bi-printer"></i> Cetak
                                 </a>
 

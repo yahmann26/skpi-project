@@ -222,34 +222,34 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="sk_pendirian_universitas" class="form-label">SK Pendirian
+                                                <label for="fax" class="form-label">FAX
                                                     <span class="text-danger">*</span></label>
                                                 <div
-                                                    class="input-group mb-3 @error('sk_pendirian_universitas') is-invalid @enderror">
-                                                    <span class="input-group-text">&nbsp;ID</span>
-                                                    <input type="text" name="sk_pendirian_universitas"
+                                                    class="input-group mb-3 @error('fax') is-invalid @enderror">
+                                                    <input type="text" name="fax"
                                                         class="form-control"
-                                                        aria-describedby="sk_pendirian_universitas-addon"
+                                                        aria-describedby="fax-addon"
                                                         class="form-control"
-                                                        value="{{ old('sk_pendirian_universitas', $pengaturan['sk_pendirian_universitas']) }}"
-                                                        autofocus placeholder="Nama program studi">
+                                                        value="{{ old('fax', $pengaturan['fax']) }}"
+                                                        autofocus placeholder="FAX">
                                                 </div>
-                                                @error('sk_pendirian_universitas')
+                                                @error('fax')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                             <div class="mb-3">
+                                                <label for="fax" class="form-label">Website
+                                                    <span class="text-danger">*</span></label>
                                                 <div
-                                                    class="input-group mb-3 @error('sk_pendirian_universitas_en') is-invalid @enderror">
-                                                    <span class="input-group-text">EN</span>
-                                                    <input type="text" name="sk_pendirian_universitas_en"
+                                                    class="input-group mb-3 @error('website') is-invalid @enderror">
+                                                    <input type="text" name="website"
                                                         class="form-control"
-                                                        aria-describedby="sk_pendirian_universitas_en-addon"
+                                                        aria-describedby="website-addon"
                                                         class="form-control"
-                                                        value="{{ old('sk_pendirian_universitas_en', $pengaturan['sk_pendirian_universitas_en']) }}"
-                                                        autofocus placeholder="Nama program studi (english)">
+                                                        value="{{ old('website', $pengaturan['website']) }}"
+                                                        autofocus placeholder="Website">
                                                 </div>
-                                                @error('sk_pendirian_universitas_en')
+                                                @error('website')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>

@@ -18,10 +18,8 @@ return new class extends Migration
             $table->foreignId('mahasiswa_id')->constrained('mahasiswa', 'id')->cascadeOnDelete();
             $table->string('nama');
             $table->string('nama_en');
-            $table->string('tingkat');
             $table->date('tgl_mulai');
             $table->date('tgl_selesai');
-            $table->string('pencapaian');
             $table->string('penyelenggara');
             $table->string('file_sertifikat')->nullable();
             $table->string('deskripsi')->nullable();

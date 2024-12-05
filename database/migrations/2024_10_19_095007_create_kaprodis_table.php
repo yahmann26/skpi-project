@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('kaprodi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('program_studi_id')->constrained('program_studi', 'id')->cascadeOnDelete();
             $table->string('kode_dosen');
             $table->string('nama');
-            $table->foreignId('program_studi_id')->constrained('program_studi', 'id')->cascadeOnDelete();
+            $table->string('nip');
             $table->timestamps();
         });
     }

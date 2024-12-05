@@ -78,9 +78,6 @@ class KegiatanController extends Controller
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="fst-italic text-muted">' . $row->nama_en . '</div>';
                 })
-                ->addColumn('pencapaian', function ($row) {
-                    return '<div>' . $row->pencapaian . '</div><div class="small text-muted">tingkat: ' . $row->tingkat . '</div>';
-                })
                 ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nama', 'status'])
                 ->make(true);
         }
@@ -119,23 +116,18 @@ class KegiatanController extends Controller
             'kategori_kegiatan_id' => 'required|exists:kategori_kegiatan,id',
             'nama' => 'required',
             'nama_en' => 'required',
-            'tingkat' => 'required',
             'tgl_mulai' => 'required|date',
             'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
-            'penyelenggara' => 'required',
             'deskripsi' => 'required',
-            'pencapaian' => 'required',
             'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:3072',
         ], [
             'kategori_kegiatan_id.required' => 'Kategori Kegiatan Wajib Dipilih',
             'nama.required' => 'Nama kegiatan harus diisi',
             'nama_en.required' => 'Nama kegiatan harus diisi',
-            'tingkat.required' => 'Tingkat kegiatan harus diisi',
             'tgl_mulai.required' => 'Tanggal Mulai kegiatan harus diisi',
             'tgl_selesai.required' => 'Tanggal Selesai kegiatan harus diisi',
             'penyelenggara.required' => 'Penyelenggara kegiatan harus diisi',
             'deskripsi.required' => 'deskripsi kegiatan harus diisi',
-            'pencapaian.required' => 'pencapaian harus diisi',
             'file_sertifikat.required_if' => 'File sertifikat kegiatan harus diisi jika opsi \'file\' dipilih',
             'file_sertifikat.file' => 'File sertifikat kegiatan tidak valid',
             'file_sertifikat.mimes' => 'File sertifikat kegiatan harus berupa file PDF, JPG, JPEG, PNG',
@@ -148,12 +140,10 @@ class KegiatanController extends Controller
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;
-        $kegiatan->tingkat = $request->tingkat;
         $kegiatan->tgl_mulai = $request->tgl_mulai;
         $kegiatan->tgl_selesai = $request->tgl_selesai;
         $kegiatan->penyelenggara = $request->penyelenggara;
         $kegiatan->deskripsi = $request->deskripsi;
-        $kegiatan->pencapaian = $request->pencapaian;
 
         // upload file sertifikat
         if ($request->hasFile('file_sertifikat')) {
@@ -208,23 +198,19 @@ class KegiatanController extends Controller
             'kategori_kegiatan_id' => 'required|exists:kategori_kegiatan,id',
             'nama' => 'required',
             'nama_en' => 'required',
-            'tingkat' => 'required',
             'tgl_mulai' => 'required|date',
             'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
             'penyelenggara' => 'required',
             'deskripsi' => 'required',
-            'pencapaian' => 'required',
             'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:1024',
         ], [
             'kategori_kegiatan_id.required' => 'Kategori Kegiatan Wajib Dipilih',
             'nama.required' => 'Nama kegiatan harus diisi',
             'nama_en.required' => 'Nama kegiatan harus diisi',
-            'tingkat.required' => 'Tingkat kegiatan harus diisi',
             'tgl_mulai.required' => 'Tanggal Mulai kegiatan harus diisi',
             'tgl_selesai.required' => 'Tanggal Selesai kegiatan harus diisi',
             'penyelenggara.required' => 'Penyelenggara kegiatan harus diisi',
             'deskripsi.required' => 'deskripsi kegiatan harus diisi',
-            'pencapaian.required' => 'pencapaian harus diisi',
             'file_sertifikat.required_if' => 'File sertifikat kegiatan harus diisi jika opsi \'file\' dipilih',
             'file_sertifikat.file' => 'File sertifikat kegiatan tidak valid',
             'file_sertifikat.mimes' => 'File sertifikat kegiatan harus berupa file PDF, JPG, JPEG, PNG',
@@ -235,14 +221,11 @@ class KegiatanController extends Controller
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;
-        $kegiatan->tingkat = $request->tingkat;
         $kegiatan->tgl_mulai = $request->tgl_mulai;
         $kegiatan->tgl_selesai = $request->tgl_selesai;
         $kegiatan->penyelenggara = $request->penyelenggara;
         $kegiatan->deskripsi = $request->deskripsi;
-        $kegiatan->pencapaian = $request->pencapaian;
 
-        // Mengelola upload file sertifikat jika ada file baru
         if ($request->hasFile('file_sertifikat')) {
             // Hapus file lama jika perlu
             if ($kegiatan->file_sertifikat) {
@@ -333,6 +316,8 @@ class KegiatanController extends Controller
         $alamat = HelperSkpi::getSettingByName('alamat_universitas');
         $telp = HelperSkpi::getSettingByName('telepon_universitas');
         $email = HelperSkpi::getSettingByName('email_universitas');
+        $fax = HelperSkpi::getSettingByName('fax');
+        $website = HelperSkpi::getSettingByName('website');
 
         $data = [
             'mahasiswa' => $mahasiswa,
@@ -345,6 +330,9 @@ class KegiatanController extends Controller
             'tahunAkademik' => $tahunAkademik,
             'prodi' => $prodi,
             'kaprodi' => $kaprodi,
+            'semester' => $semester,
+            'fax' => $fax,
+            'website' => $website
         ];
 
         $mpdf = new \Mpdf\Mpdf([
@@ -377,13 +365,18 @@ class KegiatanController extends Controller
         $kaprodi = $prodi ? $prodi->kaprodi : null;
         $tahunAkademik = $kegiatans->groupBy('tahunAkademik');
         $semester = $tahunAkademik->groupBy('semester');
-        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama');
+        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama')
+        ->sortBy(function ($kegiatan, $key) {
+            return $kegiatan->first()->kategoriKegiatan->id;
+        });
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
 
         $alamat = HelperSkpi::getSettingByName('alamat_universitas');
         $telp = HelperSkpi::getSettingByName('telepon_universitas');
         $email = HelperSkpi::getSettingByName('email_universitas');
+        $fax = HelperSkpi::getSettingByName('fax');
+        $website = HelperSkpi::getSettingByName('website');
 
         $data = [
             'mahasiswa' => $mahasiswa,
@@ -397,6 +390,8 @@ class KegiatanController extends Controller
             'semester' => $semester,
             'prodi' => $prodi,
             'kaprodi' => $kaprodi,
+            'fax' => $fax,
+            'website' => $website
         ];
 
         $mpdf = new \Mpdf\Mpdf([

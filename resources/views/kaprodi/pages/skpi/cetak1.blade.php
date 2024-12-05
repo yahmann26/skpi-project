@@ -498,7 +498,7 @@
 
                 <td style="width: 15%; background-color: #D3D3D3; padding: 0; vertical-align: left;">
                     <p style="font-size: 12px; margin-top: 2px; margin-bottom: 0;">
-                        <span>{{ $prodi->sk_akreditasi }}</span>
+                        <span>{!! nl2br(chunk_split($prodi->sk_akreditasi, 15, "\n")) !!}</span>
                     </p>
                 </td>
                 <td style="width: 3%;">

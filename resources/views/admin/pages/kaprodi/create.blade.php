@@ -71,6 +71,15 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="nip" class="form-label">NIP</label>
+                                <input type="nip" name="nip" id="nip"
+                                    class="form-control @error('nip') is-invalid @enderror" value="{{ old('nip') }}">
+                                @error('nip')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
 

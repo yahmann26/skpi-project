@@ -69,8 +69,8 @@ class DataSeeder extends Seeder
 
             foreach ($pendidikanTinggi as $pt) {
                 Pt::firstOrCreate([
-                    'sistem_pendidilkan' => $pt['sistem_pendidilkan'],
-                    'sistem_pendidilkan_en' => $pt['sistem_pendidilkan_en'],
+                    'sistem_pendidikan' => $pt['sistem_pendidikan'],
+                    'sistem_pendidikan_en' => $pt['sistem_pendidikan_en'],
                     'kkni' => $pt['kkni'],
                     'kkni_en' => $pt['kkni_en'],
                 ], $pt);
@@ -100,7 +100,7 @@ class DataSeeder extends Seeder
             // data tahun akademik
             $semester = [
                 [
-                    'nama' => 'Gasal',
+                    'nama' => 'Ganjil',
                     'tahun_akademik' => [
                         ['nama' => '2020'],
                         ['nama' => '2021'],
@@ -190,11 +190,11 @@ class DataSeeder extends Seeder
                             'nama_en' => 'Informatics Engineering',
                             'singkatan' => 'TI',
                             'akreditasi' => 'B',
-                            'sk_akreditasi' => 'BAN-PT/TI/2024',
+                            'sk_akreditasi' => '1602/SK/BAN-PT/Akred/S/IV/2019',
                             'bhs_pengantar_kuliah' => 'Indonesia',
                             'bhs_pengantar_kuliah_en' => 'Indonesian',
-                            'sistem_penilaian' => 'Skala 1-4',
-                            'sistem_penilaian_en' => 'Scale 1-4',
+                            'sistem_penilaian' => 'Skala 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
+                            'sistem_penilaian_en' => 'Scale 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
                             'gelar' => 'Sarjana Komputer ',
                             'gelar_en' => 'Bachelor of Computer',
                             'gelar_singkat' => 'S.Kom',
@@ -205,11 +205,11 @@ class DataSeeder extends Seeder
                             'nama_en' => 'Civil Engineering',
                             'singkatan' => 'TS',
                             'akreditasi' => 'B',
-                            'sk_akreditasi' => 'BAN-PT/TS/2024',
+                            'sk_akreditasi' => '1603/SK/BAN-PT/Akred/S/IV/2019',
                             'bhs_pengantar_kuliah' => 'Indonesia',
                             'bhs_pengantar_kuliah_en' => 'Indonesian',
-                            'sistem_penilaian' => 'Skala 1-4',
-                            'sistem_penilaian_en' => 'Scale 1-4',
+                            'sistem_penilaian' => 'Skala 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
+                            'sistem_penilaian_en' => 'Scale 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
                             'gelar' => 'Sarjana Teknik',
                             'gelar_en' => 'Bachelor of Engineering',
                             'gelar_singkat' => 'S.T',
@@ -220,11 +220,11 @@ class DataSeeder extends Seeder
                             'nama_en' => 'Mechanical Engineering',
                             'singkatan' => 'TM',
                             'akreditasi' => 'B',
-                            'sk_akreditasi' => 'BAN-PT/TI/2024',
+                            'sk_akreditasi' => '1604/SK/BAN-PT/Akred/S/IV/2019',
                             'bhs_pengantar_kuliah' => 'Indonesia',
                             'bhs_pengantar_kuliah_en' => 'Indonesian',
-                            'sistem_penilaian' => 'Skala 1-4',
-                            'sistem_penilaian_en' => 'Scale 1-4',
+                            'sistem_penilaian' => 'Skala 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
+                            'sistem_penilaian_en' => 'Scale 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
                             'gelar' => 'Sarjana Teknik ',
                             'gelar_en' => 'Bachelor of Engineering',
                             'gelar_singkat' => 'S.T',
@@ -232,20 +232,50 @@ class DataSeeder extends Seeder
                         [
                             'kode_prodi' => '12348',
                             'nama' => 'Arsitektur',
-                            'nama_en' => 'Architecture ',
+                            'nama_en' => 'Architecture',
                             'singkatan' => 'Ars',
                             'akreditasi' => 'B',
-                            'sk_akreditasi' => 'BAN-PT/ARS/2024',
+                            'sk_akreditasi' => '1605/SK/BAN-PT/Akred/S/IV/2019',
                             'bhs_pengantar_kuliah' => 'Indonesia',
                             'bhs_pengantar_kuliah_en' => 'Indonesian',
-                            'sistem_penilaian' => 'Skala 1-4',
-                            'sistem_penilaian_en' => 'Scale 1-4',
+                            'sistem_penilaian' => 'Skala 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
+                            'sistem_penilaian_en' => 'Scale 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
                             'gelar' => 'Sarjana Arsitektur ',
                             'gelar_en' => 'Bachelor of Architecture degree',
                             'gelar_singkat' => 'S.Ars',
                         ],
                     ]
-                ]
+                ],
+                [
+                    'nama' => 'Diploma (Diploma 3)',
+                    'nama_en' => 'Associate Degree',
+                    'singkatan' => 'D3',
+                    'jenis_pendidikan' => 'Akademik',
+                    'jenis_pendidikan_en' => 'Academic',
+                    'kualifikasi_kkni' => 'level 5',
+                    'lama_studi_reguler' => '6',
+                    'jenis_lanjutan' => 'Sarjana',
+                    'jenis_lanjutan_en' => 'Strata',
+                    'jenjang_lanjutan' => 'Magister',
+                    'jenjang_lanjutan_en' => 'Master',
+                    'program_studi' => [
+                        [
+                            'kode_prodi' => '12350',
+                            'nama' => 'Manajemen Informatika',
+                            'nama_en' => 'Informatics Manajement',
+                            'singkatan' => 'MI',
+                            'akreditasi' => 'Baik Sekali',
+                            'sk_akreditasi' => '1610/SK/BAN-PT/Akred/S/IV/2023',
+                            'bhs_pengantar_kuliah' => 'Indonesia',
+                            'bhs_pengantar_kuliah_en' => 'Indonesian',
+                            'sistem_penilaian' => 'Skala 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
+                            'sistem_penilaian_en' => 'Scale 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
+                            'gelar' => 'Ahli Madya Komputer',
+                            'gelar_en' => 'Diploma Program of Informatics Management',
+                            'gelar_singkat' => 'A.Md',
+                        ],
+                    ]
+                ],
             ];
 
             foreach ($jenjangPendidikan as $jenjang) {

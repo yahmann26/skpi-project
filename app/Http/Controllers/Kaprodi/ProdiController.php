@@ -76,9 +76,11 @@ class ProdiController extends Controller
             'kode_prodi' => 'required|unique:program_studi,kode_prodi,' . $id,
             'nama' => 'required|unique:program_studi,nama,' . $id,
             'nama_en' => 'required|unique:program_studi,nama_en,' . $id,
+            'singkatan' => 'required|unique:program_studi,singkatan,' . $id,
             'akreditasi' => 'required',
             'gelar' => 'required',
-            'gelar_en' => 'required'
+            'gelar_en' => 'required',
+            'gelar_singkat' => 'required'
         ], [
             'jenjang_pendidikan_id.required' => 'Jenjang pendidikan harus dipilih',
             'kode_prodi.required' => 'Kode program studi harus diisi',
@@ -86,9 +88,11 @@ class ProdiController extends Controller
             'nama.unique' => 'Nama program studi sudah terdaftar',
             'nama_en.required' => 'Nama program studi (English) harus diisi',
             'nama_en.unique' => 'Nama program studi (English) sudah terdaftar',
+            'singkatan.unique' => 'Singkatan program studi sudah terdaftar',
             'akreditasi.required' => 'Akreditasi harus diisi',
             'gelar.required' => 'Gelar harus diisi',
-            'gelar_en.required' => 'Gelar (English) harus diisi'
+            'gelar_en.required' => 'Gelar (English) harus diisi',
+            'gelar_en.singkat' => 'Gelar harus diisi',
         ]);
 
         // update data
@@ -97,6 +101,7 @@ class ProdiController extends Controller
             'kode_prodi' => $request->kode_prodi,
             'nama' => $request->nama,
             'nama_en' => $request->nama_en,
+            'singkatan' => $request->singkatan,
             'bhs_pengantar_kuliah' => $request->bhs_pengantar_kuliah,
             'bhs_pengantar_kuliah_en' => $request->bhs_pengantar_kuliah_en,
             'akreditasi' => $request->akreditasi,

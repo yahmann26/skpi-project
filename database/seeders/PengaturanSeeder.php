@@ -67,13 +67,13 @@ class PengaturanSeeder extends Seeder
                         'tipe' => 'teks'
                     ],
                     [
-                        'nama' => 'sk_pendirian_universitas',
-                        'nilai' => 'SK Mendiknas No. 155/D/O/2001, Tanggal 30 Agustus 2001',
+                        'nama' => 'fax',
+                        'nilai' => '(0286) 324160',
                         'tipe' => 'teks'
                     ],
                     [
-                        'nama' => 'sk_pendirian_universitas_en',
-                        'nilai' => 'SK Mendiknas No. 155/D/O/2001, Date August 30, 2001',
+                        'nama' => 'website',
+                        'nilai' => 'http://unsiq.ac.id',
                         'tipe' => 'teks'
                     ],
                     [
@@ -88,7 +88,7 @@ class PengaturanSeeder extends Seeder
                     ],
                     [
                         'nama' => 'alamat_universitas',
-                        'nilai' => 'Jalan Kalibeber',
+                        'nilai' => 'Jalan Raya Kalibeber Km. 03 Mojotengah Wonosobo Jawa Tengah 56351',
                         'tipe' => 'textarea'
                     ],
                     [
@@ -97,13 +97,8 @@ class PengaturanSeeder extends Seeder
                         'tipe' => 'teks'
                     ],
                     [
-                        'nama' => 'hp_universitas',
-                        'nilai' => '+62-8112929757',
-                        'tipe' => 'teks'
-                    ],
-                    [
                         'nama' => 'email_universitas',
-                        'nilai' => 'unsiq@ac.id',
+                        'nilai' => 'humas@unsiq.ac.id',
                         'tipe' => 'email'
                     ]
                 ],
@@ -270,7 +265,7 @@ class PengaturanSeeder extends Seeder
                 'pengaturan' => [
                     [
                         'nama' => 'nama_penandatangan',
-                        'nilai' => 'NASYIIN FAQIH, S.T., M.T',
+                        'nilai' => 'NASYIIN FAQIH, S.T., M.T, IPM',
                         'tipe' => 'teks',
                     ],
                     [

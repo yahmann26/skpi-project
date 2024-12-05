@@ -56,16 +56,6 @@
                                             <td>{{ $kegiatan->nama_en }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Pencapaian</th>
-                                            <td>:</td>
-                                            <td>{{ $kegiatan->pencapaian }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Tingkat</th>
-                                            <td>:</td>
-                                            <td>{{ $kegiatan->tingkat }}</td>
-                                        </tr>
-                                        <tr>
                                             <th>Tanggal</th>
                                             <td>:</td>
                                             <td>{{ \App\Helper\Skpi::dateIndo($kegiatan->tgl_mulai) }} s/d

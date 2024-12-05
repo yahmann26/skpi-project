@@ -38,7 +38,6 @@
                                     <th>No</th>
                                     <th>Kategori</th>
                                     <th>Nama Kegiatan</th>
-                                    <th>Pencapaian</th>
                                     <th>Penyelenggara</th>
                                     <th>Sertifikat</th>
                                     <th>Status</th>
@@ -85,10 +84,6 @@
                         data: 'nama',
                         name: 'nama'
                     },
-                    {
-                        data: 'pencapaian',
-                        name: 'pencapaian'
-                    }, // For Pencapaian
                     {
                         data: 'penyelenggara',
                         name: 'penyelenggara'

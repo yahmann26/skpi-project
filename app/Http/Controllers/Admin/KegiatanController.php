@@ -140,8 +140,6 @@ class KegiatanController extends Controller
             'kategori_kegiatan_id' => 'required',
             'nama' => 'required',
             'nama_en' => 'required',
-            'pencapaian' => 'required',
-            'tingkat' => 'required',
             'tgl_mulai' => 'required',
             'tgl_selesai' => 'required',
             'file_sertifikat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
@@ -157,12 +155,10 @@ class KegiatanController extends Controller
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;
-        $kegiatan->tingkat = $request->tingkat;
         $kegiatan->tgl_mulai = $request->tgl_mulai;
         $kegiatan->tgl_selesai = $request->tgl_selesai;
         $kegiatan->penyelenggara = $request->penyelenggara;
         $kegiatan->deskripsi = $request->deskripsi;
-        $kegiatan->pencapaian = $request->pencapaian;
         $kegiatan->catatan_status = $request->catatan_status;
 
         // Mengelola upload file sertifikat jika ada file baru
@@ -208,9 +204,8 @@ class KegiatanController extends Controller
         $kegiatan->kategori_kegiatan_id = $request->kategori_kegiatan_id;
         $kegiatan->nama = $request->nama;
         $kegiatan->nama_en = $request->nama_en;
-        $kegiatan->pencapaian = $request->pencapaian;
-        $kegiatan->tingkat = $request->tingkat;
-        $kegiatan->penyelenggara = $request->penyelenggara;
+        $kegiatan->tgl_mulai = $request->tgl_mulai;
+        $kegiatan->tgl_selesai = $request->tgl_selesai;
         $kegiatan->catatan_status = $request->catatan_status;
         $kegiatan->status = $request->status;
 
@@ -235,69 +230,56 @@ class KegiatanController extends Controller
     public function cetakSemester(Request $request)
     {
         $validated = $request->validate([
-            'nim' => 'required|string',
-            'tahun_akademik' => 'required|string',
+            'nim' => 'required|string|exists:mahasiswa,nim',
             'semester_id' => 'required|exists:semester,id',
+            'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
         ]);
 
-        // Cari mahasiswa berdasarkan NIM
-        $mahasiswa = Mahasiswa::where('nim', $validated['nim'])->first();
-        if (!$mahasiswa) {
-            return back()->withErrors(['nim' => 'Mahasiswa tidak ditemukan.']);
-        }
+        $mahasiswa = Mahasiswa::where('nim', $validated['nim'])->firstOrFail();
 
-        // Ambil semester berdasarkan ID
         $semester = Semester::findOrFail($validated['semester_id']);
+        $tahunAkademik = TahunAkademik::findOrFail($validated['tahun_akademik_id']);
 
-        // Cari tahun akademik berdasarkan nama dan semester
-        $tahunAkademik = TahunAkademik::where('nama', $validated['tahun_akademik'])
-            ->where('semester_id', $semester->id)
-            ->first();
-
-        if (!$tahunAkademik) {
-            return back()->withErrors(['tahun_akademik' => 'Tahun akademik tidak ditemukan.']);
-        }
-
-        // Ambil kegiatan mahasiswa dengan status validasi
-        $kegiatans = Kegiatan::where('tahun_akademik_id', $tahunAkademik->id)
+        $kegiatans = Kegiatan::with('kategoriKegiatan')
+            ->where('tahun_akademik_id', $tahunAkademik->id)
             ->where('mahasiswa_id', $mahasiswa->id)
             ->where('status', 'validasi')
             ->get();
 
-        // Ambil informasi prodi dan kaprodi
         $prodi = $mahasiswa->prodi;
         $kaprodi = $prodi ? $prodi->kaprodi : null;
+        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama')
+            ->sortBy(fn($kegiatan, $key) => $kegiatan->first()->kategoriKegiatan->id);
 
-        // Grupkan kegiatan berdasarkan kategori
-        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama');
-
-        // Ambil logo universitas
         $imagePath = public_path('images/unsiq.png');
-        if (!file_exists($imagePath)) {
+        $logoUniv = file_exists($imagePath) ? base64_encode(file_get_contents($imagePath)) : null;
+        if (!$logoUniv) {
             return back()->withErrors(['logo' => 'Logo universitas tidak ditemukan.']);
         }
-        $logoUniv = base64_encode(file_get_contents($imagePath));
 
-        // Ambil informasi tambahan dari helper
         $alamat = HelperSkpi::getSettingByName('alamat_universitas');
         $telp = HelperSkpi::getSettingByName('telepon_universitas');
         $email = HelperSkpi::getSettingByName('email_universitas');
+        $fax = HelperSkpi::getSettingByName('fax');
+        $website = HelperSkpi::getSettingByName('website');
 
-        // Data untuk PDF
-        $data = [
-            'mahasiswa' => $mahasiswa,
-            'logoUniv' => $logoUniv,
-            'alamat' => $alamat,
-            'telp' => $telp,
-            'email' => $email,
-            'kegiatan' => $kegiatans,
-            'kategori' => $kategori,
-            'tahunAkademik' => $tahunAkademik,
-            'prodi' => $prodi,
-            'kaprodi' => $kaprodi,
-        ];
+        $data = compact(
+            'mahasiswa',
+            'logoUniv',
+            'alamat',
+            'telp',
+            'email',
+            'kegiatans',
+            'kategori',
+            'tahunAkademik',
+            'prodi',
+            'kaprodi',
+            'semester',
+            'fax',
+            'website'
+        );
 
-        // Buat PDF menggunakan mPDF
+        // Inisialisasi Mpdf
         $mpdf = new \Mpdf\Mpdf([
             'setAutoTopMargin' => 'stretch',
             'mode' => 'utf-8',
@@ -308,9 +290,11 @@ class KegiatanController extends Controller
         $html = view('admin.pages.kegiatan.cetakSemester', $data)->render();
         $mpdf->WriteHTML($html);
 
-        // Tampilkan PDF
-        $mpdf->Output();
+        // Kembalikan file PDF
+        return $mpdf->Output('Laporan_Semester.pdf', 'I');
     }
+
+
 
 
     public function cetakTranskip(Request $request)
@@ -319,19 +303,19 @@ class KegiatanController extends Controller
             'nim' => 'required|string',
         ]);
 
-        // Cari mahasiswa berdasarkan NIM
         $mahasiswa = Mahasiswa::where('nim', $validated['nim'])->first();
 
-        // Ambil data kegiatan mahasiswa yang sudah divalidasi
         $kegiatans = Kegiatan::where('mahasiswa_id', $mahasiswa->id)
             ->where('status', 'validasi')
             ->get();
 
         $tahunAkademik = $kegiatans->groupBy('tahunAkademik.nama');
         $semester = $kegiatans->groupBy('tahunAkademik.semester.nama');
-        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama');
+        $kategori = $kegiatans->groupBy('kategoriKegiatan.nama')
+            ->sortBy(function ($kegiatan, $key) {
+                return $kegiatan->first()->kategoriKegiatan->id;
+            });
 
-        // Ambil data prodi dan kaprodi
         $prodi = $mahasiswa->prodi;
         $kaprodi = $prodi ? $prodi->kaprodi : null;
 
@@ -344,8 +328,9 @@ class KegiatanController extends Controller
         $alamat = HelperSkpi::getSettingByName('alamat_universitas');
         $telp = HelperSkpi::getSettingByName('telepon_universitas');
         $email = HelperSkpi::getSettingByName('email_universitas');
+        $fax = HelperSkpi::getSettingByName('fax');
+        $website = HelperSkpi::getSettingByName('website');
 
-        // Siapkan data untuk dikirim ke view
         $data = [
             'mahasiswa' => $mahasiswa,
             'logoUniv' => $logoUniv,
@@ -358,6 +343,8 @@ class KegiatanController extends Controller
             'semester' => $semester,
             'prodi' => $prodi,
             'kaprodi' => $kaprodi,
+            'fax' => $fax,
+            'website' => $website
         ];
 
         $mpdf = new \Mpdf\Mpdf([

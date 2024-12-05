@@ -68,6 +68,19 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="nip" class="col-sm-2 col-form-label">NIP</label>
+                                <div class="col-sm-10">
+                                    <input type="nip" class="form-control @error('nip') is-invalid @enderror"
+                                        name="nip" value="{{ $kaprodi->nip }}" id="nip">
+                                    @error('nip')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             {{-- page prodi --}}
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Program Studi</label>

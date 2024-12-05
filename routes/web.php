@@ -72,14 +72,14 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::post('kategoriKegiatan', [AdminKategoriKegiatanController::class, 'store'])->name('admin.kategoriKegiatan.store');
     Route::get('kategoriKegiatan/{id}/ubah', [AdminKategoriKegiatanController::class, 'edit'])->name('admin.kategoriKegiatan.edit');
     Route::put('kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'update'])->name('admin.kategoriKegiatan.update');
-    Route::delete('/kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'destroy'])->name('admin.kategoriKegiatan.destroy');
+    Route::delete('kategoriKegiatan/{id}', [AdminKategoriKegiatanController::class, 'destroy'])->name('admin.kategoriKegiatan.destroy');
 
     // Tahun Ajaran
     Route::get('thnAkademik', [AdminTahunAkademikController::class, 'index'])->name('admin.thnAkademik.index');
     Route::post('thnAkademik', [AdminTahunAkademikController::class, 'store'])->name('admin.thnAkademik.store');
     Route::get('thnAkademik/{id}/ubah', [AdminTahunAkademikController::class, 'edit'])->name('admin.thnAkademik.edit');
     Route::put('thnAkademik/{id}', [AdminTahunAkademikController::class, 'update'])->name('admin.thnAkademik.update');
-    Route::delete('/thnAkademik/{id}', [AdminTahunAkademikController::class, 'destroy'])->name('admin.thnAkademik.destroy');
+    Route::delete('thnAkademik/{id}', [AdminTahunAkademikController::class, 'destroy'])->name('admin.thnAkademik.destroy');
 
 
     // kegiatan

@@ -69,50 +69,28 @@
                             <div class="mb-3">
                                 <label for="nama" class="form-label" style="font-weight: bold;">Nama Kegiatan <span
                                         class="text-danger">*</span></label>
-                                <div class="input-group mb-3 @error('nama') is-invalid @enderror">
+                                <div class="input-group @error('nama') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
                                     <input type="text" name="nama" class="form-control" aria-describedby="nama-addon"
                                         class="form-control" value="{{ $kegiatan->nama }}" autofocus
                                         placeholder="Nama Kegiatan">
                                 </div>
+                                <small class="text-danger">Contoh: HMTI sebagai Ketua, Lomba UI/UX di ITB sebagai Juara 1</small>
                                 @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <div class="input-group mb-3 @error('nama_en') is-invalid @enderror">
+                                <div class="input-group mt-3 @error('nama_en') is-invalid @enderror">
                                     <span class="input-group-text">EN</span>
                                     <input type="text" name="nama_en" class="form-control"
                                         aria-describedby="nama_en-addon" class="form-control"
                                         value="{{ $kegiatan->nama_en }}" autofocus placeholder="Nama Kegiatan (english)">
                                 </div>
+                                <small class="text-danger">Example: HMTI as the President, UI/UX Competition at ITB as 1st Place Winner</small>
                                 @error('nama_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            {{-- pencapaian --}}
-                            <div class="mb-3">
-                                <label for="pencapaian" class="form-label" style="font-weight: bold;">Pencapaian <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" name="pencapaian" id="pencapaian"
-                                    class="form-control @error('pencapaian') is-invalid @enderror"
-                                    value="{{ $kegiatan->pencapaian }}" placeholder="Misal: Peserta, Ketua, Juara 2, dsb">
-                                @error('pencapaian')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="tingkat" class="form-label" style="font-weight: bold;">Tingkat kegiatan <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" name="tingkat" id="tingkat"
-                                    class="form-control @error('tingkat') is-invalid @enderror"
-                                    value="{{ $kegiatan->tingkat }}" placeholder="Misal: himpunan, univ, kabupaten dsb">
-                                @error('tingkat')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
 
                             <div class="mb-3">
                                 <label for="penyelenggara" class="form-label" style="font-weight: bold;">Penyelenggara
@@ -175,16 +153,6 @@
                             <hr class="my-4">
 
                             <div class="mb-3">
-                                <div class="alert alert-info">
-                                    <strong>Info!</strong> Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
-                                    atau
-                                    dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
-                                    Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
-                                    Admin yang akan ditampilkan.
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
 
@@ -200,11 +168,12 @@
                         <hr class="my-3">
                         <div class="alert alert-info">
                             <strong>Info!</strong>
-                            <br>Jika Anda tidak memiliki sertifikat, silahkan unggah surat tugas
-                            atau
-                            dokumen lain yang dapat memvalidasi kegiatan Anda. <br>
-                            Tidak semua kegiatan akan ditampilkan pada SKPI, <b>hanya data yang lolos validasi</b>
-                            Admin yang akan ditampilkan.
+                            <br>1. Pilih Semester
+                            <br>2. Pilih Tahun Akademiknya
+                            <br>3. Pilih Kategori Kegiatan
+                            <br>4. Sesuaikan Nama Kegiatan Dengan Kategori Kegiatan !!
+                            <br>5. Tuliskan nama kegiatan beserta penyelenggara & pencapaiannya <br>
+                            <br><b>Hanya Kegiatan yang Lolos Validasi yang akan ditampilkan di SKPI</b>
                         </div>
                     </div>
                 </div>

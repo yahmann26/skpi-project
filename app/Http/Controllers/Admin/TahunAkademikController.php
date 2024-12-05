@@ -14,7 +14,7 @@ class TahunAkademikController extends Controller
     {
         $semester = Semester::all();
         if ($request->ajax()) {
-            $data = TahunAkademik::with('semester')->orderBy('created_at', 'desc')->get();
+            $data = TahunAkademik::with('semester')->orderBy('nama', 'desc')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
