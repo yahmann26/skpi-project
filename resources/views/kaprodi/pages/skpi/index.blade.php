@@ -21,7 +21,7 @@
                 </li>
                 <li class="breadcrumb-item ">User</li>
                 <li class="breadcrumb-item ">Skpi</li>
-                <li class="breadcrumb-item active">List</li>
+                <li class="breadcrumb-item active">Periode</li>
             </ol>
         </nav>
     </div>
@@ -34,7 +34,7 @@
 
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title">Data SKPI</div>
+                            <div class="card-title">Data Periode SKPI</div>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#addPeriodeModal">
                                 Tambah Periode

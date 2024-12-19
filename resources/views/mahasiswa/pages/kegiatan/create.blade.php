@@ -34,24 +34,23 @@
                                 <select id="semester" class="form-select">
                                     <option value="">Pilih Semester</option>
                                     @foreach ($semester as $s)
-                                        <option value="{{ $s->id }}">{{ $s->nama }}</option>
+                                        <option value="{{ $s->id }}" {{ old('semester') == $s->id ? 'selected' : '' }}>{{ $s->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <!-- Pilih Tahun Akademik -->
                             <div class="mb-3" id="tahunAkademikWrapper" style="display: none;">
-                                <label for="tahun_akademik" class="form-label" style="font-weight: bold;">Tahun Akademik<span
-                                        class="text-danger">*</span></label>
+                                <label for="tahun_akademik" class="form-label" style="font-weight: bold;">Tahun
+                                    Akademik<span class="text-danger">*</span></label>
                                 <select name="tahun_akademik_id" id="tahun_akademik" class="form-select">
-                                    <option value="">Pilih Tahun Akademik</option>
+                                    <option value="{{ old('tahun_akademik_id') }}">Pilih Tahun Akademik</option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
                                 <label for="kategori_kegiatan_id" class="form-label" style="font-weight: bold;">Kategori
-                                    Kegiatan<span
-                                        class="text-danger">*</span></label>
+                                    Kegiatan<span class="text-danger">*</span></label>
                                 <select name="kategori_kegiatan_id" id="kategori_kegiatan_id"
                                     class="form-select @error('kategori_kegiatan_id') is-invalid @enderror">
                                     <option value="">-- Pilih Kategori Kegiatan --</option>
@@ -67,21 +66,27 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="nama" class="form-label" style="font-weight: bold;">Nama Kegiatan <span class="text-danger">*</span></label>
+                                <label for="nama" class="form-label" style="font-weight: bold;">Nama Kegiatan <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group @error('nama') is-invalid @enderror">
                                     <span class="input-group-text">&nbsp;ID</span>
-                                    <input type="text" name="nama" class="form-control" aria-describedby="nama-addon" value="{{ old('nama') }}" autofocus placeholder="Nama Kegiatan">
+                                    <input type="text" name="nama" class="form-control" aria-describedby="nama-addon"
+                                        value="{{ old('nama') }}" autofocus placeholder="Nama Kegiatan">
                                 </div>
-                                <small class="text-danger">Contoh: HMTI sebagai Ketua, Lomba UI/UX di ITB sebagai Juara 1</small>
+                                <small class="text-danger">Contoh: HMTI sebagai Ketua, Lomba UI/UX di ITB sebagai Juara
+                                    1</small>
                                 @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
                                 <div class="input-group mt-3 @error('nama_en') is-invalid @enderror">
                                     <span class="input-group-text">EN</span>
-                                    <input type="text" name="nama_en" class="form-control" aria-describedby="nama_en-addon" value="{{ old('nama_en') }}" autofocus placeholder="Nama Kegiatan (english)">
+                                    <input type="text" name="nama_en" class="form-control"
+                                        aria-describedby="nama_en-addon" value="{{ old('nama_en') }}" autofocus
+                                        placeholder="Nama Kegiatan (english)">
                                 </div>
-                                <small class="text-danger">Example: HMTI as the President, UI/UX Competition at ITB as 1st Place Winner</small>
+                                <small class="text-danger">Example: HMTI as the President, UI/UX Competition at ITB as 1st
+                                    Place Winner</small>
                                 @error('nama_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -110,12 +115,16 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="file_sertifikat" class="col-sm-4 col-form-label"
-                                    style="font-weight: bold;">Bukti Sertifikat</label>
+                                <label for="file_sertifikat" class="col-sm-3 col-form-label"
+                                    style="font-weight: bold;">Bukti Sertifikat</label><small class="text-danger">Maksimal ukuran file: 3 MB</small>
                                 <div class="col-sm-12">
-                                    <input class="form-control" type="file" id="file_sertifikat"
-                                        name="file_sertifikat">
-                                    <small class="text-danger">Maksimal ukuran file: 3 MB</small>
+                                    <input type="file" id="file_sertifikat"
+                                        name="file_sertifikat" class="form-control @error('file_sertifikat') is-invalid @enderror"
+                                        value="{{ old('file_sertifikat') }}">
+                                    @error('file_sertifikat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+
                                 </div>
                             </div>
 

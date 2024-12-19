@@ -73,7 +73,7 @@
                         <form action="{{ route('mahasiswa.kegiatan.cetakTranskip') }}" method="post" target="_blank">
                             @csrf
 
-                            Cetak Transkip Kegiatan Sementara
+                            Cetak Transkip Kegiatan
 
                             <div class="row mb-3 mt-3">
                                 <label class="col-sm-0 col-form-label"></label>

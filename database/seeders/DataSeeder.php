@@ -157,7 +157,7 @@ class DataSeeder extends Seeder
                 ],
                 [
                     'nama' => 'Peserta Didik Transfer',
-                    'nama_en' => 'Tranfer Student',
+                    'nama_en' => 'Transfer Student',
                 ],
 
             ];
@@ -185,7 +185,7 @@ class DataSeeder extends Seeder
                     'jenjang_lanjutan_en' => 'Doctoral',
                     'program_studi' => [
                         [
-                            'kode_prodi' => '12345',
+                            'kode_prodi' => '55201',
                             'nama' => 'Teknik Informatika',
                             'nama_en' => 'Informatics Engineering',
                             'singkatan' => 'TI',
@@ -200,7 +200,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.Kom',
                         ],
                         [
-                            'kode_prodi' => '12346',
+                            'kode_prodi' => '22201',
                             'nama' => 'Teknik Sipil',
                             'nama_en' => 'Civil Engineering',
                             'singkatan' => 'TS',
@@ -215,7 +215,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.T',
                         ],
                         [
-                            'kode_prodi' => '12347',
+                            'kode_prodi' => '21201',
                             'nama' => 'Teknik Mesin',
                             'nama_en' => 'Mechanical Engineering',
                             'singkatan' => 'TM',
@@ -230,7 +230,7 @@ class DataSeeder extends Seeder
                             'gelar_singkat' => 'S.T',
                         ],
                         [
-                            'kode_prodi' => '12348',
+                            'kode_prodi' => '23201',
                             'nama' => 'Arsitektur',
                             'nama_en' => 'Architecture',
                             'singkatan' => 'Ars',
@@ -260,7 +260,7 @@ class DataSeeder extends Seeder
                     'jenjang_lanjutan_en' => 'Master',
                     'program_studi' => [
                         [
-                            'kode_prodi' => '12350',
+                            'kode_prodi' => '57401',
                             'nama' => 'Manajemen Informatika',
                             'nama_en' => 'Informatics Manajement',
                             'singkatan' => 'MI',

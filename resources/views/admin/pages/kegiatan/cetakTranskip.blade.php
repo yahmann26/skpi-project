@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Kegiatan</title>
+    <title>Transkip Kegiatan</title>
     <style>
         body {
             font-family: serif;

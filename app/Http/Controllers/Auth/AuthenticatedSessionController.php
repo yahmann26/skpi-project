@@ -16,8 +16,19 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'kaprodi') {
+                return redirect()->route('kaprodi.dashboard');
+            } elseif ($user->role === 'mahasiswa') {
+                return redirect()->route('mahasiswa.dashboard');
+            }
+        }
+
         return view('auth.login');
     }
 

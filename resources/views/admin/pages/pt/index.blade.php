@@ -28,8 +28,8 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="card-title">Data Pendidikan Tinggi</div>
-                            <a href="{{ route('admin.pt.create') }}" class="btn btn-sm btn-primary"><i
-                                    class="bi bi-plus"></i> Tambah</a>
+                            {{-- <a href="{{ route('admin.pt.create') }}" class="btn btn-sm btn-primary"><i
+                                    class="bi bi-plus"></i> Tambah</a> --}}
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
@@ -105,7 +105,6 @@
                 ]
             });
 
-            // Event delegation for dynamically added delete buttons
             $('#datatable').on('click', '.btn-delete', function() {
                 var id = $(this).data('id');
                 deleteData(id);

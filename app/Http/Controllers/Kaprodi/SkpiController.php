@@ -69,12 +69,13 @@ class SkpiController extends Controller
     public function show(Request $request, string $id)
     {
         $periode = Periode::with(['skpi.mahasiswa.prodi'])->findOrFail($id);
+
         if ($request->ajax()) {
 
             $prodi_kaprodi = Auth::user()->kaprodi->program_studi_id;
 
-            // Ambil data SKPI berdasarkan prodi kaprodi
             $skpi = Skpi::with(['mahasiswa'])
+                ->where('periode_id', $periode->id)  // Filter berdasarkan periode
                 ->whereHas('mahasiswa', function ($query) use ($prodi_kaprodi) {
                     $query->whereHas('prodi', function ($query) use ($prodi_kaprodi) {
                         $query->where('id', $prodi_kaprodi);
@@ -83,6 +84,7 @@ class SkpiController extends Controller
                 ->select('skpi.*')
                 ->orderBy('created_at', 'desc')
                 ->get();
+
             return DataTables::of($skpi)
                 ->addIndexColumn()
                 ->addColumn('nim', function ($data) {
@@ -95,7 +97,6 @@ class SkpiController extends Controller
                 ->make(true);
         }
 
-        // Render view jika bukan permintaan AJAX
         return view('kaprodi.pages.skpi.show', compact('periode'));
     }
 

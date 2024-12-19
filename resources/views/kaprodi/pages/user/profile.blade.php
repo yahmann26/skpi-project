@@ -77,6 +77,11 @@
                                     <div class="col-lg-9 col-md-8">{{ $user->email }}</div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Nid</div>
+                                    <div class="col-lg-9 col-md-8">{{ $user->kaprodi->nip }}</div>
+                                </div>
+
                             </div>
 
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">

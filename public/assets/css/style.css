@@ -631,9 +631,16 @@ h6 {
 
 @media (min-width: 1200px) {
 
-  #main,
-  #footer {
+  #main {
     margin-left: 300px;
+  }
+
+  #footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin-left: auto;
   }
 }
 

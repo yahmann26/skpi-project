@@ -78,12 +78,12 @@ class PengaturanSeeder extends Seeder
                     ],
                     [
                         'nama' => 'jenis_pendidikan',
-                        'nilai' => 'Sekolah Tinggi',
+                        'nilai' => 'Akademik',
                         'tipe' => 'teks'
                     ],
                     [
                         'nama' => 'jenis_pendidikan_en',
-                        'nilai' => 'College',
+                        'nilai' => 'Academic',
                         'tipe' => 'teks'
                     ],
                     [

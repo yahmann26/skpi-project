@@ -185,7 +185,7 @@ class SkpiController extends Controller
 
             $header = view('admin.pages.skpi.header', $data)->render();
             $mpdf->SetHTMLHeader($header);
-            
+
             $html = view('admin.pages.skpi.cetak1', $data)->render();
             $mpdf->WriteHTML($html);
 
