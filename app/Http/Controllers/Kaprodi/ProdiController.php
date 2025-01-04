@@ -92,7 +92,7 @@ class ProdiController extends Controller
             'akreditasi.required' => 'Akreditasi harus diisi',
             'gelar.required' => 'Gelar harus diisi',
             'gelar_en.required' => 'Gelar (English) harus diisi',
-            'gelar_en.singkat' => 'Gelar harus diisi',
+            'gelar_singkat.required' => 'Gelar harus diisi',
         ]);
 
         // update data
@@ -108,7 +108,8 @@ class ProdiController extends Controller
             'sistem_penilaian' => $request->sistem_penilaian,
             'sistem_penilaian_en' => $request->sistem_penilaian_en,
             'gelar' => $request->gelar,
-            'gelar_en' => $request->gelar_en
+            'gelar_en' => $request->gelar_en,
+            'gelar_singkat' => $request->gelar_singkat
         ]);
 
         // redirect back

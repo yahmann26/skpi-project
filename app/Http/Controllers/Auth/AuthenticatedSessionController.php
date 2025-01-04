@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Auth\Events\Validated;
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -42,10 +43,21 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($request->only('uid', 'password'))) {
+        // Cek apakah user dengan UID ada
+        $user = User::where('uid', $request->uid)->first();
+
+        // Jika user tidak ada
+        if (!$user) {
+            return back()->withErrors([
+                'uid' => 'Username salah',
+            ]);
+        }
+
+        // Coba login menggunakan Auth::attempt dan cek password
+        if (Auth::attempt(['uid' => $request->uid, 'password' => $request->password])) {
             $request->session()->regenerate();
 
-            $user = Auth::user();
+            // Redirect berdasarkan role user
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } elseif ($user->role === 'kaprodi') {
@@ -55,10 +67,12 @@ class AuthenticatedSessionController extends Controller
             }
         }
 
+        // Jika password salah
         return back()->withErrors([
-            'uid' => 'Akun Tidak Dikenali',
+            'password' => 'Password salah',
         ]);
     }
+
 
     /**
      * Destroy an authenticated session.

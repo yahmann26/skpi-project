@@ -10,8 +10,6 @@ use App\Models\ProgramStudi;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-
 
 class MahasiswaImport implements ToModel
 {
@@ -27,7 +25,7 @@ class MahasiswaImport implements ToModel
         $rowNumber++;
 
         if ($rowNumber <= 4) {
-            return null; // Jangan proses header
+            return null;
         }
 
         // dd($row[6]);

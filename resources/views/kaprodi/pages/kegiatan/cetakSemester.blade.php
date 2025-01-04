@@ -79,24 +79,34 @@
                 <table border="0"
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; font-weight: bold;">
                     <tr>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 20%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
                                 <span>NIM</span> <br>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 2%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
-                                <span>: {{ $mahasiswa->nim }}</span>
+                                <span>:</span> <br>
                             </p>
                         </td>
                         <td style="width: 25%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
-                                <span>Nama</span>
+                                <span>{{ $mahasiswa->nim }}</span>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 21%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
-                                <span>: {{ $mahasiswa->nama }}</span>
+                                <span>Nama</span> <br>
+                            </p>
+                        </td>
+                        <td style="width: 2%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 12px; ">
+                                <span>:</span> <br>
+                            </p>
+                        </td>
+                        <td style="width: 32%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 12px; ">
+                                <span>{{ $mahasiswa->nama }}</span>
                             </p>
                         </td>
                     </tr>
@@ -105,24 +115,34 @@
                 <table border="0"
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; font-weight: bold;">
                     <tr>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 20%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
                                 <span>Jenjang</span> <br>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 2%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
-                                <span>: {{ $mahasiswa->prodi->jenjangPendidikan->singkatan }}</span>
+                                <span>:</span> <br>
                             </p>
                         </td>
                         <td style="width: 25%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
-                                <span>Tempat/Tgl Lahir</span>
+                                <span>{{ $mahasiswa->prodi->jenjangPendidikan->singkatan }}</span>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 21%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
-                                <span>: {{ $mahasiswa->tempat_lahir }},
+                                <span>Tempat/Tanggal Lahir</span> <br>
+                            </p>
+                        </td>
+                        <td style="width: 2%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 12px; ">
+                                <span>:</span> <br>
+                            </p>
+                        </td>
+                        <td style="width: 32%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 12px; ">
+                                <span>{{ $mahasiswa->tempat_lahir }},
                                     {{ \App\Helper\Skpi::dateIndo($mahasiswa->tgl_lahir) }}</span>
                             </p>
                         </td>
@@ -131,24 +151,34 @@
                 <table border="0"
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; font-weight: bold;">
                     <tr>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 20%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
                                 <span>Tahun Akademik</span> <br>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 2%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
-                                <span>: {{ $tahunAkademik->nama }}/{{ $tahunAkademik->semester->nama }}</span>
+                                <span>:</span> <br>
                             </p>
                         </td>
                         <td style="width: 25%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 12px; ">
+                                <span>{{ $tahunAkademik->nama }}/{{ $tahunAkademik->semester->nama }}</span>
+                            </p>
+                        </td>
+                        <td style="width: 21%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px; ">
                                 <span>Jenis Kelamin</span>
                             </p>
                         </td>
-                        <td style="width: 25%; padding: 0; vertical-align: left;">
+                        <td style="width: 2%; padding: 0; vertical-align: left;">
+                            <p style="font-size: 12px; ">
+                                <span>:</span> <br>
+                            </p>
+                        </td>
+                        <td style="width: 32%; padding: 0; vertical-align: left;">
                             <p style="font-size: 12px;">
-                                <span>:
+                                <span>
                                     @if ($mahasiswa->jenis_kelamin == 'L')
                                         Laki-Laki
                                     @elseif($mahasiswa->jenis_kelamin == 'P')
@@ -192,7 +222,6 @@
                         @endforeach
                     </tbody>
                 </table>
-
 
                 <table border="0"
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px">

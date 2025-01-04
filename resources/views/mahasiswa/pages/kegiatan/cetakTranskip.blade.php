@@ -142,9 +142,9 @@
                     style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th style="width: 10%">No</th>
                             <th colspan="2">Nama Kegiatan</th>
-                            <th>Tahun</th>
+                            <th style="width: 15%">Tahun</th>
                         </tr>
                     </thead>
                     <tbody>

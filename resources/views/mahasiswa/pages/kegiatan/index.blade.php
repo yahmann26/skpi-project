@@ -35,13 +35,13 @@
                         <table class="table table-bordered table-striped datatable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Kategori</th>
-                                    <th>Nama Kegiatan</th>
-                                    <th>Penyelenggara</th>
-                                    <th>Sertifikat</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
+                                    <th width="3%">No</th>
+                                    <th width="15%">Kategori</th>
+                                    <th width="42%">Nama Kegiatan</th>
+                                    <th width="10%">Penyelenggara</th>
+                                    <th width="10%">Sertifikat</th>
+                                    <th width="10%">Status</th>
+                                    <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

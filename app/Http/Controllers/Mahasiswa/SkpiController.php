@@ -28,7 +28,7 @@ class SkpiController extends Controller
                     $cetakSkpi = route('mahasiswa.skpi.cetak', $row->id);
                     return '<a href="' .
                         $cetakSkpi .
-                        '" class="show btn btn-success btn-sm"><i class="bi bi-printer"></i></a>';
+                        '" class="show btn btn-success btn-sm" target="_blank"><i class="bi bi-printer"></i></a>';
                 })
                 ->addColumn('mhs', fn($row) => $row->mahasiswa->nama)
                 ->rawColumns(['action', 'mhs'])

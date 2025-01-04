@@ -117,7 +117,7 @@
                                 <label for="file_sertifikat" class="col-sm-4 col-form-label"
                                     style="font-weight: bold;">Bukti Sertifikat</label>
                                 <div class="col-sm-12">
-                                    <input class="form-control" type="file" id="file_sertifikat"
+                                    <input class="form-control @error('file_sertifikat') is-invalid @enderror" type="file" id="file_sertifikat"
                                         name="file_sertifikat">
                                     @if ($kegiatan->file_sertifikat)
                                         <small class="form-text text-muted">
@@ -125,6 +125,9 @@
                                         </small>
                                     @endif
                                 </div>
+                                @error('file_sertifikat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                             </div>
 
 

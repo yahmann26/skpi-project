@@ -357,6 +357,6 @@ class KegiatanController extends Controller
         $html = view('admin.pages.kegiatan.cetakTranskip', $data)->render();
         $mpdf->WriteHTML($html);
 
-        $mpdf->Output();
+        $mpdf->Output('TranskipKegiatan.pdf', 'I');
     }
 }

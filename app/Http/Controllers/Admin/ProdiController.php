@@ -80,7 +80,7 @@ class ProdiController extends Controller
             'sk_akreditasi' => 'required',
             'gelar' => 'required',
             'gelar_en' => 'required',
-            'gelar_gelar' => 'required',
+            'gelar_singkat' => 'required',
         ], [
             'jenjang_pendidikan_id.required' => 'Jenjang Pendidikan Wajib Dipilih',
             'kode_prodi.required' => 'Kode Prodi Harus Diisi',
@@ -108,6 +108,7 @@ class ProdiController extends Controller
             'kode_prodi' => $request->kode_prodi,
             'nama' => $request->nama,
             'nama_en' => $request->nama_en,
+            'singkatan' => $request->singkatan,
             'bhs_pengantar_kuliah' => $request->bhs_pengantar_kuliah,
             'bhs_pengantar_kuliah_en' => $request->bhs_pengantar_kuliah_en,
             'sistem_penilaian' => $request->sistem_penilaian,
@@ -117,7 +118,6 @@ class ProdiController extends Controller
             'gelar' => $request->gelar,
             'gelar_en' => $request->gelar_en,
             'gelar_singkat' => $request->gelar_singkat,
-            'singkatan' => $request->singkatan,
         ]);
 
         // dd($newProdi);

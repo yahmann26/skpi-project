@@ -42,8 +42,8 @@ class SkpiImport implements ToModel, WithHeadingRow
         static $rowNumber = 1;
         $rowNumber++;
 
-        if ($rowNumber <= 4) {
-            return null; // Lewati header dan beberapa baris awal
+        if ($rowNumber <= 3) {
+            return null;
         }
 
         if (!empty($row[1]) || !empty($row[2]) || !empty($row[3]) || !empty($row[4])) {

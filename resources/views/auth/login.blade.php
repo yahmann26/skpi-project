@@ -46,24 +46,37 @@
                                             style="max-width: 100px; height: auto;" class="img-fluid">
                                     </div>
 
+                                    <!-- Form login -->
                                     <form class="row g-3 needs-validation" method="POST" action="{{ route('login') }}">
                                         @csrf
 
+                                        <!-- Username -->
                                         <div class="col-12">
                                             <label for="uid" class="form-label">Username</label>
                                             <div class="input-group has-validation">
-                                                <input type="text" name="uid" class="form-control"
-                                                    id="uid" required>
+                                                <input type="text" name="uid" class="form-control" id="uid"
+                                                    value="{{ old('uid') }}" required>
                                                 <div class="invalid-feedback">Please enter your username.</div>
                                             </div>
+                                            <!-- Display username error -->
+                                            @error('uid')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
+                                        <!-- Password -->
                                         <div class="col-12">
                                             <label for="password" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control"
-                                                id="password" required>
+                                            <input type="password" name="password" class="form-control" id="password"
+                                                required>
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
+
+                                        <!-- Display password error -->
+                                        @error('password')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100" type="submit">Login</button>
                                         </div>
@@ -90,6 +103,18 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <script>
+        // Logout otomatis saat pengguna menutup browser
+        window.onbeforeunload = function() {
+            // Kirim permintaan logout saat browser ditutup
+            document.getElementById('logout-form').submit();
+        };
+    </script>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
 
 </body>
 

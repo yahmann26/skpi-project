@@ -71,7 +71,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="nip" class="form-label">NIP</label>
+                                <label for="nip" class="form-label">NIDN</label>
                                 <input type="nip" name="nip" id="nip"
                                     class="form-control @error('nip') is-invalid @enderror" value="{{ old('nip') }}">
                                 @error('nip')

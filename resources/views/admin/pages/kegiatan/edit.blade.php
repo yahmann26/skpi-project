@@ -57,7 +57,8 @@
 
 
                             <div class="mb-3">
-                                <label for="kategori_kegiatan_id" class="form-label" style="font-weight: bold;">Kategori Kegiatan</label>
+                                <label for="kategori_kegiatan_id" class="form-label" style="font-weight: bold;">Kategori
+                                    Kegiatan</label>
                                 <select name="kategori_kegiatan_id" id="kategori_kegiatan_id"
                                     class="form-select @error('kategori_kegiatan_id') is-invalid @enderror">
                                     @foreach ($kategori as $kategori)
@@ -96,8 +97,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="penyelenggara" class="form-label" style="font-weight: bold;">Penyelenggara Kegiatan <span
-                                        class="text-danger">*</span></label>
+                                <label for="penyelenggara" class="form-label" style="font-weight: bold;">Penyelenggara
+                                    Kegiatan <span class="text-danger">*</span></label>
                                 <input type="text" name="penyelenggara" id="penyelenggara"
                                     class="form-control @error('penyelenggara') is-invalid @enderror"
                                     value="{{ $kegiatan->penyelenggara }}"
@@ -117,15 +118,21 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="file_sertifikat" class="col-sm-4 col-form-label" style="font-weight: bold;">Bukti Sertifikat</label>
-                                <div class="col-sm-12">
+                                <label for="file_sertifikat" class="col-sm-4 col-form-label"
+                                    style="font-weight: bold;">Bukti Sertifikat</label>
+                                <div class="col-sm-12 d-flex align-items-center">
+                                    @if ($kegiatan->file_sertifikat)
+                                        <button type="button" class="btn btn-sm btn-success w-30 me-2"
+                                            data-bs-toggle="modal" data-bs-target="#previewModal"
+                                            data-url="{{ asset('storage/' . $kegiatan->file_sertifikat) }}"
+                                            data-type="{{ pathinfo($kegiatan->file_sertifikat, PATHINFO_EXTENSION) }}">
+                                            <i class="bi bi-file-earmark"></i>
+                                        </button>
+                                    @else
+                                        <span class="badge bg-secondary me-2">Tidak ada file</span>
+                                    @endif
                                     <input class="form-control" type="file" id="file_sertifikat"
                                         name="file_sertifikat">
-                                    @if ($kegiatan->file_sertifikat)
-                                        <small class="form-text text-muted">
-                                            File Saat Ini: {{ basename($kegiatan->file_sertifikat) }}
-                                        </small>
-                                    @endif
                                 </div>
                             </div>
 
@@ -141,8 +148,8 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tgl_selesai" class="form-label" style="font-weight: bold;">Tanggal Selesai<span
-                                        class="text-danger">*</span></label>
+                                <label for="tgl_selesai" class="form-label" style="font-weight: bold;">Tanggal
+                                    Selesai<span class="text-danger">*</span></label>
                                 <input type="date" name="tgl_selesai" id="tgl_selesai"
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"
                                     value="{{ $kegiatan->tgl_selesai }}">
@@ -154,7 +161,8 @@
                             <hr class="my-4">
 
                             <div class="mb-3">
-                                <label for="catatan_status" class="form-label" style="font-weight: bold;">Catatan Status</label>
+                                <label for="catatan_status" class="form-label" style="font-weight: bold;">Catatan
+                                    Status</label>
                                 <textarea name="catatan_status" id="catatan_status"
                                     class="form-control @error('catatan_status') is-invalid @enderror">{{ old('catatan_status', $kegiatan->catatan_status) }}</textarea>
                                 @error('catatan_status')
@@ -169,6 +177,24 @@
                             </div>
 
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="previewModalLabel">Preview Sertifikat</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="filePreviewContent"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     </div>
                 </div>
             </div>
@@ -227,6 +253,29 @@
                     }
                 });
             }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var previewModal = document.getElementById('previewModal');
+            var filePreviewContent = document.getElementById('filePreviewContent');
+
+            previewModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var fileUrl = button.getAttribute('data-url');
+                var fileType = button.getAttribute('data-type');
+
+                filePreviewContent.innerHTML = '';
+
+                if (fileType === 'pdf') {
+                    filePreviewContent.innerHTML = '<iframe src="' + fileUrl +
+                        '" frameborder="0" width="100%" height="750px"></iframe>';
+                } else {
+                    filePreviewContent.innerHTML = '<img src="' + fileUrl +
+                        '" class="img-fluid" alt="Sertifikat">';
+                }
+            });
         });
     </script>
 @endpush

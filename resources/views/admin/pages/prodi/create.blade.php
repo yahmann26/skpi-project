@@ -182,13 +182,13 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <div class="input-group mb-3 @error('[gelar_singkat]') is-invalid @enderror">
+                                <div class="input-group mb-3 @error('gelar_singkat') is-invalid @enderror">
                                     <span class="input-group-text">Singkat</span>
-                                    <input type="text" name="[gelar_singkat]" class="form-control"
-                                        aria-describedby="[gelar_singkat]-addon" class="form-control"
-                                        value="{{ old('[gelar_singkat]') }}" autofocus placeholder="Gelar Singkat">
+                                    <input type="text" name="gelar_singkat" class="form-control"
+                                        aria-describedby="gelar_singkat-addon" class="form-control"
+                                        value="{{ old('gelar_singkat') }}" autofocus placeholder="Gelar Singkat">
                                 </div>
-                                @error('[gelar_singkat]')
+                                @error('gelar_singkat')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

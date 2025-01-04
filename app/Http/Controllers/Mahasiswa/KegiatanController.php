@@ -202,7 +202,7 @@ class KegiatanController extends Controller
             'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
             'penyelenggara' => 'required',
             'deskripsi' => 'required',
-            'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:1024',
+            'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ], [
             'kategori_kegiatan_id.required' => 'Kategori Kegiatan Wajib Dipilih',
             'nama.required' => 'Nama kegiatan harus diisi',
@@ -214,7 +214,7 @@ class KegiatanController extends Controller
             'file_sertifikat.required_if' => 'File sertifikat kegiatan harus diisi jika opsi \'file\' dipilih',
             'file_sertifikat.file' => 'File sertifikat kegiatan tidak valid',
             'file_sertifikat.mimes' => 'File sertifikat kegiatan harus berupa file PDF, JPG, JPEG, PNG',
-            'file_sertifikat.max' => 'File sertifikat kegiatan maksimal 1 MB (1024 KB)',
+            'file_sertifikat.max' => 'File sertifikat kegiatan maksimal 2 MB (2048 KB)',
         ]);
 
         $kegiatan->tahun_akademik_id = $request->tahun_akademik_id;
