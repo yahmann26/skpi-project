@@ -37,7 +37,7 @@
                                     <i class="bi bi-download"></i> Download Template
                                 </a>
                                 <button class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal"
-                                data-bs-target="#importModal"><i class="bi bi-upload"></i> Import</button>
+                                    data-bs-target="#importModal"><i class="bi bi-upload"></i> Import</button>
                                 <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-sm btn-primary "><i
                                         class="bi bi-plus"></i> Tambah</a>
                             </div>
@@ -47,17 +47,17 @@
                             <thead>
                                 <tr>
                                     <th width="3%">No</th>
-                                    <th width="20%">NIM</th>
+                                    <th width="25%">NIM</th>
                                     <th width="30%">Nama Mahasiswa</th>
                                     <th width="30%">Program Studi</th>
-                                    <th width="10%">Aksi</th>
+                                    <th width="12%">Aksi</th>
                                 </tr>
                                 <tr>
                                     <th></th>
                                     <td><input></td>
                                     <td><input></td>
                                     <td><input></td>
-                                    <td><input></td>
+                                    <td></td>
                                 </tr>
                             </thead>
                         </table>
@@ -101,25 +101,6 @@
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
-        function deletemahasiswa(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                $.ajax({
-                    url: 'admin/mahasiswa/' + id,
-                    type: 'DELETE',
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(result) {
-                        alert('Data berhasil dihapus');
-                        $('#datatable').DataTable().ajax.reload(); // Reload tabel untuk memperbarui data
-                    },
-                    error: function(xhr) {
-                        alert('Terjadi kesalahan saat menghapus data.');
-                    }
-                });
-            }
-        }
-
         $(function() {
             var table = $('#datatable').DataTable({
                 processing: true,

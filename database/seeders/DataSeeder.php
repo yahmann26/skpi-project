@@ -181,8 +181,8 @@ class DataSeeder extends Seeder
                     'lama_studi_reguler' => '8',
                     'jenis_lanjutan' => 'Magister',
                     'jenis_lanjutan_en' => 'Master',
-                    'jenjang_lanjutan' => 'Doktoral',
-                    'jenjang_lanjutan_en' => 'Doctoral',
+                    'jenjang_lanjutan' => 'Magister',
+                    'jenjang_lanjutan_en' => 'Magister',
                     'program_studi' => [
                         [
                             'kode_prodi' => '55201',
@@ -241,7 +241,7 @@ class DataSeeder extends Seeder
                             'sistem_penilaian' => 'Skala 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
                             'sistem_penilaian_en' => 'Scale 1-4: A=4.0, B=3.0-3.9, C=2.0-2.9, D=1.0-1.9',
                             'gelar' => 'Sarjana Arsitektur ',
-                            'gelar_en' => 'Bachelor of Architecture degree',
+                            'gelar_en' => 'Bachelor of Architecture Degree',
                             'gelar_singkat' => 'S.Ars',
                         ],
                     ]
@@ -255,9 +255,9 @@ class DataSeeder extends Seeder
                     'kualifikasi_kkni' => 'level 5',
                     'lama_studi_reguler' => '6',
                     'jenis_lanjutan' => 'Sarjana',
-                    'jenis_lanjutan_en' => 'Strata',
-                    'jenjang_lanjutan' => 'Magister',
-                    'jenjang_lanjutan_en' => 'Master',
+                    'jenis_lanjutan_en' => 'Bachelor',
+                    'jenjang_lanjutan' => 'Strata',
+                    'jenjang_lanjutan_en' => 'Strata',
                     'program_studi' => [
                         [
                             'kode_prodi' => '57401',

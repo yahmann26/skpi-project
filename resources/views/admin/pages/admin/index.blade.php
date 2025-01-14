@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title', 'Prodi')
+@section('title', 'admin')
 
 @push('style')
     <link href="{{ asset('assets/vendor/simple-datatables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
@@ -11,8 +11,8 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item ">Data Master</li>
-                <li class="breadcrumb-item ">Program Studi</li>
+                <li class="breadcrumb-item ">User</li>
+                <li class="breadcrumb-item ">Admin</li>
                 <li class="breadcrumb-item active">List</li>
             </ol>
         </nav>
@@ -27,21 +27,18 @@
                     <div class="card-body">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title">Data Program Studi</div>
-                            <a href="{{ route('admin.prodi.create') }}" class="btn btn-sm btn-primary"><i
-                                    clas    s="bi bi-plus"></i> Tambah</a>
+                            <div class="card-title">Data Admin</div>
+                            <a href="{{ route('admin.admin.create') }}" class="btn btn-sm btn-primary"><i
+                                    class="bi bi-plus"></i> Tambah</a>
                         </div>
 
                         <table id="datatable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th width = "5%">No</th>
-                                    <th width = "15%">Nama</th>
-                                    <th width = "18%">Jenis Pendidikan</th>
-                                    <th width = "10%">Akreditasi</th>
-                                    <th width = "15%">Gelar</th>
-                                    <th width = "17%">Jenjang Lanjutan</th>
-                                    <th width = "20%">Aksi</th>
+                                    <th width = "40%">Username</th>
+                                    <th width = "40%">Email</th>
+                                    <th width = "15%">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -53,7 +50,6 @@
         </div>
     </section>
 
-
 @endsection
 
 @push('script')
@@ -63,10 +59,10 @@
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
-        function deleteProdi(id) {
+        function deleteadmin(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 $.ajax({
-                    url: 'admin/prodi/' + id,
+                    url: 'admin/admin/' + id,
                     type: 'DELETE',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
@@ -87,30 +83,18 @@
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.prodi.index') }}",
+                ajax: "{{ route('admin.admin.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
+                        data: 'uid',
+                        name: 'uid'
                     },
                     {
-                        data: 'jenjang',
-                        name: 'jenjang'
-                    },
-                    {
-                        data: 'akreditasi',
-                        name: 'akreditasi'
-                    },
-                    {
-                        data: 'gelar',
-                        name: 'gelar'
-                    },
-                    {
-                        data: 'jenjang_lanjutan',
-                        name: 'jenjang_lanjutan'
+                        data: 'email',
+                        name: 'email'
                     },
                     {
                         data: 'action',

@@ -37,11 +37,12 @@
                                 <tr>
                                     <th width="3%">No</th>
                                     <th width="15%">Kategori</th>
-                                    <th width="42%">Nama Kegiatan</th>
+                                    <th width="35%">Nama Kegiatan</th>
                                     <th width="10%">Penyelenggara</th>
                                     <th width="10%">Sertifikat</th>
+                                    <th width="10%">Tanggal</th>
                                     <th width="10%">Status</th>
-                                    <th width="10%">Aksi</th>
+                                    <th width="7%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -94,6 +95,12 @@
                         orderable: false,
                         searchable: false
                     }, // Sertifikat with preview button
+                    {
+                        data: 'tgl',
+                        name: 'tgl',
+                        orderable: false,
+                        searchable: false
+                    },
                     {
                         data: 'status',
                         name: 'status'

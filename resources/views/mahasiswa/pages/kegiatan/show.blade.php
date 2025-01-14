@@ -98,7 +98,7 @@
                                 <div class="mb-3">
                                     <label for="catatan_status" class="form-label"
                                         style="font-weight: bold;">Catatan</label>
-                                    <textarea class="form-control">{{$kegiatan->catatan_status }}</textarea>
+                                    <textarea class="form-control" disabled>{{$kegiatan->catatan_status }}</textarea>
                                 </div>
                             </div>
                         </div>

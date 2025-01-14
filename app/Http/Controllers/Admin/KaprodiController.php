@@ -29,7 +29,9 @@ class KaprodiController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.kaprodi.edit', $row->id);
                     $deleteUrl = route('admin.kaprodi.destroy', $row->id);
+                    $resetPasswordUrl = route('admin.kaprodi.reset-password', $row->id);
                     return '
+                    <a href="#" class="btn btn-info btn-sm" onclick="confirmResetPassword(\'' . $resetPasswordUrl . '\')"><i class="bi bi-lock"></i></a>
                     <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                     <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
                         ' . csrf_field() . '
@@ -161,5 +163,21 @@ class KaprodiController extends Controller
         $user->delete();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function resetPassword($id)
+    {
+        $kaprodi = Kaprodi::findOrFail($id);
+
+        $user = $kaprodi->user;
+
+        if ($user) {
+            $user->password = bcrypt($kaprodi->kode_dosen);
+            $user->save();
+
+            return redirect()->route('admin.kaprodi.index')->with('success', 'Password telah berhasil direset');
+        } else {
+            return redirect()->route('admin.kaprodi.index')->with('error', 'User tidak ditemukan.');
+        }
     }
 }

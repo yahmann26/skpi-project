@@ -75,7 +75,7 @@
                                         class="form-control" value="{{ $kegiatan->nama }}" autofocus
                                         placeholder="Nama Kegiatan">
                                 </div>
-                                <small class="text-danger">Contoh: HMTI sebagai Ketua, Lomba UI/UX di ITB sebagai Juara 1</small>
+                                <small style="font-style: italic;">Contoh: HMTI sebagai Ketua, Lomba UI/UX di ITB sebagai Juara 1</small>
                                 @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -86,7 +86,7 @@
                                         aria-describedby="nama_en-addon" class="form-control"
                                         value="{{ $kegiatan->nama_en }}" autofocus placeholder="Nama Kegiatan (english)">
                                 </div>
-                                <small class="text-danger">Example: HMTI as the President, UI/UX Competition at ITB as 1st Place Winner</small>
+                                <small style="font-style: italic;">Example: HMTI as the President, UI/UX Competition at ITB as 1st Place Winner</small>
                                 @error('nama_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -136,7 +136,7 @@
                                         class="text-danger">*</span></label>
                                 <input type="date" name="tgl_mulai" id="tgl_mulai"
                                     class="form-control @error('tgl_mulai') is-invalid @enderror"
-                                    value="{{ $kegiatan->tgl_mulai }}">
+                                    value="{{ $kegiatan->tgl_mulai }}" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                 @error('tgl_mulai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -147,7 +147,7 @@
                                     Selesai<span class="text-danger">*</span></label>
                                 <input type="date" name="tgl_selesai" id="tgl_selesai"
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"
-                                    value="{{ $kegiatan->tgl_selesai }}">
+                                    value="{{ $kegiatan->tgl_selesai }}" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                 @error('tgl_selesai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

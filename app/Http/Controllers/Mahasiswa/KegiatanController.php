@@ -45,9 +45,22 @@ class KegiatanController extends Controller
             return DataTables::of($kegiatan)
                 ->addIndexColumn()
                 ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama)
+                ->addColumn('sertifikat', function ($row) {
+                    return $row->file_sertifikat
+                    ? '<button type="button" class="btn btn-sm btn-success open-file" data-url="' . asset('storage/' . $row->file_sertifikat) . '" data-type="' . pathinfo($row->file_sertifikat, PATHINFO_EXTENSION) . '"><i class="bi bi-file-earmark"></i> Lihat </button>'
+                    : '<span class="badge bg-secondary">Tidak ada</span>';
+                })
+                ->addColumn('status', fn($row) => getStatusColor($row->status))
+                ->addColumn('nama', function ($row) {
+                    return '<div>' . $row->nama . '</div><div class="fst-italic text-muted">' . $row->nama_en . '</div>';
+                })
+                ->addColumn('tgl', function ($row) {
+                    $tglSelesaiFormatted = \Carbon\Carbon::parse($row->tgl_selesai)->format('d-m-Y');
+
+                    return '<div>' . $tglSelesaiFormatted . '</div>';
+                })
                 ->addColumn('aksi', function ($row) {
                     $editUrl = route('mahasiswa.kegiatan.edit', $row->id);
-                    $deleteUrl = route('mahasiswa.kegiatan.destroy', $row->id);
                     $showUrl = route('mahasiswa.kegiatan.show', $row->id);
 
                     // Check the validation status
@@ -62,23 +75,9 @@ class KegiatanController extends Controller
                     }
 
                     return '
-                        ' . $actionButtons . '
-                        <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                            ' . csrf_field() . '
-                            ' . method_field("DELETE") . '
-                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
-                        </form>';
+                        ' . $actionButtons;
                 })
-                ->addColumn('sertifikat', function ($row) {
-                    return $row->file_sertifikat
-                        ? '<button type="button" class="btn btn-sm btn-success open-file" data-url="' . asset('storage/' . $row->file_sertifikat) . '" data-type="' . pathinfo($row->file_sertifikat, PATHINFO_EXTENSION) . '"><i class="bi bi-file-earmark"></i> Lihat </button>'
-                        : '<span class="badge bg-secondary">Tidak ada</span>';
-                })
-                ->addColumn('status', fn($row) => getStatusColor($row->status))
-                ->addColumn('nama', function ($row) {
-                    return '<div>' . $row->nama . '</div><div class="fst-italic text-muted">' . $row->nama_en . '</div>';
-                })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nama', 'status'])
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nama', 'status', 'tgl'])
                 ->make(true);
         }
 
@@ -116,16 +115,18 @@ class KegiatanController extends Controller
             'kategori_kegiatan_id' => 'required|exists:kategori_kegiatan,id',
             'nama' => 'required',
             'nama_en' => 'required',
-            'tgl_mulai' => 'required|date',
-            'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
+            'tgl_mulai' => 'required|date|before_or_equal:tgl_selesai',
+            'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai|before_or_equal:' . date('d-m-Y'),
             'deskripsi' => 'required',
             'file_sertifikat' => 'required_if:sertifikat_option,file|nullable|file|mimes:pdf,jpg,jpeg,png|max:3072',
         ], [
             'kategori_kegiatan_id.required' => 'Kategori Kegiatan Wajib Dipilih',
             'nama.required' => 'Nama kegiatan harus diisi',
             'nama_en.required' => 'Nama kegiatan harus diisi',
+            'tgl_mulai.after_or_equal' => 'Tanggal Mulai harus sebelum atau sama dengan Tanggal Selesai',
             'tgl_mulai.required' => 'Tanggal Mulai kegiatan harus diisi',
             'tgl_selesai.required' => 'Tanggal Selesai kegiatan harus diisi',
+            'tgl_selesai.before_or_equal' => 'Tanggal Selesai harus sebelum atau sama dengan ' . date('d-m-Y'),
             'penyelenggara.required' => 'Penyelenggara kegiatan harus diisi',
             'deskripsi.required' => 'deskripsi kegiatan harus diisi',
             'file_sertifikat.required_if' => 'File sertifikat kegiatan harus diisi jika opsi \'file\' dipilih',
@@ -272,7 +273,7 @@ class KegiatanController extends Controller
     public function cetakSemester(Request $request)
     {
         $validated = $request->validate([
-           'semester_id' => 'required|exists:semester,id',
+            'semester_id' => 'required|exists:semester,id',
             'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
         ]);
 
@@ -357,9 +358,9 @@ class KegiatanController extends Controller
         $tahunAkademik = $kegiatans->groupBy('tahunAkademik');
         $semester = $tahunAkademik->groupBy('semester');
         $kategori = $kegiatans->groupBy('kategoriKegiatan.nama')
-        ->sortBy(function ($kegiatan, $key) {
-            return $kegiatan->first()->kategoriKegiatan->id;
-        });
+            ->sortBy(function ($kegiatan, $key) {
+                return $kegiatan->first()->kategoriKegiatan->id;
+            });
         $imagePath = public_path('images/unsiq.png');
         $logoUniv = base64_encode(file_get_contents($imagePath));
 

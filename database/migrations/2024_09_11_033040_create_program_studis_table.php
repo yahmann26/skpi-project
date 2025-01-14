@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('gelar_en')->nullable();
             $table->string('gelar_singkat')->nullable();
             $table->text('kualifikasi_cpl')->nullable();
+            $table->text('kegiatan_default')->nullable();
             $table->timestamps();
         });
     }

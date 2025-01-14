@@ -103,6 +103,24 @@ class PengaturanSeeder extends Seeder
                     ]
                 ],
             ],
+
+            [
+                'nama' => 'kegiatan',
+                'pengaturan' => [
+                    [
+                        'nama' => 'kegiatan_default',
+                        'tipe' => 'json',
+                        'nilai' => [
+                            [
+                                'nama' => 'PKKMB',
+                                'nama_en' => 'PKKMB Eng',
+                            ],
+                        ],
+                    ],
+
+                ],
+            ],
+
             [
                 'nama' => 'Capaian Belajar',
                 'pengaturan' => [
@@ -265,7 +283,7 @@ class PengaturanSeeder extends Seeder
                 'pengaturan' => [
                     [
                         'nama' => 'nama_penandatangan',
-                        'nilai' => 'NASYIIN FAQIH, S.T., M.T, IPM',
+                        'nilai' => 'NASYIIN FAQIH, S.T., M.T, I.P.M',
                         'tipe' => 'teks',
                     ],
                     [
@@ -313,6 +331,14 @@ class PengaturanSeeder extends Seeder
         foreach ($prodis as $prodi) {
             $pengaturan = Pengaturan::where('nama', 'informasi_kualifikasi_dan_hasil_capaian')->first();
             $prodi->kualifikasi_cpl = $pengaturan ? $pengaturan->nilai : json_encode([]);
+            $prodi->save();
+        }
+
+        // get all prodi, and set setting 'kegiatan_default' for each prodi
+        $prodis = ProgramStudi::all();
+        foreach ($prodis as $prodi) {
+            $pengaturan = Pengaturan::where('nama', 'kegiatan_default')->first();
+            $prodi->kegiatan_default = $pengaturan ? $pengaturan->nilai : json_encode([]);
             $prodi->save();
         }
     }

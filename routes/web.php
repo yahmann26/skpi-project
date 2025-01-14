@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DashboardController as AdminDasboardController;
 use App\Http\Controllers\Admin\PengaturanController as AdminPengaturanController;
 use App\Http\Controllers\Admin\JenjangController as AdminJenjangController;
@@ -66,6 +67,12 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('prodi/{id}/edit-cpl', [AdminProdiController::class, 'editCpl'])->name('admin.prodi.edit-cpl');
     Route::put('prodi/{id}/cpl', [AdminProdiController::class, 'updateCpl'])->name('admin.prodi.update-cpl');
 
+    //prodi kegiatan default
+    Route::get('prodi/{id}/edit-kegiatan', [AdminProdiController::class, 'editKegiatan'])->name('admin.prodi.edit-kegiatan');
+    Route::put('prodi/{id}/kegiatan', [AdminProdiController::class, 'updateKegiatan'])->name('admin.prodi.update-kegiatan');
+
+
+
     //kategori kegiatan
     Route::get('kategoriKegiatan', [AdminKategoriKegiatanController::class, 'index'])->name('admin.kategoriKegiatan.index');
     Route::get('kategoriKegiatan/tambah', [AdminKategoriKegiatanController::class, 'create'])->name('admin.kategoriKegiatan.create');
@@ -112,6 +119,7 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('mahasiswa/{id}/ubah', [AdminMahasiswaController::class, 'edit'])->name('admin.mahasiswa.edit');
     Route::put('mahasiswa/{id}', [AdminMahasiswaController::class, 'update'])->name('admin.mahasiswa.update');
     Route::delete('mahasiswa/{id}', [AdminMahasiswaController::class, 'destroy'])->name('admin.mahasiswa.destroy');
+    Route::get('mahasiswa/{id}/reset-password', [AdminMahasiswaController::class, 'resetPassword'])->name('admin.mahasiswa.reset-password');
     Route::get('mahasiswa/download', [AdminMahasiswaController::class, 'download'])->name('admin.mahasiswa.download');
     Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('admin.mahasiswa.import');
 
@@ -122,6 +130,16 @@ Route::middleware(['isAdmin', 'verified'])->prefix('admin')->group(function () {
     Route::get('kaprodi/{id}/ubah', [AdminKaprodiController::class, 'edit'])->name('admin.kaprodi.edit');
     Route::put('kaprodi/{id}', [AdminKaprodiController::class, 'update'])->name('admin.kaprodi.update');
     Route::delete('kaprodi/{id}', [AdminKaprodiController::class, 'destroy'])->name('admin.kaprodi.destroy');
+    Route::get('kaprodi/{id}/reset-password', [AdminKaprodiController::class, 'resetPassword'])->name('admin.kaprodi.reset-password');
+
+    //admin
+    Route::get('admin', [AdminController::class, 'index'])->name('admin.admin.index');
+    Route::get('admin/tambah', [AdminController::class, 'create'])->name('admin.admin.create');
+    Route::post('admin', [AdminController::class, 'store'])->name('admin.admin.store');
+    Route::get('admin/{id}/ubah', [AdminController::class, 'edit'])->name('admin.admin.edit');
+    Route::put('admin/{id}', [AdminController::class, 'update'])->name('admin.admin.update');
+    Route::delete('admin/{id}', [AdminController::class, 'destroy'])->name('admin.admin.destroy');
+    Route::get('admin/{id}/reset-password', [AdminController::class, 'resetPassword'])->name('admin.admin.reset-password');
 
     // pt
     Route::get('pt', [PtController::class, 'index'])->name('admin.pt.index');
@@ -215,6 +233,8 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::post('skpi/tambah/periode', [KaprodiSkpiController::class, 'store'])->name('kaprodi.periode.store');
     Route::get('skpi/download', [KaprodiSkpiController::class, 'download'])->name('kaprodi.skpi.download');
     Route::post('skpi/import{periodeId}', [KaprodiSkpiController::class, 'import'])->name('kaprodi.skpi.import');
+    Route::delete('skpi/{id}', [KaprodiSkpiController::class, 'destroy'])->name('kaprodi.skpi.destroy');
+
 });
 
 require __DIR__ . '/auth.php';

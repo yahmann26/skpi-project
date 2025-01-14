@@ -99,11 +99,11 @@
                                                 <td>
                                                     <input type="date" name="tgl_mulai" value="{{ old('tgl_mulai',$kegiatan->tgl_mulai) }}" class="form-control @error('tgl_mulai') is-invalid
 
-                                                    @enderror">
+                                                    @enderror" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                                     s/d
                                                     <input type="date" name="tgl_selesai" value="{{ old('tgl_selesai',$kegiatan->tgl_selesai) }}" class="form-control @error('tgl_selesai') is-invalid
 
-                                                    @enderror">
+                                                    @enderror" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                                 </td>
                                             </tr>
                                             <tr>

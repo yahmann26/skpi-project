@@ -73,8 +73,7 @@
                                     <input type="text" name="nama" class="form-control" aria-describedby="nama-addon"
                                         value="{{ old('nama') }}" autofocus placeholder="Nama Kegiatan">
                                 </div>
-                                <small class="text-danger">Contoh: HMTI sebagai Ketua, Lomba UI/UX di ITB sebagai Juara
-                                    1</small>
+                                <small style="font-style: italic;">Contoh: HMTI sebagai Ketua, Lomba UI/UX di ITB sebagai Juara 1</small>
                                 @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -85,7 +84,7 @@
                                         aria-describedby="nama_en-addon" value="{{ old('nama_en') }}" autofocus
                                         placeholder="Nama Kegiatan (english)">
                                 </div>
-                                <small class="text-danger">Example: HMTI as the President, UI/UX Competition at ITB as 1st
+                                <small style="font-style: italic;">Example: HMTI as the President, UI/UX Competition at ITB as 1st
                                     Place Winner</small>
                                 @error('nama_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -116,7 +115,7 @@
 
                             <div class="mb-3">
                                 <label for="file_sertifikat" class="col-sm-3 col-form-label"
-                                    style="font-weight: bold;">Bukti Sertifikat</label><small class="text-danger">Maksimal ukuran file: 3 MB</small>
+                                    style="font-weight: bold;">Bukti Sertifikat</label><small style="font-style: italic;">Maksimal ukuran file: 3 MB</small>
                                 <div class="col-sm-12">
                                     <input type="file" id="file_sertifikat"
                                         name="file_sertifikat" class="form-control @error('file_sertifikat') is-invalid @enderror"
@@ -129,22 +128,20 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tgl_mulai" class="form-label" style="font-weight: bold;">Tanggal Mulai<span
-                                        class="text-danger">*</span></label>
+                                <label for="tgl_mulai" class="form-label" style="font-weight: bold;">Tanggal Mulai<span class="text-danger">*</span></label>
                                 <input type="date" name="tgl_mulai" id="tgl_mulai"
                                     class="form-control @error('tgl_mulai') is-invalid @enderror"
-                                    value="{{ old('tgl_mulai') }}">
+                                    value="{{ old('tgl_mulai') }}" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                 @error('tgl_mulai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tgl_selesai" class="form-label" style="font-weight: bold;">Tanggal
-                                    Selesai<span class="text-danger">*</span></label>
+                                <label for="tgl_selesai" class="form-label" style="font-weight: bold;">Tanggal Selesai<span class="text-danger">*</span></label>
                                 <input type="date" name="tgl_selesai" id="tgl_selesai"
                                     class="form-control @error('tgl_selesai') is-invalid @enderror"
-                                    value="{{ old('tgl_selesai') }}">
+                                    value="{{ old('tgl_selesai') }}" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                 @error('tgl_selesai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

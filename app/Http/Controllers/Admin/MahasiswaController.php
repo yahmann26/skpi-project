@@ -43,13 +43,15 @@ class MahasiswaController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.mahasiswa.edit', $row->id);
                     $deleteUrl = route('admin.mahasiswa.destroy', $row->id);
+                    $resetPasswordUrl = route('admin.mahasiswa.reset-password', $row->id);
                     return '
-                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                    <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                        ' . csrf_field() . '
-                        ' . method_field("DELETE") . '
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
-                    </form>';
+                        <a href="#" class="btn btn-info btn-sm" onclick="confirmResetPassword(\'' . $resetPasswordUrl . '\')"><i class="bi bi-lock"></i></a>
+                        <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                            ' . csrf_field() . '
+                            ' . method_field("DELETE") . '
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
+                        </form>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -210,6 +212,23 @@ class MahasiswaController extends Controller
         return redirect()->back()->with('success', 'Data Mahasiswa berhasil dihapus!');
     }
 
+    public function resetPassword($id)
+    {
+        $mahasiswa = Mahasiswa::findOrFail($id);
+
+        $user = $mahasiswa->user;
+
+        if ($user) {
+            $user->password = bcrypt($mahasiswa->nim);
+            $user->save();
+
+            return redirect()->route('admin.mahasiswa.index')->with('success', 'Password telah berhasil direset');
+        } else {
+            return redirect()->route('admin.mahasiswa.index')->with('error', 'User tidak ditemukan.');
+        }
+    }
+
+
     public function import(Request $request)
     {
         $request->validate([
@@ -247,7 +266,7 @@ class MahasiswaController extends Controller
         $sheet->getStyle('A1:A2')->getAlignment()->setHorizontal(StyleAlignment::HORIZONTAL_LEFT);
 
         // Tambahkan header
-        $header = ['NO','NIM', 'EMAIL', 'NAMA', 'TEMPAT LAHIR', 'TGL LAHIR', 'JENIS KELAMIN', 'PRODI', 'TGL MASUK', 'JENIS PENDAFTARAN'];
+        $header = ['NO', 'NIM', 'EMAIL', 'NAMA', 'TEMPAT LAHIR', 'TGL LAHIR', 'JENIS KELAMIN', 'PRODI', 'TGL MASUK', 'JENIS PENDAFTARAN'];
         $sheet->fromArray($header, null, 'A3');
 
         // Header bold

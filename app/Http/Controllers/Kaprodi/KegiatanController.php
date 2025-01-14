@@ -38,27 +38,15 @@ class KegiatanController extends Controller
         }
         // Jika request adalah AJAX (untuk datatables)
         if ($request->ajax()) {
-
-            $prodi_kaprodi = Auth::user()->kaprodi->program_studi_id;
-
-            // Ambil data kegiatan semua mahasiswa dengan relasi kategoriKegiatan dan mahasiswa, filter berdasarkan prodi kaprodi
-            $kegiatan = Kegiatan::with(['kategoriKegiatan', 'mahasiswa'])
-                ->whereHas('mahasiswa', function ($query) use ($prodi_kaprodi) {
-                    $query->whereHas('prodi', function ($query) use ($prodi_kaprodi) {
-                        $query->where('id', $prodi_kaprodi);
-                    });
-                })
-                ->select('kegiatan.*')
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $kegiatan = Kegiatan::with(['kategoriKegiatan', 'mahasiswa'])->select('kegiatan.*')->orderBy('created_at', 'desc')->get();
 
 
             return DataTables::of($kegiatan)
                 ->addIndexColumn()
-                ->addColumn('nim', fn($row) => $row->mahasiswa->nim) // Tampilkan nim mahasiswa
-                ->addColumn('mahasiswa', fn($row) => $row->mahasiswa->nama) // Tampilkan nama mahasiswa
-                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama) // Tampilkan nama kategori kegiatan
-                ->addColumn('status', fn($row) => getStatusColor($row->status)) // Panggil fungsi getStatusColor
+                ->addColumn('nim', fn($row) => $row->mahasiswa->nim)
+                ->addColumn('mahasiswa', fn($row) => $row->mahasiswa->nama)
+                ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama)
+                ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('prodi', fn($row) => ($row->mahasiswa->prodi->nama))
                 ->addColumn('pencapaian', function ($row) {
                     return '<div>' . $row->pencapaian . '</div><div class="small fst-italic text-muted">tingkat: ' . $row->tingkat . '</div>';
@@ -66,20 +54,36 @@ class KegiatanController extends Controller
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
                 })
+                ->addColumn('tgl', function ($row) {
+                    $tglSelesaiFormatted = \Carbon\Carbon::parse($row->tgl_selesai)->format('d-m-Y');
+
+                    return '<div>' . $tglSelesaiFormatted . '</div>';
+                })
                 ->addColumn('aksi', function ($row) {
                     $editUrl = route('kaprodi.kegiatan.edit', $row->id);
                     $showUrl = route('kaprodi.kegiatan.show', $row->id);
                     $deleteUrl = route('kaprodi.kegiatan.destroy', $row->id);
+
+                    // Check the validation status
+                    if ($row->status === 'diproses') {
+                        $actionButtons = '
+                            <a href="' . $showUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-search"></i></a>
+                        ';
+                    } else {
+                        $actionButtons = '
+                            <a href="' . $editUrl . '" class="edit btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        ';
+                    }
+
                     return '
-                    <a href="' . $showUrl . '" class="show btn btn-success btn-sm"><i class="bi bi-search"></i></a>
-                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                    <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
+                        ' . $actionButtons . '
+                        <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
                         ' . csrf_field() . '
                         ' . method_field("DELETE") . '
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
-                    </form>';
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
+                        </form>';
                 })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama']) // Merender HTML
+                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama', 'tgl'])
                 ->make(true);
         }
 
@@ -305,9 +309,9 @@ class KegiatanController extends Controller
         $tahunAkademik = $kegiatans->groupBy('tahunAkademik.nama');
         $semester = $kegiatans->groupBy('tahunAkademik.semester.nama');
         $kategori = $kegiatans->groupBy('kategoriKegiatan.nama')
-        ->sortBy(function ($kegiatan, $key) {
-            return $kegiatan->first()->kategoriKegiatan->id;
-        });
+            ->sortBy(function ($kegiatan, $key) {
+                return $kegiatan->first()->kategoriKegiatan->id;
+            });
 
         // Ambil data prodi dan kaprodi
         $prodi = $mahasiswa->prodi;

@@ -38,11 +38,13 @@ class ProdiController extends Controller
                 )
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.prodi.edit', $row->id);
+                    $editKegiatan = route('admin.prodi.edit-kegiatan', $row->id);
                     $editCpl = route('admin.prodi.edit-cpl', $row->id);
                     $deleteUrl = route('admin.prodi.destroy', $row->id);
                     return '
+                        <a title="Ubah Kegiatan Default" href="' . $editKegiatan . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                         <a title="Ubah CPL" href="' . $editCpl . '" class="edit btn btn-light text-success fw-bold"><i class="bi bi-pencil-square"></i> CPL</a>
-                        <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        <a href="' . $editUrl . '" class="edit btn btn-info btn-sm"><i class="bi bi-pencil-square"></i></a>
                         <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
                         ' . csrf_field() . '
                         ' . method_field("DELETE") . '
@@ -125,6 +127,9 @@ class ProdiController extends Controller
         // isi capaian pembelajaran
         $pengaturan = Pengaturan::where('nama', 'informasi_kualifikasi_dan_hasil_capaian')->first();
         $newProdi->kualifikasi_cpl = $pengaturan ? $pengaturan->nilai : json_encode([]);
+
+        $pengaturan = Pengaturan::where('nama', 'kegiatan_default')->first();
+        $newProdi->kegiatan_default = $pengaturan ? $pengaturan->nilai : json_encode([]);
         $newProdi->save();
 
         // redirect to cpl page
@@ -210,6 +215,8 @@ class ProdiController extends Controller
         // get detail data
         $detailData = ProgramStudi::findOrFail($prodiId);
 
+        // dd($detailData->kualifikasi_cpl);
+
         return view('admin.pages.prodi.cpl', [
             'detailData' => $detailData,
         ]);
@@ -228,5 +235,28 @@ class ProdiController extends Controller
 
         // redirect back
         return redirect()->route('admin.prodi.index')->with('success', 'CPL berhasil diperbarui');
+    }
+
+    public function editKegiatan(Request $request, $prodiId)
+    {
+        // get detail data
+        $detailData = ProgramStudi::findOrFail($prodiId);
+
+        // dd($detailData->kegiatan_default);
+
+        return view('admin.pages.prodi.editKegiatan', [
+            'detailData' => $detailData,
+        ]);
+    }
+
+    public function updateKegiatan(Request $request, $id)
+    {
+        // update data
+        ProgramStudi::where('id', $id)->update([
+            'kegiatan_default' => $request->kegiatan_default
+        ]);
+
+        // redirect back
+        return redirect()->route('admin.prodi.index')->with('success', 'Kegiatan berhasil diperbarui');
     }
 }

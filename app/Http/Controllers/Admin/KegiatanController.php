@@ -54,20 +54,12 @@ class KegiatanController extends Controller
                 ->addColumn('nama', function ($row) {
                     return '<div>' . $row->nama . '</div><div class="small fst-italic text-muted">' . $row->nama_en . '</div>';
                 })
-                ->addColumn('aksi', function ($row) {
-                    $editUrl = route('admin.kegiatan.edit', $row->id);
-                    $showUrl = route('admin.kegiatan.show', $row->id);
-                    $deleteUrl = route('admin.kegiatan.destroy', $row->id);
-                    return '
-                    <a href="' . $showUrl . '" class="show btn btn-light btn-sm"><i class="bi bi-search"></i></a>
-                    <a href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                    <form id="deleteForm-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display:inline-block;">
-                        ' . csrf_field() . '
-                        ' . method_field("DELETE") . '
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $row->id . ')"><i class="bi bi-trash"></i></button>
-                    </form>';
+                ->addColumn('tgl', function ($row) {
+                    $tglSelesaiFormatted = \Carbon\Carbon::parse($row->tgl_selesai)->format('d-m-Y');
+
+                    return '<div>' . $tglSelesaiFormatted . '</div>';
                 })
-                ->rawColumns(['aksi', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama'])
+                ->rawColumns(['tgl', 'sertifikat', 'pencapaian', 'nim', 'status', 'nama'])
                 ->make(true);
         }
 

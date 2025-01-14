@@ -41,18 +41,20 @@
 
                         <table class="table table-bordered table-striped datatable">
                             <thead>
-                                <tr>
+                                <tr style="text-align: center">
                                     <th width="3%">No</th>
                                     <th width="10%">NIM</th>
-                                    <th width="20%">Nama Mahasiswa</th>
+                                    <th width="10%">Nama Mahasiswa</th>
                                     <th width="15%">Program Studi</th>
                                     <th width="10%">Kategori</th>
                                     <th width="20%">Nama Kegiatan</th>
                                     <th width="10%">Status</th>
-                                    <th width="12%">Aksi</th>
+                                    <th width="12%">Tanggal</th>
+                                    <th width="10%">Aksi</th>
                                 </tr>
                                 <tr>
                                     <th></th>
+                                    <td><input></td>
                                     <td><input></td>
                                     <td><input></td>
                                     <td><input></td>
@@ -114,6 +116,10 @@
                     {
                         data: 'status',
                         name: 'status'
+                    },
+                    {
+                        data: 'tgl',
+                        name: 'tgl'
                     },
                     {
                         data: 'aksi',

@@ -34,11 +34,15 @@ class SkpiController extends Controller
                     return '';
                 })
                 ->addColumn('action', function ($row) {
+                    $deleteUrl = route('kaprodi.skpi.destroy', $row->id);
                     $showSkpi = route('kaprodi.skpi.show', $row->id);
                     return '
-                        <a href="' .
-                        $showSkpi .
-                        '" class="show btn btn-light btn-sm"><i class="bi bi-search"></i></a>';
+                        <a href="' . $showSkpi .'" class="show btn btn-light btn-sm"><i class="bi bi-search"></i></a>
+                        <form id="deleteForm-' .$row->id .'" action="' .$deleteUrl .'" method="POST" style="display:inline-block;">'
+                        . csrf_field() .''
+                        . method_field('DELETE') .'
+                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(' .$row->id .')"><i class="bi bi-trash"></i></button>
+                        </form>';
                 })
 
                 ->rawColumns(['action'])
@@ -98,6 +102,12 @@ class SkpiController extends Controller
         }
 
         return view('kaprodi.pages.skpi.show', compact('periode'));
+    }
+
+    public function destroy($id)
+    {
+        Periode::where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Berhasil menghapus data');
     }
 
 

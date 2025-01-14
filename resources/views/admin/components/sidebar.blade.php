@@ -50,11 +50,17 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ isRouteName(['admin.mahasiswa.index', 'admin.kaprodi.index']) ? '' : 'collapsed' }}"
+            <a class="nav-link {{ isRouteName(['admin.mahasiswa.index', 'admin.kaprodi.index', 'admin.mahasiswa.index',]) ? '' : 'collapsed' }}"
                 data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-people"></i><span>User</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="user-nav" class="nav-content collapse {{ isRouteName(['admin.mahasiswa.index', 'admin.mahasiswa.create', 'admin.mahasiswa.edit', 'admin.kaprodi.index', 'admin.kaprodi.create', 'admin.kaprodi.edit']) ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="user-nav" class="nav-content collapse {{ isRouteName(['admin.admin.index', 'admin.admin.create', 'admin.admin.edit','admin.admin.index', 'admin.mahasiswa.create', 'admin.mahasiswa.edit', 'admin.kaprodi.index', 'admin.kaprodi.create', 'admin.kaprodi.edit']) ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.admin.index') }}"
+                        class="{{ isRouteName('admin.admin.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Admin</span>
+                    </a>
+                </li>
                 <li>
                     <a href="{{ route('admin.kaprodi.index') }}"
                         class="{{ isRouteName('admin.kaprodi.index') ? 'active' : '' }}">

@@ -91,6 +91,25 @@ if (!function_exists('isRouteName')) {
                 }
             });
         }
+
+        //fungsi alert reset password
+        function confirmResetPassword(url) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Password akan di-reset!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, reset password!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika dikonfirmasi, redirect ke URL reset password
+                    window.location.href = url;
+                }
+            });
+        }
     </script>
 
     @if (session('success'))

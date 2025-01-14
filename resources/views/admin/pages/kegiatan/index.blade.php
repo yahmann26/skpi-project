@@ -46,7 +46,7 @@
                                     <th width="10%">Kategori</th>
                                     <th width="20%">Nama Kegiatan</th>
                                     <th width="10%">Status</th>
-                                    <th width="12%">Aksi</th>
+                                    <th width="12%">Tanggal</th>
                                 </tr>
                                 <tr>
                                     <th></th>
@@ -114,10 +114,8 @@
                         name: 'status'
                     },
                     {
-                        data: 'aksi',
-                        name: 'aksi',
-                        orderable: false,
-                        searchable: false
+                        data: 'tgl',
+                        name: 'tgl',
                     }
                 ],
 

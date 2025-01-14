@@ -51,19 +51,18 @@ class SkpiImport implements ToModel, WithHeadingRow
             $mahasiswa = Mahasiswa::where('nim', $row[1])->first();
 
             if ($mahasiswa) {
+                // Cek apakah mahasiswa sudah memiliki SKPI di database
+                $existingSkpi = Skpi::where('mahasiswa_id', $mahasiswa->id)->first();
+
+                if ($existingSkpi) {
+                    // Jika SKPI sudah ada, log dan batalkan impor
+                    Log::warning("Mahasiswa dengan NIM {$row[1]} sudah memiliki SKPI. Impor dibatalkan.");
+                    return null;
+                }
+
                 // Jika Kaprodi, filter berdasarkan prodi
                 if ($this->prodiId && $mahasiswa->program_studi_id != $this->prodiId) {
                     return null; // Jika program studi tidak cocok, lewati baris
-                }
-
-                // Cek apakah SKPI sudah ada di DB
-                $existingSkpi = Skpi::where('mahasiswa_id', $mahasiswa->id)
-                    ->where('periode_id', $this->periodeId)
-                    ->first();
-
-                if ($existingSkpi) {
-                    Log::warning("SKPI untuk Mahasiswa dengan NIM {$row[1]} sudah ada. Impor dibatalkan.");
-                    return null;
                 }
 
                 // Convert tanggal lulus jika ada
@@ -83,6 +82,7 @@ class SkpiImport implements ToModel, WithHeadingRow
             }
         }
     }
+
 
     private function convertToDateFormat($date)
     {

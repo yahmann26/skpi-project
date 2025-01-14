@@ -32,12 +32,15 @@
                 <div class="card overflow-auto">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="card-title"><a href="{{ route('admin.skpi.index') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-left"></i> Kembali</a></div>
+                            <div class="card-title"><a href="{{ route('admin.skpi.index') }}"
+                                    class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-left"></i> Kembali</a>
+                            </div>
                             <div class="card-title">Data SKPI {{ $periode->nama }} </div>
                             <div class="d-flex">
 
                                 {{-- cetak --}}
-                                <a id="printButton" href="#" class="btn btn-sm btn-success me-2 d-none" target="_blank">
+                                <a id="printButton" href="#" class="btn btn-sm btn-success me-2 d-none"
+                                    target="_blank">
                                     <i class="bi bi-printer"></i> Cetak
                                 </a>
 
@@ -175,6 +178,22 @@
             }
 
         });
-    </script>
 
+        $.ajax({
+            url: 'admin/skpi/import{periodeId}',
+            method: 'POST',
+            data: {
+                /* Data yang dibutuhkan */ },
+            success: function(response) {
+                if (response.status == 'error') {
+                    toastr.error(response.message); // Menampilkan pesan peringatan
+                } else {
+                    toastr.success('Data berhasil diimpor!');
+                }
+            },
+            error: function() {
+                toastr.error('Terjadi kesalahan saat proses import.');
+            }
+        });
+    </script>
 @endpush
