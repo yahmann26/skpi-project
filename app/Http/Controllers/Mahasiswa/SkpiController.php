@@ -57,6 +57,7 @@ class SkpiController extends Controller
         $mahasiswa = $skpi->mahasiswa;
         $prodi = $mahasiswa->prodi;
         $cpl = json_decode($prodi->kualifikasi_cpl, true);
+        $kegiatan_default = json_decode($prodi->kegiatan_default, true);
         $jenjangPendidikan = $prodi->jenjangPendidikan;
         $kegiatan = $mahasiswa->kegiatan;
         $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
@@ -76,6 +77,7 @@ class SkpiController extends Controller
             'mahasiswa' => $mahasiswa,
             'prodi' => $prodi,
             'cpl' => $cpl,
+            'kegiatan_default' => $kegiatan_default,
             'jenjangPendidikan' => $jenjangPendidikan,
             'kegiatan' => $kegiatan,
             'namaUniv' => $namaUniv,

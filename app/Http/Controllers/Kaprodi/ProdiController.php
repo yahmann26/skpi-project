@@ -41,11 +41,13 @@ class ProdiController extends Controller
                     <div class="fst-italic small text-secondary">' . $row->jenjangPendidikan->jenjang_lanjutan_en . '</div>'
                 )
                 ->addColumn('action', function ($row) {
+                    $editKegiatan = route('kaprodi.prodi.edit-kegiatan', $row->id);
                     $editUrl = route('kaprodi.prodi.edit', $row->id);
                     $editCpl = route('kaprodi.prodi.edit-cpl', $row->id);
                     return '
+                        <a title="Ubah Kegiatan Default" href="' . $editKegiatan . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                         <a title="Ubah CPL" href="' . $editCpl . '" class="edit btn btn-light text-success fw-bold"><i class="bi bi-pencil-square"></i> CPL</a>
-                        <a title="Ubah" href="' . $editUrl . '" class="edit btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>';
+                        <a title="Ubah" href="' . $editUrl . '" class="edit btn btn-info btn-sm"><i class="bi bi-pencil-square"></i></a>';
                 })
                 ->rawColumns(['nama', 'gelar', 'jenjang_lanjutan', 'jenjang', 'action'])
                 ->make(true);
@@ -139,5 +141,28 @@ class ProdiController extends Controller
 
         // redirect back
         return redirect()->route('kaprodi.prodi.index')->with('success', 'CPL berhasil diperbarui');
+    }
+
+    public function editKegiatan(Request $request, $prodiId)
+    {
+        // get detail data
+        $detailData = ProgramStudi::findOrFail($prodiId);
+
+        // dd($detailData->kegiatan_default);
+
+        return view('kaprodi.pages.prodi.editKegiatan', [
+            'detailData' => $detailData,
+        ]);
+    }
+
+    public function updateKegiatan(Request $request, $id)
+    {
+        // update data
+        ProgramStudi::where('id', $id)->update([
+            'kegiatan_default' => $request->kegiatan_default
+        ]);
+
+        // redirect back
+        return redirect()->route('kaprodi.prodi.index')->with('success', 'Kegiatan berhasil diperbarui');
     }
 }

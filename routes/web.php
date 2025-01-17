@@ -226,6 +226,10 @@ Route::middleware(['isKaprodi', 'verified'])->prefix('kaprodi')->group(function 
     Route::get('/prodi/{id}/edit-cpl', [KaprodiProdiController::class, 'editCpl'])->name('kaprodi.prodi.edit-cpl');
     Route::put('/prodi/{id}/cpl', [KaprodiProdiController::class, 'updateCpl'])->name('kaprodi.prodi.update-cpl');
 
+    //prodi kegiatan default
+    Route::get('prodi/{id}/edit-kegiatan', [KaprodiProdiController::class, 'editKegiatan'])->name('kaprodi.prodi.edit-kegiatan');
+    Route::put('prodi/{id}/kegiatan', [KaprodiProdiController::class, 'updateKegiatan'])->name('kaprodi.prodi.update-kegiatan');
+
     // SKPI
     Route::get('skpi', [KaprodiSkpiController::class, 'index'])->name('kaprodi.skpi.index');
     Route::get('skpi/{id}/lihat', [KaprodiSkpiController::class, 'show'])->name('kaprodi.skpi.show');

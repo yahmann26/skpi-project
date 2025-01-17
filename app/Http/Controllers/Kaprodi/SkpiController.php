@@ -113,10 +113,13 @@ class SkpiController extends Controller
 
     public function cetak($ids)
     {
+        // Mengambil PT pertama
         $pt = Pt::where('id', 1)->first();
 
+        // Mengubah string ID menjadi array
         $idsArray = explode(',', $ids);
 
+        // Mengambil SKPI berdasarkan array ID
         $skpis = Skpi::with([
             'mahasiswa.prodi.jenjangPendidikan',
             'mahasiswa.kegiatan' => function ($query) {
@@ -153,6 +156,7 @@ class SkpiController extends Controller
             $mahasiswa = $skpi->mahasiswa;
             $prodi = $mahasiswa->prodi;
             $cpl = json_decode($prodi->kualifikasi_cpl, true);
+            $kegiatan_default = json_decode($prodi->kegiatan_default, true);
             $jenjangPendidikan = $prodi->jenjangPendidikan;
             $kegiatan = $mahasiswa->kegiatan;
             $namaUniv = HelperSkpi::getSettingByName('nama_universitas');
@@ -168,6 +172,7 @@ class SkpiController extends Controller
                 'mahasiswa' => $mahasiswa,
                 'prodi' => $prodi,
                 'cpl' => $cpl,
+                'kegiatan_default' => $kegiatan_default,
                 'jenjangPendidikan' => $jenjangPendidikan,
                 'kegiatan' => $kegiatan,
                 'namaUniv' => $namaUniv,
@@ -180,19 +185,20 @@ class SkpiController extends Controller
             ];
 
             // Render header dan halaman PDF
-            $header1 = view('admin.pages.skpi.header1', $data)->render();
-            $mpdf->SetHTMLHeader($header1, 'O');
 
             $mpdf->AddPage('P', '', 1);
+            
+            $header1 = view('kaprodi.pages.skpi.header1', $data)->render();
+            $mpdf->SetHTMLHeader($header1, 'O');
 
-            $header = view('admin.pages.skpi.header', $data)->render();
+            $header = view('kaprodi.pages.skpi.header', $data)->render();
             $mpdf->SetHTMLHeader($header);
 
-            $html = view('admin.pages.skpi.cetak1', $data)->render();
+            $html = view('kaprodi.pages.skpi.cetak1', $data)->render();
             $mpdf->WriteHTML($html);
 
 
-            $html2 = view('admin.pages.skpi.cetak2', $data)->render();
+            $html2 = view('kaprodi.pages.skpi.cetak2', $data)->render();
             $mpdf->WriteHTML($html2);
         }
 

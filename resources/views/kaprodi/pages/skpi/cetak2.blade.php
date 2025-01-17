@@ -5,7 +5,7 @@
     </link>
     <style>
         body {
-            font-family:'Times New Roman', Times, serif ;
+            font-family: 'Times New Roman', Times, serif;
         }
     </style>
 
@@ -164,7 +164,8 @@
         @endforeach
 
         {{-- Kegiatan Mahasiswa --}}
-        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; text-align: left;">
+        <table border="0"
+            style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px; text-align: left;">
             <tr>
                 <td style="width: 5%; text-align: center; padding: 0;">
                 </td>
@@ -194,13 +195,13 @@
             </tr>
         </table>
 
-        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 0; text-align: justify;">
+        <table border="0"
+            style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 0; text-align: justify;">
             <tr>
                 <td style="width: 5%; padding: 0;">
                 </td>
                 <td style="width: 45%; vertical-align: top;">
-                    <h1
-                        style="font-size: 12px; font-weight: normal; margin-top: 0; margin-bottom: 0;">
+                    <h1 style="font-size: 12px; font-weight: normal; margin-top: 0; margin-bottom: 0;">
                         Pemilik Surat Keterangan Pendamping Ijazah ini memiliki prestasi dan telah mengikuti kegiatan:
                     </h1>
                 </td>
@@ -215,6 +216,41 @@
             </tr>
         </table>
 
+        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 10px">
+            @foreach ($kegiatan_default as $index => $item)
+                <tr>
+                    <td style="width: 5%;">
+                    </td>
+                    <td style="width: 2%;">
+                        <h1
+                            style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            {{ $index + 1 }}.
+                        </h1>
+                    </td>
+                    <td style="width: 43%; text-align: left; vertical-align: top;">
+                        <h1
+                            style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            {{ ucwords($item['nama']) ?? 'Nama tidak tersedia' }}
+                        </h1>
+                    </td>
+                    <td style="width: 5%;">
+                    </td>
+                    <td style="width: 2%;">
+                        <h1
+                            style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            {{ $index + 1 }}.
+                        </h1>
+                    </td>
+                    <td style="width: 43%; text-align: left; vertical-align: top;">
+                        <h1
+                            style="font-size: 12px; font-weight: normal; font-style: italic; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            {{ ucwords($item['nama_en']) ?? 'Nama tidak tersedia' }}
+                        </h1>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+
         <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 0">
             @foreach ($kegiatan as $index => $k)
                 <tr>
@@ -223,7 +259,7 @@
                     <td style="width: 2%; text-align: left; vertical-align: top;">
                         <h1
                             style="font-size: 12px; font-weight: normal; text-align: left; margin-top: 0; margin-bottom: 0;">
-                            {{ $index + 1 }}.
+                            {{ count($kegiatan_default) + $index + 1 }}.
                         </h1>
                     </td>
                     <td style="width: 43%; text-align: left; vertical-align: top;">
@@ -237,7 +273,7 @@
                     <td style="width: 2%; text-align: left; vertical-align: top;">
                         <h1
                             style="font-size: 12px; font-weight: normal; font-style: italic; text-align: left; margin-top: 0; margin-bottom: 0;">
-                            {{ $index + 1 }}.
+                            {{ count($kegiatan_default) + $index + 1 }}.
                         </h1>
                     </td>
                     <td style="width: 43%; text-align: left; vertical-align: top;">
@@ -249,6 +285,8 @@
                 </tr>
             @endforeach
         </table>
+
+
         {{-- end kegiatan  --}}
 
     </div>
@@ -316,13 +354,13 @@
             </tr>
         </table>
 
-        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 0; text-align: justify;" >
+        <table border="0"
+            style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 0; text-align: justify;">
             <tr>
                 <td style="width: 5%; text-align: center; padding: 0;">
                 </td>
                 <td style="width: 45%; vertical-align: top;">
-                    <h1
-                        style="font-size: 12px; font-weight: normal; margin-top: 0; margin-bottom: 0;">
+                    <h1 style="font-size: 12px; font-weight: normal; margin-top: 0; margin-bottom: 0;">
                         {{ $pt->sistem_pendidikan }}
                     </h1>
                 </td>
@@ -367,13 +405,13 @@
             </tr>
         </table>
 
-        <table border="0" style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 0; text-align: justify;">
+        <table border="0"
+            style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 0; text-align: justify;">
             <tr>
                 <td style="width: 5%; text-align: center; padding: 0;">
                 </td>
                 <td style="width: 45%; vertical-align: top;">
-                    <h1
-                        style="font-size: 12px; font-weight: normal; margin-top: 0; margin-bottom: 0;">
+                    <h1 style="font-size: 12px; font-weight: normal; margin-top: 0; margin-bottom: 0;">
                         {{ $pt->kkni }}
                     </h1>
                 </td>
@@ -471,8 +509,7 @@
                 <td style="width: 5%;">
                 </td>
                 <td style="width: 45%; text-align: left; vertical-align: top;">
-                    <span
-                        style="font-size: 12px; font-style: italic; color: gray; ">
+                    <span style="font-size: 12px; font-style: italic; color: gray; ">
                         Dean of Engineering and Computer Science Faculty
                     </span>
                 </td>
