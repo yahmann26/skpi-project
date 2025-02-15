@@ -87,7 +87,6 @@ class KegiatanController extends Controller
                 ->make(true);
         }
 
-        // Render view halaman kaprodi untuk pengajuan kegiatan mahasiswa
         return view('kaprodi.pages.kegiatan.index');
     }
 
@@ -163,7 +162,7 @@ class KegiatanController extends Controller
 
         // Mengelola upload file sertifikat jika ada file baru
         if ($request->hasFile('file_sertifikat')) {
-            // Hapus file lama jika perlu
+            //hapus file lama
             if ($kegiatan->file_sertifikat) {
                 Storage::disk('public')->delete($kegiatan->file_sertifikat);
             }
@@ -184,8 +183,15 @@ class KegiatanController extends Controller
 
     public function destroy(string $id)
     {
-        Kegiatan::where('id', $id)->delete();
-        return redirect()->back()->with('success', 'Berhasil menghapus data');
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        if ($kegiatan->file_sertifikat) {
+            Storage::disk('public')->delete($kegiatan->file_sertifikat);
+        }
+
+        $kegiatan->delete();
+
+        return redirect()->back()->with('success', 'Berhasil menghapus data dan file');
     }
 
     public function updateStatus(Request $request, $id)

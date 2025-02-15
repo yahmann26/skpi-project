@@ -47,8 +47,8 @@ class KegiatanController extends Controller
                 ->addColumn('kategori', fn($row) => $row->kategoriKegiatan->nama)
                 ->addColumn('sertifikat', function ($row) {
                     return $row->file_sertifikat
-                    ? '<button type="button" class="btn btn-sm btn-success open-file" data-url="' . asset('storage/' . $row->file_sertifikat) . '" data-type="' . pathinfo($row->file_sertifikat, PATHINFO_EXTENSION) . '"><i class="bi bi-file-earmark"></i> Lihat </button>'
-                    : '<span class="badge bg-secondary">Tidak ada</span>';
+                        ? '<button type="button" class="btn btn-sm btn-success open-file" data-url="' . HelperSkpi::getAssetUrl($row->file_sertifikat) . '" data-type="' . pathinfo($row->file_sertifikat, PATHINFO_EXTENSION) . '"><i class="bi bi-file-earmark"></i> Lihat </button>'
+                        : '<span class="badge bg-secondary">Tidak ada</span>';
                 })
                 ->addColumn('status', fn($row) => getStatusColor($row->status))
                 ->addColumn('nama', function ($row) {
@@ -228,8 +228,8 @@ class KegiatanController extends Controller
         $kegiatan->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('file_sertifikat')) {
-            // Hapus file lama jika perlu
-            if ($kegiatan->file_sertifikat) {
+            // Jika file lama ada, hapus file lama tersebut
+            if ($kegiatan->file_sertifikat && Storage::disk('public')->exists($kegiatan->file_sertifikat)) {
                 Storage::disk('public')->delete($kegiatan->file_sertifikat);
             }
 
@@ -237,6 +237,8 @@ class KegiatanController extends Controller
             $file = $request->file('file_sertifikat');
             $fileName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
             $filePath = $file->storeAs('kegiatan', $fileName, 'public');
+
+            // Update field file_sertifikat dengan path file baru
             $kegiatan->file_sertifikat = $filePath;
         }
 

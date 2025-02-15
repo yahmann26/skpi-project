@@ -7,7 +7,8 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ route('kaprodi.dashboard') }}"><i class="bi bi-house-door"></i></a>
+                </li>
                 <li class="breadcrumb-item">Kegiatan</li>
                 <li class="breadcrumb-item">Mahasiswa</li>
                 <li class="breadcrumb-item active">Lihat</li>
@@ -97,23 +98,31 @@
                                                 <th>Tanggal</th>
                                                 <td>:</td>
                                                 <td>
-                                                    <input type="date" name="tgl_mulai" value="{{ old('tgl_mulai',$kegiatan->tgl_mulai) }}" class="form-control @error('tgl_mulai') is-invalid
+                                                    <input type="date" name="tgl_mulai"
+                                                        value="{{ old('tgl_mulai', $kegiatan->tgl_mulai) }}"
+                                                        class="form-control @error('tgl_mulai') is-invalid
 
-                                                    @enderror" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                    @enderror"
+                                                        max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                                     s/d
-                                                    <input type="date" name="tgl_selesai" value="{{ old('tgl_selesai',$kegiatan->tgl_selesai) }}" class="form-control @error('tgl_selesai') is-invalid
+                                                    <input type="date" name="tgl_selesai"
+                                                        value="{{ old('tgl_selesai', $kegiatan->tgl_selesai) }}"
+                                                        class="form-control @error('tgl_selesai') is-invalid
 
-                                                    @enderror" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                    @enderror"
+                                                        max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Penyelenggara</th>
                                                 <td>:</td>
-                                                <td><input type="text" name="penyelenggara" value="{{ old('penyelenggara', $kegiatan->penyelenggara) }}"
-                                                    class="form-control @error('penyelenggara') is-invalid @enderror">
-                                             @error('penyelenggara')
-                                                 <div class="invalid-feedback">{{ $message }}</div>
-                                             @enderror</td>
+                                                <td><input type="text" name="penyelenggara"
+                                                        value="{{ old('penyelenggara', $kegiatan->penyelenggara) }}"
+                                                        class="form-control @error('penyelenggara') is-invalid @enderror">
+                                                    @error('penyelenggara')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Bukti</th>
@@ -122,7 +131,8 @@
                                                     @if ($kegiatan->file_sertifikat)
                                                         <button type="button" class="btn btn-sm btn-success"
                                                             data-bs-toggle="modal" data-bs-target="#previewModal"
-                                                            data-url="{{ asset('storage/' . $kegiatan->file_sertifikat) }}"
+                                                            {{-- data-url="{{ asset('storage/' . $kegiatan->file_sertifikat) }}" --}}
+                                                            data-url="{{ \App\Helper\Skpi::getAssetUrl($kegiatan->file_sertifikat) }}"
                                                             data-type="{{ pathinfo($kegiatan->file_sertifikat, PATHINFO_EXTENSION) }}">
                                                             <i class="bi bi-file-earmark"></i> Lihat
                                                         </button>
@@ -140,7 +150,8 @@
                                         </tbody>
                                     </table>
                                     <div class="mb-3">
-                                        <label for="catatan_status" class="form-label" style="font-weight: bold;">Catatan</label>
+                                        <label for="catatan_status" class="form-label"
+                                            style="font-weight: bold;">Catatan</label>
                                         <textarea name="catatan_status" id="catatan_status" class="form-control @error('catatan_status') is-invalid @enderror">{{ old('catatan_status', $kegiatan->catatan_status) }}</textarea>
                                         @error('catatan_status')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -228,10 +239,10 @@
 
             previewModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
-                var fileUrl = button.getAttribute('data-url');
-                var fileType = button.getAttribute('data-type');
+                var fileUrl = button.getAttribute('data-url'); // Mengambil URL file
+                var fileType = button.getAttribute('data-type'); // Mengambil tipe file (pdf/gambar)
 
-                filePreviewContent.innerHTML = '';
+                filePreviewContent.innerHTML = ''; // Bersihkan konten sebelumnya
 
                 if (fileType === 'pdf') {
                     filePreviewContent.innerHTML = '<iframe src="' + fileUrl +
@@ -243,6 +254,7 @@
             });
         });
     </script>
+
 
     <script>
         function submitForm(id, action) {
